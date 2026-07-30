@@ -1,0 +1,39 @@
+field,missing_before,action,reason
+STR_RAD,0,Blank to 0,Verified binary checkbox indicator
+DAM_RAD,0,Blank to 0,Verified binary checkbox indicator
+STR_WINDSHLD,0,Blank to 0,Verified binary checkbox indicator
+DAM_WINDSHLD,0,Blank to 0,Verified binary checkbox indicator
+STR_NOSE,0,Blank to 0,Verified binary checkbox indicator
+DAM_NOSE,0,Blank to 0,Verified binary checkbox indicator
+STR_ENG1,0,Blank to 0,Verified binary checkbox indicator
+DAM_ENG1,0,Blank to 0,Verified binary checkbox indicator
+ING_ENG1,0,Blank to 0,Verified binary checkbox indicator
+STR_ENG2,0,Blank to 0,Verified binary checkbox indicator
+DAM_ENG2,0,Blank to 0,Verified binary checkbox indicator
+ING_ENG2,0,Blank to 0,Verified binary checkbox indicator
+STR_ENG3,0,Blank to 0,Verified binary checkbox indicator
+DAM_ENG3,0,Blank to 0,Verified binary checkbox indicator
+ING_ENG3,0,Blank to 0,Verified binary checkbox indicator
+STR_ENG4,0,Blank to 0,Verified binary checkbox indicator
+DAM_ENG4,0,Blank to 0,Verified binary checkbox indicator
+ING_ENG4,0,Blank to 0,Verified binary checkbox indicator
+STR_PROP,0,Blank to 0,Verified binary checkbox indicator
+DAM_PROP,0,Blank to 0,Verified binary checkbox indicator
+STR_WING_ROT,0,Blank to 0,Verified binary checkbox indicator
+DAM_WING_ROT,0,Blank to 0,Verified binary checkbox indicator
+STR_FUSE,0,Blank to 0,Verified binary checkbox indicator
+DAM_FUSE,0,Blank to 0,Verified binary checkbox indicator
+STR_LG,0,Blank to 0,Verified binary checkbox indicator
+DAM_LG,0,Blank to 0,Verified binary checkbox indicator
+STR_TAIL,0,Blank to 0,Verified binary checkbox indicator
+DAM_TAIL,0,Blank to 0,Verified binary checkbox indicator
+STR_LGHTS,0,Blank to 0,Verified binary checkbox indicator
+DAM_LGHTS,0,Blank to 0,Verified binary checkbox indicator
+STR_OTHER,0,Blank to 0,Verified binary checkbox indicator
+DAM_OTHER,0,Blank to 0,Verified binary checkbox indicator
+NR_INJURIES,318813,Blank to 0,Reported outcome count; blank interpreted as no reported cases
+NR_FATALITIES,319082,Blank to 0,Reported outcome count; blank interpreted as no reported cases
+IMAGE,0,Preserved,Administrative or reporting blank is not proven to mean No
+REMAINS_COLLECTED,0,Preserved,Administrative or reporting blank is not proven to mean No
+REMAINS_SENT,0,Preserved,Administrative or reporting blank is not proven to mean No
+INGESTED_OTHER,0,Preserved,Administrative or reporting blank is not proven to mean No

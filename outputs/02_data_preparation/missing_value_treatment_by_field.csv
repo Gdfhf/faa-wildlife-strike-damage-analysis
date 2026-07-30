@@ -1,0 +1,148 @@
+field,missing_pct_after_deterministic_cleaning,treatment,stage
+INDEX_NR,0.0,Preserve unless another documented rule applies,Deterministic preservation
+INCIDENT_DATE,0.0,Preserve unless another documented rule applies,Deterministic preservation
+INCIDENT_MONTH,0.0,Preserve unless another documented rule applies,Deterministic preservation
+INCIDENT_YEAR,0.0,Preserve unless another documented rule applies,Deterministic preservation
+TIME,38.0,Preserve unless another documented rule applies,Deterministic preservation
+TIME_OF_DAY,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+AIRPORT_ID,0.0,Preserve unless another documented rule applies,Deterministic preservation
+AIRPORT,0.0,Preserve unless another documented rule applies,Deterministic preservation
+AIRPORT_LATITUDE,100.0,Preserve unless another documented rule applies,Deterministic preservation
+AIRPORT_LONGITUDE,100.0,Preserve unless another documented rule applies,Deterministic preservation
+RUNWAY,24.44,Preserve unless another documented rule applies,Deterministic preservation
+STATE,0.0,Preserve unless another documented rule applies,Deterministic preservation
+FAAREGION,0.0,Preserve unless another documented rule applies,Deterministic preservation
+LOCATION,87.64,Preserve unless another documented rule applies,Deterministic preservation
+ENROUTE_STATE,98.25,Preserve unless another documented rule applies,Deterministic preservation
+OPID,0.0,Preserve unless another documented rule applies,Deterministic preservation
+OPERATOR,0.0,Preserve unless another documented rule applies,Deterministic preservation
+REG,39.33,Preserve unless another documented rule applies,Deterministic preservation
+FLT,53.61,Preserve unless another documented rule applies,Deterministic preservation
+AIRCRAFT,0.0,Preserve unless another documented rule applies,Deterministic preservation
+AMA,28.96,Preserve unless another documented rule applies,Deterministic preservation
+AMO,37.2,Preserve unless another documented rule applies,Deterministic preservation
+EMA,33.47,Preserve unless another documented rule applies,Deterministic preservation
+EMO,36.24,Preserve unless another documented rule applies,Deterministic preservation
+AC_CLASS,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+AC_MASS,28.5,Preserve unless another documented rule applies,Deterministic preservation
+TYPE_ENG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+NUM_ENGS,28.58,Preserve unless another documented rule applies,Deterministic preservation
+ENG_1_POS,28.59,Preserve unless another documented rule applies,Deterministic preservation
+ENG_2_POS,33.38,Preserve unless another documented rule applies,Deterministic preservation
+ENG_3_POS,95.77,Preserve unless another documented rule applies,Deterministic preservation
+ENG_4_POS,98.9,Preserve unless another documented rule applies,Deterministic preservation
+PHASE_OF_FLIGHT,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+HEIGHT,49.57,Keep missing; training pipeline may impute if approved,Learned preprocessing later
+SPEED,68.42,Keep missing; training pipeline may impute if approved,Learned preprocessing later
+DISTANCE,33.55,Keep missing; training pipeline may impute if approved,Learned preprocessing later
+INCIDENT_LATITUDE,100.0,Preserve unless another documented rule applies,Deterministic preservation
+INCIDENT_LONGITUDE,100.0,Preserve unless another documented rule applies,Deterministic preservation
+SKY,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+PRECIPITATION,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+AOS,95.04,Preserve unless another documented rule applies,Deterministic preservation
+COST_REPAIRS,98.35,Preserve unless another documented rule applies,Deterministic preservation
+COST_OTHER,98.38,Preserve unless another documented rule applies,Deterministic preservation
+COST_REPAIRS_INFL_ADJ,98.35,Preserve unless another documented rule applies,Deterministic preservation
+COST_OTHER_INFL_ADJ,98.38,Preserve unless another documented rule applies,Deterministic preservation
+INGESTED_OTHER,0.0,Preserve missing; blank not proven to mean No,Deterministic preservation
+INDICATED_DAMAGE,0.0,Preserve unless another documented rule applies,Deterministic preservation
+DAMAGE_LEVEL,35.35,Preserve unless another documented rule applies,Deterministic preservation
+STR_RAD,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_RAD,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_WINDSHLD,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_WINDSHLD,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_NOSE,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_NOSE,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_ENG1,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_ENG1,0.0,Blank converted to zero after binary-value validation,Deterministic
+ING_ENG1,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_ENG2,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_ENG2,0.0,Blank converted to zero after binary-value validation,Deterministic
+ING_ENG2,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_ENG3,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_ENG3,0.0,Blank converted to zero after binary-value validation,Deterministic
+ING_ENG3,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_ENG4,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_ENG4,0.0,Blank converted to zero after binary-value validation,Deterministic
+ING_ENG4,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_PROP,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_PROP,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_WING_ROT,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_WING_ROT,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_FUSE,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_FUSE,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_LG,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_LG,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_TAIL,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_TAIL,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_LGHTS,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_LGHTS,0.0,Blank converted to zero after binary-value validation,Deterministic
+STR_OTHER,0.0,Blank converted to zero after binary-value validation,Deterministic
+DAM_OTHER,0.0,Blank converted to zero after binary-value validation,Deterministic
+OTHER_SPECIFY,86.22,Preserve unless another documented rule applies,Deterministic preservation
+EFFECT,95.34,Preserve unless another documented rule applies,Deterministic preservation
+EFFECT_OTHER,99.2,Preserve unless another documented rule applies,Deterministic preservation
+BIRD_BAND_NUMBER,99.77,Preserve unless another documented rule applies,Deterministic preservation
+SPECIES_ID,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SPECIES,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+REMARKS,7.66,Preserve unless another documented rule applies,Deterministic preservation
+REMAINS_COLLECTED,0.0,Preserve missing; blank not proven to mean No,Deterministic preservation
+REMAINS_SENT,0.0,Preserve missing; blank not proven to mean No,Deterministic preservation
+WARNED,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+NUM_SEEN,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+NUM_STRUCK,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+SIZE,0.0,Preserve explicit Unknown; blank standardized to Not reported,Deterministic
+NR_INJURIES,0.0,Blank converted to zero as no reported cases,Deterministic
+NR_FATALITIES,0.0,Blank converted to zero as no reported cases,Deterministic
+COMMENTS,30.96,Preserve unless another documented rule applies,Deterministic preservation
+IMAGE,0.0,Preserve missing; blank not proven to mean No,Deterministic preservation
+REPORTED_NAME,0.0,Preserve unless another documented rule applies,Deterministic preservation
+REPORTED_TITLE,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SOURCE,0.0,Preserve unless another documented rule applies,Deterministic preservation
+PERSON,6.61,Preserve unless another documented rule applies,Deterministic preservation
+LUPDATE,0.0,Preserve unless another documented rule applies,Deterministic preservation
+TRANSFER,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SPECIES_RAW,0.0,Preserved unchanged for audit,Audit
+SPECIES_ID_RAW,0.0,Preserved unchanged for audit,Audit
+SIZE_RAW,9.87,Preserved unchanged for audit,Audit
+NUM_SEEN_RAW,67.68,Preserved unchanged for audit,Audit
+NUM_STRUCK_RAW,0.21,Preserved unchanged for audit,Audit
+PHASE_OF_FLIGHT_RAW,39.02,Preserved unchanged for audit,Audit
+TIME_OF_DAY_RAW,43.45,Preserved unchanged for audit,Audit
+WARNED_RAW,0.0,Preserved unchanged for audit,Audit
+SKY_RAW,52.58,Preserved unchanged for audit,Audit
+PRECIPITATION_RAW,96.25,Preserved unchanged for audit,Audit
+AC_CLASS_RAW,28.46,Preserved unchanged for audit,Audit
+DAMAGE_LEVEL_RAW,35.35,Preserved unchanged for audit,Audit
+NUM_SEEN_ORDER,67.68,Preserve unless another documented rule applies,Deterministic preservation
+NUM_STRUCK_ORDER,0.21,Preserve unless another documented rule applies,Deterministic preservation
+TARGET_CONFLICT_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SEVERITY_ELIGIBLE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+WILDLIFE_TYPE,0.0,Preserve unless another documented rule applies,Deterministic preservation
+HEIGHT_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+HEIGHT_EXTREME_REVIEW_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SPEED_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SPEED_EXTREME_REVIEW_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+DISTANCE_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+DISTANCE_EXTREME_REVIEW_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+NUM_ENGS_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+NUM_ENGS_EXTREME_REVIEW_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+AC_MASS_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+AC_MASS_EXTREME_REVIEW_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+NR_INJURIES_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+NR_INJURIES_EXTREME_REVIEW_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+NR_FATALITIES_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+NR_FATALITIES_EXTREME_REVIEW_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+GROUND_PHASE_HEIGHT_CONFLICT_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SEASON,0.0,Preserve unless another documented rule applies,Deterministic preservation
+MONTH_SIN,0.0,Preserve unless another documented rule applies,Deterministic preservation
+MONTH_COS,0.0,Preserve unless another documented rule applies,Deterministic preservation
+AC_MASS_GROUP,0.0,Preserve unless another documented rule applies,Deterministic preservation
+HEIGHT_MISSING_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SPEED_MISSING_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+TIME_OF_DAY_MISSING_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+PHASE_OF_FLIGHT_MISSING_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SIZE_MISSING_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+SKY_MISSING_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+PRECIPITATION_MISSING_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+TEMPORAL_SPLIT,0.0,Preserve unless another documented rule applies,Deterministic preservation

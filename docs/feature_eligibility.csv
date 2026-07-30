@@ -1,0 +1,147 @@
+field,role,available_before_or_at_scenario,leakage_risk,binary_damage_use,severity_use,component_use,rationale,review_status
+INDEX_NR,identifier,No or not applicable,Not used,Exclude,Exclude,Exclude,Identifier; not a scenario predictor,Approved in Notebook 02
+INCIDENT_DATE,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+INCIDENT_MONTH,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+INCIDENT_YEAR,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+TIME,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+TIME_OF_DAY,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+AIRPORT_ID,airport_feature,Yes,Low/controlled,Airport-aware only,Exclude,Exclude,Tests airport dependence,Approved in Notebook 02
+AIRPORT,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+AIRPORT_LATITUDE,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+AIRPORT_LONGITUDE,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+RUNWAY,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+STATE,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+FAAREGION,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+LOCATION,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+ENROUTE_STATE,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+OPID,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+OPERATOR,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+REG,identifier,No or not applicable,Not used,Exclude,Exclude,Exclude,Identifier; not a scenario predictor,Approved in Notebook 02
+FLT,identifier,No or not applicable,Not used,Exclude,Exclude,Exclude,Identifier; not a scenario predictor,Approved in Notebook 02
+AIRCRAFT,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+AMA,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+AMO,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+EMA,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+EMO,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+AC_CLASS,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+AC_MASS,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+TYPE_ENG,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+NUM_ENGS,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+ENG_1_POS,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+ENG_2_POS,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+ENG_3_POS,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+ENG_4_POS,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+PHASE_OF_FLIGHT,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+HEIGHT,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+SPEED,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+DISTANCE,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+INCIDENT_LATITUDE,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+INCIDENT_LONGITUDE,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+SKY,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+PRECIPITATION,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+AOS,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+COST_REPAIRS,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+COST_OTHER,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+COST_REPAIRS_INFL_ADJ,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+COST_OTHER_INFL_ADJ,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+INGESTED_OTHER,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+INDICATED_DAMAGE,primary_target,No or not applicable,Not used,Target only,Exclude,Exclude,Primary binary outcome,Approved in Notebook 02
+DAMAGE_LEVEL,secondary_target,No or not applicable,High,Exclude,Target,Exclude,Post-event severity target,Approved in Notebook 02
+STR_RAD,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_RAD,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_WINDSHLD,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_WINDSHLD,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_NOSE,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_NOSE,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_ENG1,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_ENG1,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+ING_ENG1,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+STR_ENG2,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_ENG2,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+ING_ENG2,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+STR_ENG3,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_ENG3,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+ING_ENG3,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+STR_ENG4,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_ENG4,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+ING_ENG4,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+STR_PROP,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_PROP,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_WING_ROT,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_WING_ROT,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_FUSE,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_FUSE,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_LG,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_LG,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_TAIL,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_TAIL,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_LGHTS,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_LGHTS,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+STR_OTHER,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+DAM_OTHER,component_target,No or not applicable,High,Exclude,Exclude,Target,Post-event component outcome,Approved in Notebook 02
+OTHER_SPECIFY,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+EFFECT,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+EFFECT_OTHER,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+BIRD_BAND_NUMBER,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+SPECIES_ID,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+SPECIES,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+REMARKS,administrative,No or not applicable,Not used,Exclude,Exclude,Exclude,Reporting or administrative field,Approved in Notebook 02
+REMAINS_COLLECTED,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+REMAINS_SENT,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+WARNED,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+NUM_SEEN,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+NUM_STRUCK,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+SIZE,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+NR_INJURIES,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+NR_FATALITIES,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
+COMMENTS,administrative,No or not applicable,Not used,Exclude,Exclude,Exclude,Reporting or administrative field,Approved in Notebook 02
+IMAGE,administrative,No or not applicable,Not used,Exclude,Exclude,Exclude,Reporting or administrative field,Approved in Notebook 02
+REPORTED_NAME,identifier,No or not applicable,Not used,Exclude,Exclude,Exclude,Identifier; not a scenario predictor,Approved in Notebook 02
+REPORTED_TITLE,administrative,No or not applicable,Not used,Exclude,Exclude,Exclude,Reporting or administrative field,Approved in Notebook 02
+SOURCE,administrative,No or not applicable,Not used,Exclude,Exclude,Exclude,Reporting or administrative field,Approved in Notebook 02
+PERSON,administrative,No or not applicable,Not used,Exclude,Exclude,Exclude,Reporting or administrative field,Approved in Notebook 02
+LUPDATE,administrative,No or not applicable,Not used,Exclude,Exclude,Exclude,Reporting or administrative field,Approved in Notebook 02
+TRANSFER,administrative,No or not applicable,Not used,Exclude,Exclude,Exclude,Reporting or administrative field,Approved in Notebook 02
+SPECIES_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+SPECIES_ID_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+SIZE_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+NUM_SEEN_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+NUM_STRUCK_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+PHASE_OF_FLIGHT_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+TIME_OF_DAY_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+WARNED_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+SKY_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+PRECIPITATION_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+AC_CLASS_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+DAMAGE_LEVEL_RAW,raw_audit_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Preserved source value for audit,Approved in Notebook 02
+NUM_SEEN_ORDER,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+NUM_STRUCK_ORDER,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+TARGET_CONFLICT_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+SEVERITY_ELIGIBLE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+WILDLIFE_TYPE,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+HEIGHT_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+HEIGHT_EXTREME_REVIEW_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+SPEED_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+SPEED_EXTREME_REVIEW_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+DISTANCE_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+DISTANCE_EXTREME_REVIEW_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+NUM_ENGS_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+NUM_ENGS_EXTREME_REVIEW_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+AC_MASS_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+AC_MASS_EXTREME_REVIEW_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+NR_INJURIES_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+NR_INJURIES_EXTREME_REVIEW_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+NR_FATALITIES_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+NR_FATALITIES_EXTREME_REVIEW_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+GROUND_PHASE_HEIGHT_CONFLICT_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+SEASON,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+MONTH_SIN,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+MONTH_COS,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+AC_MASS_GROUP,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+HEIGHT_MISSING_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+SPEED_MISSING_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+TIME_OF_DAY_MISSING_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+PHASE_OF_FLIGHT_MISSING_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+SIZE_MISSING_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+SKY_MISSING_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+PRECIPITATION_MISSING_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required

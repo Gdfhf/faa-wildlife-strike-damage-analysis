@@ -1,0 +1,11 @@
+field,raw_value,canonical_value
+NUM_SEEN,1,1
+NUM_SEEN,11-100,11–100
+NUM_SEEN,2-10,2–10
+NUM_SEEN,More than 100,More than 100
+NUM_SEEN,Not reported,Not reported
+NUM_STRUCK,1,1
+NUM_STRUCK,11-100,11–100
+NUM_STRUCK,2-10,2–10
+NUM_STRUCK,More than 100,More than 100
+NUM_STRUCK,Not reported,Not reported

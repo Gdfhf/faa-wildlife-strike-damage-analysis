@@ -1,0 +1,23 @@
+{
+  "train_years": [
+    1990,
+    2018
+  ],
+  "validation_years": [
+    2019,
+    2021
+  ],
+  "test_years": [
+    2022,
+    2024
+  ],
+  "external_years_reserved": [
+    2025
+  ],
+  "partial_year_excluded": 2026,
+  "random_benchmark_seed": 42,
+  "required_sensitivity_analysis": {
+    "description": "Repeat temporal evaluation using a more recent training window.",
+    "candidate_train_start_year": 2000
+  }
+}

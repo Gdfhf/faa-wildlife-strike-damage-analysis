@@ -1,0 +1,8 @@
+field,missing_pct,negative_values_converted_to_missing,minimum,p99_9,maximum,records_above_p99_9
+HEIGHT,49.57,0,0.0,14500.0,32000.0,158
+SPEED,68.42,0,0.0,310.0,541.0,90
+DISTANCE,33.55,0,0.0,40.0,99.0,172
+NUM_ENGS,28.58,0,1.0,4.0,4.0,0
+AC_MASS,28.5,0,1.0,5.0,5.0,0
+NR_INJURIES,0.0,0,0.0,0.0,7.0,294
+NR_FATALITIES,0.0,0,0.0,0.0,8.0,25

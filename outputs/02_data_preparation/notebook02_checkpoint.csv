@@ -1,0 +1,14 @@
+item,result
+Source rows,348146
+Retained analytical rows,319107
+Retained years,1990–2024
+Excluded recent years,2025 and partial 2026
+Redundant repeated rows removed,4
+Unresolved repeated identifier groups,0
+Target conflicts flagged,0
+Exact species labels retained,927
+Broad wildlife groups,5
+Core feature count,11
+Extended feature count,19
+Airport-aware feature count,20
+Learned preprocessing fitted here,No
