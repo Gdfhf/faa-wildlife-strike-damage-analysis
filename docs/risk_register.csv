@@ -1,0 +1,10 @@
+risk,why_it_matters,planned_control,status
+Target imbalance,A majority-class model may appear accurate.,"Use PR-AUC, recall, precision, F1, calibration and suitable baselines.",Open
+Target leakage,Post-event fields may produce misleadingly high model performance.,Complete and enforce the feature-eligibility table.,Open
+Temporal drift,Reporting and relationships may change over time.,Use chronological validation and inspect coverage by year.,Open
+Airport memorization,The model may rely on airports represented in training.,Use airport-held-out validation.,Open
+Incomplete years,Partial recent years may distort analysis.,Lock a complete-year analytical window in Notebook 02.,Open
+Reporting bias,Damaging incidents may be documented more completely.,Compare missingness by outcome and retain missingness information.,Open
+Rare severity/components,Secondary models may not have adequate support.,Apply feasibility gates; keep unsupported outcomes descriptive.,Open
+Unsupported scenarios,The interface may accept rare or unseen combinations.,Report historical support and add warnings.,Open
+Reproducibility,"Colab, Drive, and local paths may produce different results.","Use one repository, portable paths, saved artifacts, and clean runs.",Open

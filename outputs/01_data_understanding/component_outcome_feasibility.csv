@@ -1,0 +1,15 @@
+field,positive_1,negative_0,missing,other_values,positive_rate_all_records_pct,positive_rate_damaged_records_pct,feasibility_decision
+DAM_WING_ROT,6693,341453,0,0,1.9225,30.3592,Pending review
+DAM_ENG1,3210,344936,0,0,0.922,14.5605,Pending review
+DAM_ENG2,2736,345410,0,0,0.7859,12.4104,Pending review
+DAM_OTHER,2582,345564,0,0,0.7416,11.7119,Pending review
+DAM_RAD,2204,345942,0,0,0.6331,9.9973,Pending review
+DAM_NOSE,1868,346278,0,0,0.5366,8.4732,Pending review
+DAM_WINDSHLD,1547,346599,0,0,0.4444,7.0171,Pending review
+DAM_LG,1363,346783,0,0,0.3915,6.1825,Pending review
+DAM_FUSE,1256,346890,0,0,0.3608,5.6972,Pending review
+DAM_TAIL,1095,347051,0,0,0.3145,4.9669,Pending review
+DAM_LGHTS,1068,347078,0,0,0.3068,4.8444,Pending review
+DAM_PROP,726,347420,0,0,0.2085,3.2931,Pending review
+DAM_ENG3,169,347977,0,0,0.0485,0.7666,Pending review
+DAM_ENG4,68,348078,0,0,0.0195,0.3084,Pending review

@@ -1,0 +1,15 @@
+question,answer
+Raw rows,348146
+Raw columns,103
+Year minimum,1990
+Year maximum,2026
+Damage prevalence (%),6.33
+Majority benchmark accuracy (%),93.67
+Unique non-null species labels,973
+Most frequently reported species label,Unknown bird - small
+Most frequent species count,55183
+Exact duplicate rows,0
+Repeated incident-ID groups,7
+Component target fields,14
+Unresolved date rows,0
+Feature-table rows pending review,43
