@@ -1,0 +1,24 @@
+field,role,available_before_or_at_scenario,leakage_risk,binary_damage_use,severity_use,component_use,rationale,review_status
+INCIDENT_MONTH,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+INCIDENT_YEAR,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+TIME_OF_DAY,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+AIRPORT_ID,airport_feature,Yes,Low/controlled,Airport-aware only,Exclude,Exclude,Tests airport dependence,Approved in Notebook 02
+STATE,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+FAAREGION,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+AC_CLASS,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+TYPE_ENG,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+NUM_ENGS,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+PHASE_OF_FLIGHT,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+HEIGHT,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+SPEED,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+DISTANCE,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+SKY,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+PRECIPITATION,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
+INDICATED_DAMAGE,primary_target,No or not applicable,Not used,Target only,Exclude,Exclude,Primary binary outcome,Approved in Notebook 02
+SPECIES,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+WARNED,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+NUM_STRUCK,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+SIZE,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+WILDLIFE_TYPE,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+SEASON,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+AC_MASS_GROUP,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
