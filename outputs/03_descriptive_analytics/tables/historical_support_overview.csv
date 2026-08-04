@@ -1,0 +1,5 @@
+comparison,total_combinations,very_limited_combinations,limited_combinations,broader_combinations
+Wildlife size × aircraft mass,16,0,0,16
+Wildlife size × phase of flight,48,8,11,29
+Wildlife type × season,20,1,4,15
+Number struck × aircraft mass,20,5,6,9

@@ -1,0 +1,21 @@
+NUM_STRUCK,AC_MASS_GROUP,records,damaged_records,damage_rate,damage_rate_pct,historical_support
+More than 100,Unknown,4,0,0.0,0.0,Very limited
+More than 100,Light,5,3,0.6,60.0,Very limited
+More than 100,Medium,15,3,0.2,20.0,Very limited
+More than 100,Heavy,33,14,0.42424242424242425,42.42,Very limited
+Not reported,Unknown,63,3,0.047619047619047616,4.76,Very limited
+11–100,Unknown,146,2,0.0136986301369863,1.37,Limited
+11–100,Light,150,44,0.29333333333333333,29.33,Limited
+Not reported,Medium,151,0,0.0,0.0,Limited
+Not reported,Heavy,182,1,0.005494505494505495,0.55,Limited
+Not reported,Light,285,122,0.4280701754385965,42.81,Limited
+11–100,Medium,348,71,0.20402298850574713,20.4,Limited
+11–100,Heavy,951,208,0.21871713985278654,21.87,Broader
+2–10,Light,3326,946,0.28442573662056525,28.44,Broader
+2–10,Medium,5840,786,0.1345890410958904,13.46,Broader
+2–10,Unknown,5896,23,0.0039009497964721846,0.39,Broader
+2–10,Heavy,18535,2055,0.11087132452117615,11.09,Broader
+1,Light,24083,5689,0.23622472283353402,23.62,Broader
+1,Medium,29779,2714,0.09113805030390544,9.11,Broader
+1,Unknown,84836,146,0.001720967513791315,0.17,Broader
+1,Heavy,144479,8078,0.055911239695734326,5.59,Broader

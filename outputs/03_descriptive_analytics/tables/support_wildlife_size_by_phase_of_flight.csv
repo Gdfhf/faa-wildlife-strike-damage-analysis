@@ -1,0 +1,49 @@
+SIZE,PHASE_OF_FLIGHT,records,damaged_records,damage_rate,damage_rate_pct,historical_support
+Not reported,Parked,5,0,0.0,0.0,Very limited
+Large,Parked,7,2,0.2857142857142857,28.57,Very limited
+Large,Arrival,27,8,0.2962962962962963,29.63,Very limited
+Medium,Parked,33,1,0.030303030303030304,3.03,Very limited
+Large,Departure,68,18,0.2647058823529412,26.47,Very limited
+Small,Parked,69,1,0.014492753623188406,1.45,Very limited
+Not reported,Taxi,80,2,0.025,2.5,Very limited
+Medium,Arrival,91,11,0.12087912087912088,12.09,Very limited
+Large,Local,105,27,0.2571428571428571,25.71,Limited
+Large,Taxi,118,19,0.16101694915254236,16.1,Limited
+Medium,Taxi,158,10,0.06329113924050633,6.33,Limited
+Medium,Departure,180,26,0.14444444444444443,14.44,Limited
+Large,Descent,196,99,0.5051020408163265,50.51,Limited
+Medium,Local,202,32,0.15841584158415842,15.84,Limited
+Not reported,Arrival,384,13,0.033854166666666664,3.39,Limited
+Small,Taxi,397,10,0.02518891687657431,2.52,Limited
+Not reported,Descent,403,33,0.08188585607940446,8.19,Limited
+Not reported,Local,407,22,0.05405405405405406,5.41,Limited
+Small,Arrival,425,11,0.02588235294117647,2.59,Limited
+Small,Local,690,10,0.014492753623188406,1.45,Broader
+Large,En Route,737,575,0.7801899592944369,78.02,Broader
+Not reported,En Route,866,145,0.1674364896073903,16.74,Broader
+Medium,Descent,928,187,0.20150862068965517,20.15,Broader
+Small,Departure,1078,28,0.025974025974025976,2.6,Broader
+Small,Descent,1180,83,0.07033898305084746,7.03,Broader
+Medium,En Route,1706,790,0.4630715123094959,46.31,Broader
+Large,Take-off Run,2188,706,0.3226691042047532,32.27,Broader
+Not reported,Departure,2220,44,0.01981981981981982,1.98,Broader
+Large,Climb,2456,1341,0.5460097719869706,54.6,Broader
+Not reported,Take-off Run,2497,80,0.032038446135362435,3.2,Broader
+Small,En Route,2562,264,0.10304449648711944,10.3,Broader
+Large,Landing Roll,2945,1167,0.3962648556876061,39.63,Broader
+Not reported,Landing Roll,3010,55,0.018272425249169437,1.83,Broader
+Not reported,Climb,3811,239,0.06271319863552874,6.27,Broader
+Large,Not reported,5331,118,0.022134683924216844,2.21,Broader
+Large,Approach,5423,2380,0.438871473354232,43.89,Broader
+Not reported,Not reported,5529,331,0.05986616024597576,5.99,Broader
+Medium,Landing Roll,6775,462,0.06819188191881918,6.82,Broader
+Medium,Take-off Run,8423,1061,0.1259646206814674,12.6,Broader
+Medium,Climb,8987,1963,0.21842661622343384,21.84,Broader
+Not reported,Approach,12280,494,0.04022801302931596,4.02,Broader
+Small,Climb,13823,744,0.05382333791506909,5.38,Broader
+Small,Take-off Run,19530,626,0.032053251408090115,3.21,Broader
+Medium,Approach,21754,3057,0.14052588029787624,14.05,Broader
+Medium,Not reported,22073,1379,0.06247451637747474,6.25,Broader
+Small,Landing Roll,22453,321,0.014296530530441366,1.43,Broader
+Small,Approach,42909,1241,0.02892167144421916,2.89,Broader
+Small,Not reported,91588,672,0.007337205747477835,0.73,Broader
