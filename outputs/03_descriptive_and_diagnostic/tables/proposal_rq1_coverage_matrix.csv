@@ -1,7 +1,0 @@
-RQ1_Domain,Variables,Descriptive_Output,Statistical_Output
-Temporal,"INCIDENT_YEAR, INCIDENT_MONTH, SEASON, DAY_OF_WEEK, TIME_OF_DAY","Counts, damage rates, 95% CIs, and figures",Chi-square tests and Cramer's V for categorical variables
-Geographic,"FAAREGION, STATE, AIRPORT_ID","Region, state, and airport counts and damage rates",Region and state chi-square tests and Cramer's V; airports descriptive only
-Wildlife,"WILDLIFE_TYPE, SIZE, NUM_STRUCK, SPECIES","Counts, damage rates, 95% CIs, top-species results, and wildlife-by-season outputs","Wildlife type, size, and number-struck tests; exact species descriptive only"
-Aircraft,"AC_CLASS, AC_MASS_GROUP, TYPE_ENG, NUM_ENGS","Counts, damage rates, 95% CIs, figures, and wildlife-size-by-aircraft-mass outputs",Chi-square tests and Cramer's V
-Flight,"PHASE_OF_FLIGHT, WARNED, HEIGHT, SPEED, DISTANCE","Categorical damage rates, numerical summaries, figures, and wildlife-size-by-flight-phase outputs","Chi-square tests, Cramer's V, Mann–Whitney U tests, and rank-biserial correlations"
-Environmental context,"SKY, PRECIPITATION","Counts, damage rates, and data availability",Known-only sensitivity tests with strong missingness limitations

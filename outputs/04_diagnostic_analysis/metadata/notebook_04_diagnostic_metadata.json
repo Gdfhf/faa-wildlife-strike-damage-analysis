@@ -1,0 +1,28 @@
+{
+  "notebook": "04_diagnostic_analytics.ipynb",
+  "input_file": "c:\\Users\\davis\\Programing\\MDA_programs\\Capstone\\faa-wildlife-strike-damage-analysis\\data\\processed\\faa_strikes_analytical.csv",
+  "rows": 319107,
+  "columns": 147,
+  "analytical_year_start": 1990,
+  "analytical_year_end": 2024,
+  "target": "INDICATED_DAMAGE",
+  "random_seed": 42,
+  "primary_categorical_tests": [
+    "SIZE",
+    "NUM_STRUCK",
+    "AC_CLASS",
+    "AC_MASS_GROUP",
+    "PHASE_OF_FLIGHT",
+    "WARNED"
+  ],
+  "ordered_tests": [
+    "Wildlife size",
+    "Number struck"
+  ],
+  "interactions_tested": [
+    "Wildlife size \u00d7 aircraft mass",
+    "Wildlife size \u00d7 phase of flight"
+  ],
+  "adjusted_model_formula": "DAMAGE_RATE ~ YEAR_CENTERED + C(SIZE, Treatment(reference=\"Small\")) + C(NUM_STRUCK, Treatment(reference=\"1\")) + C(AC_CLASS, Treatment(reference=\"A\")) + C(AC_MASS_GROUP, Treatment(reference=\"Heavy\")) + C(PHASE_OF_FLIGHT, Treatment(reference=\"Approach\")) + C(WARNED, Treatment(reference=\"No\")) + C(FAAREGION, Treatment(reference=\"ASO\"))",
+  "interpretation": "Associations conditional on a reported wildlife strike; not causal."
+}
