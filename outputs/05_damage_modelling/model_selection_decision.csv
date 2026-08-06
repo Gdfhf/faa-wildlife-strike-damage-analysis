@@ -1,0 +1,2 @@
+selected_candidate,validation_pr_auc,validation_roc_auc,validation_brier_score,validation_log_loss,selection_rule,final_test_used
+xgboost__airport_aware,0.44674907619487325,0.9055530957365154,0.09306577592649504,0.2982546394972015,Lowest Brier score among candidates within 1% of best validation PR-AUC,False

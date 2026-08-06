@@ -52,12 +52,23 @@ data/processed/*
 *.joblib
 
 
-# =========================
-# Machine-learning outputs
-# =========================
+# --------------------------------------------------
+# Generated model artifacts
+# --------------------------------------------------
 
-models/
-artifacts/
+# Keep the model directory structure visible in GitHub.
+!models/
+!models/README.md
+!models/candidates/
+!models/final/
+
+# Ignore generated candidate and final model binaries by default.
+models/candidates/*
+models/final/*
+
+# Keep placeholders so empty folders remain visible in Git.
+!models/candidates/.gitkeep
+!models/final/.gitkeep
 
 # Logs and temporary outputs
 logs/

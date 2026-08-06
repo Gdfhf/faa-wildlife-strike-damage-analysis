@@ -1,0 +1,29 @@
+# Core numerical and data handling
+numpy>=2.0,<3.0
+pandas>=2.2,<3.0
+scipy>=1.13,<2.0
+
+# Visualization and notebook display
+matplotlib>=3.8,<4.0
+seaborn>=0.13,<1.0
+ipython>=8.20,<10.0
+jupyterlab>=4.0,<5.0
+ipykernel>=6.29,<7.0
+
+# Statistical analysis
+statsmodels>=0.14,<1.0
+
+# Machine learning and saved pipelines
+scikit-learn>=1.5,<2.0
+xgboost>=2.1,<4.0
+joblib>=1.4,<2.0
+
+# Spreadsheet and artifact support
+openpyxl>=3.1,<4.0
+
+# Dashboard and interactive figures
+streamlit>=1.40,<2.0
+plotly>=5.24,<7.0
+
+# Explainability planned for later notebooks
+shap>=0.46,<1.0
