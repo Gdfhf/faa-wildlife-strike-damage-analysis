@@ -2,7 +2,7 @@
   "notebook": "04_diagnostic_analytics.ipynb",
   "input_file": "c:\\Users\\davis\\Programing\\MDA_programs\\Capstone\\faa-wildlife-strike-damage-analysis\\data\\processed\\faa_strikes_analytical.csv",
   "rows": 319107,
-  "columns": 147,
+  "columns": 150,
   "analytical_year_start": 1990,
   "analytical_year_end": 2024,
   "target": "INDICATED_DAMAGE",

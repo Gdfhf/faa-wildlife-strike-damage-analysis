@@ -4,8 +4,8 @@ Unknown bird - medium,Bird,38955
 Unknown bird,Bird,31049
 Mourning dove,Bird,16374
 Barn swallow,Bird,10838
-Killdeer,Terrestrial mammal,10663
-American kestrel,Other wildlife,9791
+Killdeer,Bird,10663
+American kestrel,Bird,9791
 Horned lark,Bird,9209
 Gulls,Bird,7551
 European starling,Bird,6622
@@ -16,20 +16,20 @@ Red-tailed hawk,Bird,4308
 Unknown bird - large,Bird,3859
 Cliff swallow,Bird,3324
 Western meadowlark,Bird,2788
-American robin,Other wildlife,2551
+American robin,Bird,2551
 Ring-billed gull,Bird,2395
 American barn owl,Bird,2247
 Canada goose,Bird,2225
 Herring gull,Bird,2169
-Chimney swift,Other wildlife,1850
+Chimney swift,Bird,1850
 Perching birds (y),Bird,1794
 Savannah sparrow,Bird,1720
 Hawks,Bird,1699
 Microbats,Bat,1684
-Pacific golden-plover,Other wildlife,1586
+Pacific golden-plover,Bird,1586
 Swallows,Bird,1582
 Brazilian free-tailed bat,Bat,1473
-Mallard,Other wildlife,1472
+Mallard,Bird,1472
 Common nighthawk,Bird,1397
 Doves,Bird,1367
 Blackbirds,Bird,1346
@@ -37,76 +37,76 @@ White-tailed deer,Terrestrial mammal,1333
 Tree swallow,Bird,1322
 Laughing gull,Bird,1289
 Turkey vulture,Bird,1249
-Western cattle egret,Terrestrial mammal,996
+Western cattle egret,Bird,996
 Short-eared owl,Bird,975
 Ducks,Bird,959
 Coyote,Terrestrial mammal,932
 Bank swallow,Bird,895
 Meadowlarks,Bird,876
 Striped skunk,Terrestrial mammal,857
-Yellow-rumped warbler,Other wildlife,853
+Yellow-rumped warbler,Bird,853
 Red-winged blackbird,Bird,845
-Swainson's thrush,Other wildlife,828
+Swainson's thrush,Bird,828
 Eastern red bat,Bat,795
-American crow,Other wildlife,765
+American crow,Bird,765
 White-throated sparrow,Bird,685
-Osprey,Other wildlife,681
-Cedar waxwing,Other wildlife,673
+Osprey,Bird,681
+Cedar waxwing,Bird,673
 Peregrine falcon,Bird,664
 Great blue heron,Bird,639
 House sparrow,Bird,623
 Western kingbird,Bird,620
 Black-tailed jackrabbit,Terrestrial mammal,581
-Gray catbird,Terrestrial mammal,563
-Hermit thrush,Other wildlife,544
+Gray catbird,Bird,563
+Hermit thrush,Bird,544
 Bald eagle,Bird,543
 Song sparrow,Bird,537
 Brown-headed cowbird,Bird,523
 Virginia opossum,Terrestrial mammal,511
 Zebra dove,Bird,508
-Dark-eyed junco,Other wildlife,504
+Dark-eyed junco,Bird,504
 Burrowing owl,Bird,496
-American pipit,Other wildlife,490
-American coot,Other wildlife,482
+American pipit,Bird,490
+American coot,Bird,482
 Geese,Bird,482
-Red-eyed vireo,Other wildlife,478
-Snow bunting,Other wildlife,462
+Red-eyed vireo,Bird,478
+Snow bunting,Bird,462
 Little brown bat,Bat,462
 Upland sandpiper,Bird,451
 White-headed gull complex,Bird,446
-Scissor-tailed flycatcher,Terrestrial mammal,445
+Scissor-tailed flycatcher,Bird,445
 Great horned owl,Bird,437
 New World vultures,Bird,424
-Purple martin,Other wildlife,423
+Purple martin,Bird,423
 Owls,Bird,411
-Ruby-crowned kinglet,Other wildlife,406
+Ruby-crowned kinglet,Bird,406
 "Sandpipers, curlews, phalaropes, allies",Bird,405
 Unknown bird or bat,Bat,398
 Egrets,Bird,396
 Snowy owl,Bird,385
-Common grackle,Other wildlife,384
+Common grackle,Bird,384
 Black vulture,Bird,383
-Common yellowthroat,Other wildlife,366
+Common yellowthroat,Bird,366
 California gull,Bird,356
 Big brown bat,Bat,351
-American golden-plover,Other wildlife,340
+American golden-plover,Bird,340
 Least sandpiper,Bird,328
 Western sandpiper,Bird,323
 Vesper bats,Bat,320
 Ovenbird,Bird,319
 Red fox,Terrestrial mammal,308
-Black-bellied plover,Other wildlife,289
-Wilson's snipe,Other wildlife,286
+Black-bellied plover,Bird,289
+Wilson's snipe,Bird,286
 Franklin's gull,Bird,285
 Spotted dove,Bird,282
-Northern pintail,Other wildlife,282
-House finch,Other wildlife,280
+Northern pintail,Bird,282
+House finch,Bird,280
 Chipping sparrow,Bird,263
 Swainson's hawk,Bird,260
 Hoary bat,Bat,259
-Double-crested cormorant,Other wildlife,257
-Merlin,Other wildlife,257
-American woodcock,Other wildlife,256
+Double-crested cormorant,Bird,257
+Merlin,Bird,257
+American woodcock,Bird,256
 White-tailed jackrabbit,Terrestrial mammal,250
 Swamp sparrow,Bird,242
 Northern flicker,Other wildlife,237
@@ -156,7 +156,7 @@ Vesper sparrow,Bird,154
 "Ducks, geese, swans",Bird,152
 Turtles,Reptile,152
 Scaly-breasted munia,Other wildlife,150
-Fox sparrow,Terrestrial mammal,149
+Fox sparrow,Bird,149
 Gadwall,Other wildlife,148
 Silver-haired bat,Bat,147
 White-crowned sparrow,Bird,146
@@ -188,7 +188,7 @@ Plovers,Other wildlife,112
 Blue-winged teal,Other wildlife,111
 Northern parula,Other wildlife,109
 Evening bat,Bat,108
-Blue-gray gnatcatcher,Terrestrial mammal,107
+Blue-gray gnatcatcher,Bird,107
 Scarlet tanager,Other wildlife,107
 Great-tailed grackle,Other wildlife,106
 Lesser scaup,Other wildlife,105
@@ -204,7 +204,7 @@ Bay-breasted warbler,Other wildlife,101
 Gray-cheeked thrush,Other wildlife,100
 American black duck,Bird,100
 Northern waterthrush,Other wildlife,98
-Western flycatcher,Terrestrial mammal,98
+Western flycatcher,Bird,98
 Cave swallow,Bird,97
 Magnolia warbler,Other wildlife,96
 Boat-tailed grackle,Other wildlife,95
@@ -234,7 +234,7 @@ Rabbits,Terrestrial mammal,75
 Ferruginous hawk,Bird,74
 Lark sparrow,Bird,74
 Rose-breasted grosbeak,Other wildlife,74
-Alder/willow flycatcher complex,Terrestrial mammal,72
+Alder/willow flycatcher complex,Bird,72
 Brant,Other wildlife,71
 "Pigeons, doves",Bird,71
 Bobolink,Other wildlife,71
@@ -252,7 +252,7 @@ Ring-necked duck,Bird,64
 Snowy egret,Bird,63
 Cape May warbler,Other wildlife,63
 Sharp-shinned hawk,Bird,62
-Least flycatcher,Terrestrial mammal,62
+Least flycatcher,Bird,62
 Green heron,Bird,62
 Brown thrasher,Other wildlife,61
 Brewer's sparrow,Bird,61
@@ -266,7 +266,7 @@ Pine siskin,Other wildlife,59
 Common tern,Bird,59
 Common loon,Other wildlife,59
 Blue jay,Other wildlife,59
-Tyrant (New World) flycatchers,Terrestrial mammal,58
+Tyrant (New World) flycatchers,Bird,58
 Mallard/American black duck complex,Bird,58
 Domestic/feral dog,Terrestrial mammal,58
 Dickcissel,Other wildlife,58
@@ -278,17 +278,17 @@ Pine warbler,Other wildlife,57
 American tree sparrow,Bird,56
 Gopher tortoise,Reptile,56
 Green iguana,Other wildlife,54
-American oystercatcher,Terrestrial mammal,54
+American oystercatcher,Bird,54
 Eastern towhee,Bird,54
 Domestic/feral cat,Terrestrial mammal,52
-Great crested flycatcher,Terrestrial mammal,52
+Great crested flycatcher,Bird,52
 Blue-headed vireo,Other wildlife,51
 Yellow-throated warbler,Other wildlife,49
 Muskrat,Other wildlife,48
 Cackling goose,Bird,47
 Tri-colored bat,Bat,47
 Glaucous gull,Bird,47
-Yellow-bellied flycatcher,Terrestrial mammal,46
+Yellow-bellied flycatcher,Bird,46
 White ibis,Other wildlife,46
 Prairie falcon,Bird,45
 Unknown terrestrial mammal,Terrestrial mammal,45
@@ -323,7 +323,7 @@ Western/Clark's grebe complex,Bird,36
 Canada warbler,Other wildlife,36
 Black skimmer,Other wildlife,36
 American white pelican,Bird,36
-Hammond's flycatcher,Terrestrial mammal,36
+Hammond's flycatcher,Bird,36
 Mississippi kite,Bird,36
 Canvasback,Other wildlife,36
 American alligator,Reptile,35
@@ -353,7 +353,7 @@ Nightjars,Other wildlife,28
 Prairie warbler,Other wildlife,28
 Wedge-tailed shearwater,Other wildlife,27
 Hooded merganser,Other wildlife,27
-Willow flycatcher,Terrestrial mammal,27
+Willow flycatcher,Bird,27
 North American porcupine,Other wildlife,27
 Sedge wren,Other wildlife,26
 Forster's tern,Bird,26
@@ -376,10 +376,10 @@ Common poorwill,Other wildlife,24
 Long-billed curlew,Other wildlife,24
 Western bluebird,Bird,24
 Golden-crowned sparrow,Bird,24
-Alder flycatcher,Terrestrial mammal,24
+Alder flycatcher,Bird,24
 Hummingbirds,Bird,23
 Redhead,Other wildlife,23
-Acadian flycatcher,Terrestrial mammal,23
+Acadian flycatcher,Bird,23
 Solitary sandpiper,Bird,23
 Red-necked phalarope,Other wildlife,23
 Green-tailed towhee,Other wildlife,22
@@ -413,7 +413,7 @@ American avocet,Other wildlife,17
 Common goldeneye,Other wildlife,17
 Rails,Other wildlife,17
 Lazuli bunting,Other wildlife,16
-Ash-throated flycatcher,Terrestrial mammal,16
+Ash-throated flycatcher,Bird,16
 Magnificent frigatebird,Bird,16
 Cinnamon teal,Other wildlife,15
 Clapper rail,Other wildlife,15
@@ -513,7 +513,7 @@ Sooty tern,Bird,8
 Connecticut warbler,Other wildlife,8
 Thick-billed longspur,Other wildlife,8
 Eagles,Bird,8
-Dusky flycatcher,Terrestrial mammal,8
+Dusky flycatcher,Bird,8
 Mountain chickadee,Other wildlife,8
 Snowy plover,Other wildlife,8
 Swine (pigs),Other wildlife,8
@@ -534,7 +534,7 @@ Common chaffinch,Other wildlife,7
 Hooded oriole,Other wildlife,7
 Vireos,Other wildlife,7
 Eastern screech-owl,Bird,7
-Olive-sided flycatcher,Terrestrial mammal,7
+Olive-sided flycatcher,Bird,7
 Long-tailed jaeger,Other wildlife,7
 Purple gallinule,Other wildlife,7
 Red-crested cardinal,Other wildlife,7
@@ -557,7 +557,7 @@ Surf scoter,Other wildlife,6
 Collared peccary,Other wildlife,6
 Scaled quail,Other wildlife,6
 Harris's hawk,Bird,6
-Gray flycatcher,Terrestrial mammal,6
+Gray flycatcher,Bird,6
 White-tailed prairie dog,Terrestrial mammal,6
 Black kite,Bird,6
 Western rat snake,Reptile,5
@@ -588,7 +588,7 @@ Piping plover,Other wildlife,5
 Monk parakeet,Other wildlife,5
 Larks,Bird,5
 Parrots,Other wildlife,5
-Sulphur-bellied flycatcher,Terrestrial mammal,5
+Sulphur-bellied flycatcher,Bird,5
 Red knot,Other wildlife,5
 Common kingsnake,Reptile,5
 Bewick's wren,Other wildlife,4
@@ -605,9 +605,9 @@ Red-breasted sapsucker,Other wildlife,4
 Tree squirrels,Terrestrial mammal,4
 Townsend's solitaire,Other wildlife,4
 Tufted titmouse,Other wildlife,4
-Brown-crested flycatcher,Terrestrial mammal,4
+Brown-crested flycatcher,Bird,4
 "Waxbills, mannikins, parrotfinches",Other wildlife,4
-Eastern cattle egret,Terrestrial mammal,4
+Eastern cattle egret,Bird,4
 Kit fox,Terrestrial mammal,4
 Gambel's quail,Other wildlife,4
 Great gray owl,Bird,4
@@ -695,7 +695,7 @@ Western ribbon snake,Reptile,2
 Bare-eyed pigeon,Bird,2
 Northern hawk owl,Bird,2
 Old World vultures,Bird,2
-Oriental turtle dove,Reptile,2
+Oriental turtle dove,Bird,2
 Oriental plover,Other wildlife,2
 Pallid swift,Other wildlife,2
 Parakeets,Other wildlife,2
@@ -820,7 +820,7 @@ Sooty mustached bat,Bat,1
 South American snipe,Other wildlife,1
 Speckled pigeon,Bird,1
 Spectacled caiman,Other wildlife,1
-Spotted flycatcher,Terrestrial mammal,1
+Spotted flycatcher,Bird,1
 Spruce grouse,Other wildlife,1
 Spur-winged lapwing,Other wildlife,1
 Storm-petrels,Other wildlife,1
@@ -834,7 +834,7 @@ Northern pygmy-owl,Bird,1
 Olivaceous elaenia,Other wildlife,1
 Olive-throated parakeet,Other wildlife,1
 Mountain cottontail,Other wildlife,1
-Mugimaki flycatcher,Terrestrial mammal,1
+Mugimaki flycatcher,Bird,1
 Cuban flower bat,Bat,1
 Dark-billed cuckoo,Other wildlife,1
 Domestic sheep,Other wildlife,1

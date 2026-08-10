@@ -1,6 +1,6 @@
 check,result,status
 Rows,319107,information
-Columns,147,information
+Columns,150,information
 Minimum year,1990,pass
 Maximum year,2024,pass
 Rows outside 1990–2024,0,pass

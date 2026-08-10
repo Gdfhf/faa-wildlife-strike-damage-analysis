@@ -1,21 +1,21 @@
 WILDLIFE_TYPE,SEASON,records,damaged_records,damage_rate,damage_rate_pct,historical_support
 Reptile,Winter,30,0,0.0,0.0,Very limited
 Reptile,Autumn,111,0,0.0,0.0,Limited
-Reptile,Spring,203,2,0.009852216748768473,0.99,Limited
+Reptile,Spring,202,2,0.009900990099009901,0.99,Limited
 Bat,Winter,236,6,0.025423728813559324,2.54,Limited
-Reptile,Summer,329,2,0.0060790273556231,0.61,Limited
+Reptile,Summer,328,2,0.006097560975609756,0.61,Limited
+Terrestrial mammal,Winter,991,216,0.21796165489404642,21.8,Broader
 Bat,Spring,1018,10,0.009823182711198428,0.98,Broader
-Terrestrial mammal,Winter,1946,230,0.11819116135662898,11.82,Broader
+Terrestrial mammal,Spring,1176,229,0.19472789115646258,19.47,Broader
+Other wildlife,Winter,1220,140,0.11475409836065574,11.48,Broader
+Terrestrial mammal,Autumn,1811,520,0.2871341800110436,28.71,Broader
+Terrestrial mammal,Summer,1834,371,0.20229007633587787,20.23,Broader
 Bat,Autumn,1978,23,0.011627906976744186,1.16,Broader
-Terrestrial mammal,Spring,2826,257,0.09094125973106865,9.09,Broader
+Other wildlife,Summer,2689,165,0.061361100780959466,6.14,Broader
 Bat,Summer,3195,24,0.007511737089201878,0.75,Broader
-Other wildlife,Winter,3772,364,0.09650053022269353,9.65,Broader
-Terrestrial mammal,Autumn,6114,579,0.09470068694798822,9.47,Broader
-Terrestrial mammal,Summer,8453,430,0.0508695137820892,5.09,Broader
-Other wildlife,Spring,8917,584,0.06549287877088707,6.55,Broader
-Other wildlife,Summer,11081,368,0.03320999909755437,3.32,Broader
-Other wildlife,Autumn,16830,928,0.05513963161021985,5.51,Broader
-Bird,Winter,26459,2959,0.11183340262292604,11.18,Broader
-Bird,Spring,55593,4394,0.07903872789739716,7.9,Broader
-Bird,Autumn,81012,5905,0.07289043598479238,7.29,Broader
-Bird,Summer,89004,3843,0.04317783470405825,4.32,Broader
+Other wildlife,Spring,3448,265,0.07685614849187936,7.69,Broader
+Other wildlife,Autumn,5407,406,0.07508784908452007,7.51,Broader
+Bird,Winter,29966,3197,0.1066875792564907,10.67,Broader
+Bird,Spring,62713,4741,0.07559836078643982,7.56,Broader
+Bird,Autumn,96738,6486,0.06704707560627675,6.7,Broader
+Bird,Summer,104016,4105,0.03946508229503153,3.95,Broader

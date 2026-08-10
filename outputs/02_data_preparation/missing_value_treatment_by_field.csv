@@ -118,7 +118,10 @@ NUM_SEEN_ORDER,67.68,Preserve unless another documented rule applies,Determinist
 NUM_STRUCK_ORDER,0.21,Preserve unless another documented rule applies,Deterministic preservation
 TARGET_CONFLICT_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
 SEVERITY_ELIGIBLE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
+WILDLIFE_TYPE_INITIAL,0.0,Preserve unless another documented rule applies,Deterministic preservation
 WILDLIFE_TYPE,0.0,Preserve unless another documented rule applies,Deterministic preservation
+WILDLIFE_TYPE_OVERRIDE,87.04,Preserve unless another documented rule applies,Deterministic preservation
+WILDLIFE_TYPE_OVERRIDE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
 HEIGHT_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
 HEIGHT_EXTREME_REVIEW_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation
 SPEED_INVALID_NEGATIVE_FLAG,0.0,Preserve unless another documented rule applies,Deterministic preservation

@@ -7,5 +7,5 @@ Damage differs by WARNED,Pearson chi-square with BH correction,121015,Bias-corre
 Damage differs by AC_CLASS,Pearson chi-square with BH correction,228282,Bias-corrected Cramer's V,0.05135206876695359,7.850417759062622e-130,Small,Carry forward for model evaluation
 Ordered trend: Wildlife size,Univariable logistic trend with BH correction,287615,Odds ratio per category level,4.843014991486517,0.0,Increasing odds,Preserve ordered information; validate encoding in Notebook 05
 Ordered trend: Number struck,Univariable logistic trend with BH correction,318426,Odds ratio per category level,2.04430616945716,0.0,Increasing odds,Preserve ordered information; validate encoding in Notebook 05
-Wildlife size × aircraft mass,Likelihood-ratio test with BH correction,319107,Delta AIC,-145.6247111558041,1.310130293198197e-30,Improved in-sample fit,Evaluate under validation; do not force into final model
-Wildlife size × phase of flight,Likelihood-ratio test with BH correction,319107,Delta AIC,-214.8864281152346,8.487431483280544e-41,Improved in-sample fit,Evaluate under validation; do not force into final model
+Wildlife size × aircraft mass,Likelihood-ratio test with BH correction,197437,Delta AIC,-65.14115105317615,4.925481550383246e-15,Improved in-sample fit,Evaluate under validation; do not force into final model
+Wildlife size × phase of flight,Likelihood-ratio test with BH correction,168623,Delta AIC,-153.4282641475147,4.468764208583911e-30,Improved in-sample fit,Evaluate under validation; do not force into final model

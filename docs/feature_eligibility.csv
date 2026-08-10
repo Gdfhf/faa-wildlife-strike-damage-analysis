@@ -7,8 +7,8 @@ TIME,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exc
 TIME_OF_DAY,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
 AIRPORT_ID,airport_feature,Yes,Low/controlled,Airport-aware only,Exclude,Exclude,Tests airport dependence,Approved in Notebook 02
 AIRPORT,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
-AIRPORT_LATITUDE,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
-AIRPORT_LONGITUDE,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+AIRPORT_LATITUDE,undocumented_empty_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Entirely empty and undocumented; optional external coordinates are reserved for dashboard mapping,Approved in Notebook 02
+AIRPORT_LONGITUDE,undocumented_empty_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Entirely empty and undocumented; optional external coordinates are reserved for dashboard mapping,Approved in Notebook 02
 RUNWAY,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
 STATE,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
 FAAREGION,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
@@ -35,8 +35,8 @@ PHASE_OF_FLIGHT,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate
 HEIGHT,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
 SPEED,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
 DISTANCE,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
-INCIDENT_LATITUDE,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
-INCIDENT_LONGITUDE,descriptive_only,No or not applicable,Not used,Exclude,Exclude,Exclude,Retained for historical description,Approved in Notebook 02
+INCIDENT_LATITUDE,undocumented_empty_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Entirely empty and undocumented; optional external coordinates are reserved for dashboard mapping,Approved in Notebook 02
+INCIDENT_LONGITUDE,undocumented_empty_field,No or not applicable,Not used,Exclude,Exclude,Exclude,Entirely empty and undocumented; optional external coordinates are reserved for dashboard mapping,Approved in Notebook 02
 SKY,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
 PRECIPITATION,extended_feature,Yes,Low/controlled,Extended,Candidate,Candidate,Contextual predictor,Approved in Notebook 02
 AOS,excluded_leakage,No or not applicable,High,Exclude,Exclude,Exclude,Known after impact or consequence,Approved in Notebook 02
@@ -118,7 +118,10 @@ NUM_SEEN_ORDER,pending_review,No or not applicable,Not used,Exclude by default,E
 NUM_STRUCK_ORDER,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
 TARGET_CONFLICT_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
 SEVERITY_ELIGIBLE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+WILDLIFE_TYPE_INITIAL,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
 WILDLIFE_TYPE,core_feature,Yes,Low/controlled,Include,Candidate,Candidate,Scenario-eligible core predictor,Approved in Notebook 02
+WILDLIFE_TYPE_OVERRIDE,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
+WILDLIFE_TYPE_OVERRIDE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
 HEIGHT_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
 HEIGHT_EXTREME_REVIEW_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
 SPEED_INVALID_NEGATIVE_FLAG,pending_review,No or not applicable,Not used,Exclude by default,Exclude,Exclude,Requires documented approval,Manual review required
