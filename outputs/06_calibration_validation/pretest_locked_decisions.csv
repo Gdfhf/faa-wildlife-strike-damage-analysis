@@ -1,0 +1,2 @@
+selected_base_candidate,selected_calibration_method,threshold_source,base_fit_period,calibration_fit_period,final_test_period,final_test_used_so_far
+xgboost__airport_aware,isotonic,forward 2019–2021 validation predictions only,1990–2018,2019–2021,2022–2024,False

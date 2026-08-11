@@ -70,6 +70,9 @@ models/final/*
 !models/candidates/.gitkeep
 !models/final/.gitkeep
 
+# Keep the canonical final calibrated model.
+!models/final/final_calibrated_pipeline.joblib
+
 # Logs and temporary outputs
 logs/
 *.log

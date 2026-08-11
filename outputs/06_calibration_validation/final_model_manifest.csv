@@ -1,0 +1,2 @@
+artifact,path,selected_base_candidate,selected_calibration_method,feature_set,n_input_features,base_fit_period,calibration_fit_period,final_test_period,file_size_mb,purpose
+final_calibrated_pipeline.joblib,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\final\final_calibrated_pipeline.joblib,xgboost__airport_aware,isotonic,airport_aware,20,1990–2018,2019–2021,2022–2024,1.880415916442871,Canonical probability model for simulation and interface

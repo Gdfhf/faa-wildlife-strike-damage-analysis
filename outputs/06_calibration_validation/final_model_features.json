@@ -1,0 +1,28 @@
+{
+  "selected_base_candidate": "xgboost__airport_aware",
+  "selected_calibration_method": "isotonic",
+  "features": [
+    "SEASON",
+    "MONTH_SIN",
+    "MONTH_COS",
+    "WILDLIFE_TYPE",
+    "SIZE",
+    "NUM_STRUCK",
+    "AC_CLASS",
+    "AC_MASS_GROUP",
+    "TYPE_ENG",
+    "NUM_ENGS",
+    "WARNED",
+    "PHASE_OF_FLIGHT",
+    "HEIGHT",
+    "SPEED",
+    "TIME_OF_DAY",
+    "SKY",
+    "PRECIPITATION",
+    "STATE",
+    "FAAREGION",
+    "AIRPORT_ID"
+  ],
+  "target": "INDICATED_DAMAGE",
+  "seed": 42
+}

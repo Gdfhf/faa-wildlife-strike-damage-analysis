@@ -1,0 +1,2 @@
+selected_base_candidate,adequate_unseen_support,extended_dominates_unseen,extended_overall_within_1pct_relative_pr_auc,decision,final_test_used
+xgboost__airport_aware,False,False,True,Retain Notebook-05 airport-aware XGBoost because the predefined conditions for geographic fallback were not all satisfied.,False

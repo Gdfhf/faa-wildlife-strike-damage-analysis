@@ -1,0 +1,7 @@
+criterion,evidence,interpretation_required
+Final discrimination,PR-AUC=0.3605; prevalence=0.0379,True
+Final probability quality,Brier=0.0287; log loss=0.1125,True
+Temporal stability,See final_test_metrics_by_year.csv,True
+Unseen-airport stability,See final_test_unseen_airport_metrics.csv,True
+Rare-group stability,See final_test_rare_group_metrics.csv,True
+Historical support coverage,See final_test_performance_by_support_tier.csv,True

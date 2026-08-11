@@ -1,0 +1,25 @@
+artifact,file_size_mb,purpose
+geographic_generalization_validation.csv,0.0007658004760742188,2019–2021 all/unseen-airport candidate comparison
+geographic_model_decision.csv,0.00030040740966796875,Pre-test geographic candidate decision
+forward_calibration_fold_metrics.csv,0.0010213851928710938,Forward-year calibration-fold metrics
+forward_calibration_predictions.csv,1.8162927627563477,Forward probabilities for calibration and threshold selection
+calibration_method_selection.csv,0.0005245208740234375,Pre-test calibration-method decision
+locked_calibrated_thresholds.csv,0.0009069442749023438,Pre-test threshold policies
+pretest_locked_decisions.csv,0.00026035308837890625,Audit proof that decisions were locked before final test
+historical_marginal_support.csv,0.12604141235351562,Marginal historical scenario support
+historical_joint_support.csv,0.2007455825805664,Joint core-context historical support
+rare_group_definitions.csv,0.00025653839111328125,Development-defined rare wildlife/aircraft groups
+final_test_probability_metrics.csv,0.0003833770751953125,Raw versus final probability metrics on 2022–2024
+final_test_metrics_by_year.csv,0.00047969818115234375,Future-year stability
+final_test_unseen_airport_metrics.csv,0.0009918212890625,Geographic generalization on final test
+final_test_rare_group_metrics.csv,0.0024900436401367188,Rare wildlife/aircraft group performance
+final_test_locked_threshold_metrics.csv,0.0006151199340820312,Final classification behavior at locked thresholds
+final_test_error_analysis.csv,0.05199241638183594,False-positive/false-negative patterns
+final_test_performance_by_support_tier.csv,0.0011968612670898438,Model behavior by historical support
+monte_carlo_trust_decision_evidence.csv,0.00042438507080078125,Evidence table for simulation decision gate
+final_model_manifest.csv,0.0004749298095703125,Canonical model artifact metadata
+final_model_features.json,0.0005016326904296875,Exact downstream model input list
+validation_metadata.json,0.000896453857421875,Locked validation design and decisions
+validation_unseen_airport_diagnostic.csv,0.0020475387573242188,Composition and damage prevalence of 2019–2021 unseen airports
+development_group_outcome_support.csv,0.0007381439208984375,Development counts and positive-damage support for subgroup evaluation
+models\final\final_calibrated_pipeline.joblib,1.880415916442871,Canonical final calibrated probability pipeline

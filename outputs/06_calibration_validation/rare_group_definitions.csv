@@ -1,0 +1,4 @@
+feature,n_rare_levels,rare_levels,definition
+WILDLIFE_TYPE,0,,development count < 200 and development share < 0.500%
+AC_CLASS,3,C | J | Y,development count < 200 and development share < 0.500%
+AC_MASS_GROUP,0,,development count < 200 and development share < 0.500%

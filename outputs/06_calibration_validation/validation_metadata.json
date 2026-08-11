@@ -1,0 +1,42 @@
+{
+  "seed": 42,
+  "base_training_period": [
+    1990,
+    2018
+  ],
+  "validation_calibration_period": [
+    2019,
+    2021
+  ],
+  "final_test_period": [
+    2022,
+    2024
+  ],
+  "selected_base_candidate": "xgboost__airport_aware",
+  "selected_calibration_method": "isotonic",
+  "final_test_used_for_model_selection": false,
+  "final_test_used_for_calibration_selection": false,
+  "final_test_used_for_threshold_selection": false,
+  "threshold_rules": [
+    "maximum_validation_f1",
+    "maximum_validation_f2_sensitivity",
+    "highest_precision_at_recall_70",
+    "highest_precision_at_recall_80"
+  ],
+  "historical_support_period": [
+    1990,
+    2021
+  ],
+  "joint_support_features": [
+    "WILDLIFE_TYPE",
+    "SIZE",
+    "NUM_STRUCK",
+    "AC_MASS_GROUP",
+    "PHASE_OF_FLIGHT",
+    "FAAREGION"
+  ],
+  "rare_group_definition": {
+    "count_threshold": 200,
+    "share_threshold": 0.005
+  }
+}
