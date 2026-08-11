@@ -1,7 +1,7 @@
 candidate,path,selected_for_primary_calibration,file_size_mb
-logistic__extended_geographic,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\05_damage_modelling\logistic__extended_geographic_uncalibrated.joblib,False,0.011297225952148438
-random_forest__extended_geographic,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\05_damage_modelling\random_forest__extended_geographic_uncalibrated.joblib,False,150.4573621749878
-xgboost__extended_geographic,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\05_damage_modelling\xgboost__extended_geographic_uncalibrated.joblib,False,2.1389474868774414
-logistic__airport_aware,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\05_damage_modelling\logistic__airport_aware_uncalibrated.joblib,False,0.06369590759277344
-random_forest__airport_aware,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\05_damage_modelling\random_forest__airport_aware_uncalibrated.joblib,False,39.861124992370605
-xgboost__airport_aware,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\05_damage_modelling\xgboost__airport_aware_uncalibrated.joblib,True,1.8554344177246094
+logistic__extended_geographic,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\candidates\logistic__extended_geographic_uncalibrated.joblib,False,0.011281967163085938
+random_forest__extended_geographic,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\candidates\random_forest__extended_geographic_uncalibrated.joblib,False,498.6075086593628
+xgboost__extended_geographic,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\candidates\xgboost__extended_geographic_uncalibrated.joblib,False,2.1439132690429688
+logistic__airport_aware,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\candidates\logistic__airport_aware_uncalibrated.joblib,False,0.06366920471191406
+random_forest__airport_aware,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\candidates\random_forest__airport_aware_uncalibrated.joblib,False,426.9019422531128
+xgboost__airport_aware,c:\Users\davis\Programing\MDA_programs\Capstone\faa-wildlife-strike-damage-analysis\models\candidates\xgboost__airport_aware_uncalibrated.joblib,True,1.8776159286499023

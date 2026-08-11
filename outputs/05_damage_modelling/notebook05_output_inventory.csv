@@ -1,9 +1,14 @@
 artifact,rows,file_size_mb,purpose
-faa_strikes_binary_model_ready.csv,319107,55.83725643157959,Readable cleaned pre-model dataset
+faa_strikes_binary_model_ready.csv,319107,55.391180992126465,Readable cleaned pre-model dataset
 faa_strikes_training_matrix_sample.csv,1000,1.888859748840332,No-NaN transformed training sample
 transformed_feature_manifest.csv,482,0.01529693603515625,Complete transformed feature names
-internal_tuning_results.csv,94,0.0246734619140625,Chronological tuning evidence
-validation_model_comparison.csv,7,0.0021152496337890625,Validation metrics
-validation_probability_predictions.csv,44614,5.674428939819336,Probabilities for calibration
-selected_model_thresholds.csv,4,0.0005035400390625,Threshold decision evidence
-uncalibrated_candidate_manifest.csv,6,0.0012826919555664062,Candidate model artifacts
+logistic_chronological_cv_results.csv,36,0.012424468994140625,Logistic chronological-CV tuning evidence
+random_forest_chronological_cv_results.csv,128,0.0543060302734375,Random Forest chronological-CV tuning evidence
+xgboost_chronological_cv_results.csv,512,0.23877334594726562,XGBoost chronological-CV tuning evidence
+internal_tuning_results.csv,676,0.30516624450683594,Combined chronological-CV tuning evidence
+selected_hyperparameters_from_cv.csv,6,0.0026063919067382812,CV-selected hyperparameter settings
+cv_selected_settings_classification_report.csv,6,0.0009784698486328125,Fixed-threshold classification-report summary
+validation_model_comparison.csv,7,0.0025892257690429688,Validation metrics
+validation_probability_predictions.csv,44614,6.040848731994629,Probabilities for calibration
+selected_model_thresholds.csv,4,0.0005092620849609375,Threshold decision evidence
+uncalibrated_candidate_manifest.csv,6,0.0012302398681640625,Candidate model artifacts
