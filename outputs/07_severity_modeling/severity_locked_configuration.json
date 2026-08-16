@@ -1,0 +1,46 @@
+{
+  "target_classes": [
+    "M",
+    "M?",
+    "S+D"
+  ],
+  "destroyed_merge": "D merged into S for modelling only -> S+D",
+  "m_question_mark": "retained as independent undetermined-level class",
+  "selected_candidate": "xgboost__extended_geographic",
+  "selected_features": [
+    "SEASON",
+    "MONTH_SIN",
+    "MONTH_COS",
+    "WILDLIFE_TYPE",
+    "SIZE",
+    "NUM_STRUCK",
+    "AC_CLASS",
+    "AC_MASS_GROUP",
+    "TYPE_ENG",
+    "NUM_ENGS",
+    "WARNED",
+    "PHASE_OF_FLIGHT",
+    "HEIGHT",
+    "SPEED",
+    "TIME_OF_DAY",
+    "SKY",
+    "PRECIPITATION",
+    "STATE",
+    "FAAREGION"
+  ],
+  "sample_weight_mode": "balanced",
+  "selected_params": {
+    "model__colsample_bytree": 0.8,
+    "model__learning_rate": 0.03,
+    "model__max_depth": 6,
+    "model__min_child_weight": 1,
+    "model__n_estimators": 300,
+    "model__reg_lambda": 5.0,
+    "model__subsample": 1.0
+  },
+  "selected_calibration_method": "sigmoid",
+  "train_period": "1990-2018",
+  "calibration_period": "2019-2021",
+  "final_test_period": "2022-2024",
+  "seed": 42
+}

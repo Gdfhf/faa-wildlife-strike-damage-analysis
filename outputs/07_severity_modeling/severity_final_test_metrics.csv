@@ -1,0 +1,2 @@
+accuracy,balanced_accuracy,macro_precision,macro_recall,macro_f1,weighted_f1,log_loss,brier_multiclass,macro_average_precision_ovr,macro_roc_auc_ovr,precision_M,recall_M,f1_M,support_M,precision_M?,recall_M?,f1_M?,support_M?,precision_S+D,recall_S+D,f1_S+D,support_S+D
+0.8121104185218165,0.3333333333333333,0.27070347284060553,0.3333333333333333,0.2987714987714988,0.7279063407291368,0.575673347022375,0.31370041710648855,0.40432654933910284,0.6551481085239257,0.0,0.0,0.0,270,0.8121104185218165,1.0,0.8963144963144963,1824,0.0,0.0,0.0,152

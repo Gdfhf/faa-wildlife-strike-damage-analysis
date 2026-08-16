@@ -1,0 +1,5 @@
+{
+  "decision": "DROP",
+  "reason": "The calibrated three-class severity model did not generalize reliably to 2022-2024. It predicted M? for all final-test observations, resulting in zero recall and zero F1 for the S+D class.",
+  "final_model_exported": false
+}
