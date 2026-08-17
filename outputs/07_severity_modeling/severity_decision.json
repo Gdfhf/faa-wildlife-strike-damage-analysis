@@ -1,5 +1,12 @@
 {
-  "decision": "DROP",
-  "reason": "The calibrated three-class severity model did not generalize reliably to 2022-2024. It predicted M? for all final-test observations, resulting in zero recall and zero F1 for the S+D class.",
-  "final_model_exported": false
+  "decision": "SIMPLIFY",
+  "three_class_decision": "DROP",
+  "known_severity_binary_tested": true,
+  "known_severity_candidate": "xgboost__airport_aware",
+  "known_severity_calibration_method": "raw",
+  "known_severity_classification_threshold": 0.35,
+  "known_severity_conditioning": "P(S+D | reported strike, damage occurred, severity was determined, scenario)",
+  "excluded_category": "M?",
+  "final_model_exported": true,
+  "final_model_path": "c:\\Users\\davis\\Programing\\MDA_programs\\Capstone\\faa-wildlife-strike-damage-analysis\\models\\final\\final_known_severity_probability_system.joblib"
 }
