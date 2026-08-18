@@ -56,22 +56,56 @@ data/processed/*
 # Generated model artifacts
 # --------------------------------------------------
 
-# Keep the model directory structure visible in GitHub.
+# Keep the model directory and documentation visible in GitHub.
 !models/
 !models/README.md
 !models/candidates/
 !models/final/
 
-# Ignore generated candidate and final model binaries by default.
-models/candidates/*
-models/final/*
+# --------------------------------------------------
+# Candidate models
+# --------------------------------------------------
+#
+# Candidate binaries are generated intermediate artifacts and may be large.
+# Keep their notebook-specific directory structure visible, but do not
+# commit the fitted .joblib files.
 
-# Keep placeholders so empty folders remain visible in Git.
-!models/candidates/.gitkeep
-!models/final/.gitkeep
+models/candidates/**/*.joblib
 
-# Keep the canonical final calibrated model.
-!models/final/final_calibrated_pipeline.joblib
+# Preserve notebook-specific candidate directories.
+!models/candidates/**/.gitkeep
+
+
+# --------------------------------------------------
+# Final models
+# --------------------------------------------------
+#
+# Final model artifacts are also generated binaries. Ignore them by default,
+# then explicitly allow the canonical binary-damage model below.
+
+models/final/**/*.joblib
+
+# Preserve notebook-specific final-model directories.
+!models/final/**/.gitkeep
+
+
+# --------------------------------------------------
+# Canonical final binary-damage model
+# --------------------------------------------------
+#
+# Produced by Notebook 06 and consumed by downstream notebooks.
+
+!models/final/06_calibration_validation/final_calibrated_pipeline.joblib
+
+# Produced by Notebook 07
+!models/final/07_severity_modelling/final_known_severity_probability_system.joblib
+
+# Produced by Notebook 08
+!models/final/08_component_modelling/engine_damage_component_probability_system.joblib
+!models/final/08_component_modelling/forward_cockpit_damage_component_probability_system.joblib
+!models/final/08_component_modelling/landing_gear_damage_component_probability_system.joblib
+!models/final/08_component_modelling/propeller_damage_component_probability_system.joblib
+!models/final/08_component_modelling/wing_rotor_damage_component_probability_system.joblib
 
 # Logs and temporary outputs
 logs/

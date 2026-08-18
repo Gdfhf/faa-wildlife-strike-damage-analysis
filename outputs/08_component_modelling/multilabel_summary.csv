@@ -1,0 +1,8 @@
+measure,value
+Damaged incidents,20908.0
+At least one DAM_* positive,20908.0
+No DAM_* positive despite INDICATED_DAMAGE=1,0.0
+Exactly one component positive,17979.0
+More than one component positive,2929.0
+Maximum positive components on one incident,11.0
+Mean label cardinality,1.2105414195523245

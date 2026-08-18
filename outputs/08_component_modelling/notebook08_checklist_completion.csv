@@ -1,0 +1,12 @@
+requirement,notebook_location,status
+"Positive, negative, missing, and positive-rate counts for every component",Sections 6 and 10,COMPLETE
+Determine whether outcomes are multilabel,Section 7,COMPLETE
+Assess whether separate binary models are appropriate,Sections 1 and 7,COMPLETE
+"Review strike-location, ingestion, inspection, and post-event leakage",Section 11,COMPLETE
+Model only components with adequate support,Sections 13–14,COMPLETE
+Include baselines,Section 17,COMPLETE
+Use PR-AUC and recall,Sections 16–22,COMPLETE
+Evaluate calibration,Sections 25–27,COMPLETE
+Use chronological validation and locked final test,"Sections 10, 13, 22, 30–32",COMPLETE
+"Classify every component as modelled, descriptive only, or excluded",Sections 9 and 33,COMPLETE
+Justify whether each component may enter simulation,Sections 33–35,COMPLETE

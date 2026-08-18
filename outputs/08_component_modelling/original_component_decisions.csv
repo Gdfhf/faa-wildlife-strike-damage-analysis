@@ -1,0 +1,15 @@
+component,status,model_target,rationale
+DAM_RAD,CANDIDATE VIA GROUP,FORWARD_COCKPIT_DAMAGE,Retained within coherent forward-airframe/cockpit group.
+DAM_WINDSHLD,CANDIDATE VIA GROUP,FORWARD_COCKPIT_DAMAGE,Retained within coherent forward-airframe/cockpit group.
+DAM_NOSE,CANDIDATE VIA GROUP,FORWARD_COCKPIT_DAMAGE,Retained within coherent forward-airframe/cockpit group.
+DAM_ENG1,CANDIDATE VIA GROUP,ENGINE_DAMAGE,Retained within any-engine damage target.
+DAM_ENG2,CANDIDATE VIA GROUP,ENGINE_DAMAGE,Retained within any-engine damage target.
+DAM_ENG3,CANDIDATE VIA GROUP,ENGINE_DAMAGE,Too sparse for standalone modelling; retained within any-engine target.
+DAM_ENG4,CANDIDATE VIA GROUP,ENGINE_DAMAGE,Too sparse for standalone modelling; retained within any-engine target.
+DAM_PROP,CANDIDATE VIA GROUP,PROPELLER_DAMAGE,Distinct component retained as its own binary target subject to support gate.
+DAM_WING_ROT,CANDIDATE VIA GROUP,WING_ROTOR_DAMAGE,FAA field retained as its own grouped target.
+DAM_FUSE,CANDIDATE VIA GROUP,FUSELAGE_DAMAGE,FAA field retained as its own grouped target.
+DAM_LG,CANDIDATE VIA GROUP,LANDING_GEAR_DAMAGE,FAA field retained as its own grouped target.
+DAM_TAIL,CANDIDATE VIA GROUP,TAIL_DAMAGE,FAA field retained as its own grouped target.
+DAM_LGHTS,CANDIDATE VIA GROUP,LIGHTS_DAMAGE,FAA field retained as its own grouped target subject to support gate.
+DAM_OTHER,DESCRIPTIVE ONLY,,Heterogeneous 'other' category has no stable component meaning for simulation.
