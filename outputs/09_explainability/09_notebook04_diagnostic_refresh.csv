@@ -1,0 +1,8 @@
+factor,Notebook_04_refresh,Notebook_09_question
+SIZE,Strong association,Direction/importance should be inspected explicitly
+AC_MASS_GROUP,Substantial association,Direction/importance should be inspected explicitly
+PHASE_OF_FLIGHT,Meaningful group differences,Inspect category-specific SHAP behaviour
+NUM_STRUCK,Associated; smaller marginal signal than strongest factors,Check whether nonlinear/context interactions increase predictive use
+WARNED,Formally assessed in diagnostic stage,Interpret cautiously; not a causal intervention effect
+SIZE × AC_MASS_GROUP,Interaction examined,Look for context-dependent SHAP patterns
+SIZE × PHASE_OF_FLIGHT,Interaction examined,Look for context-dependent SHAP patterns

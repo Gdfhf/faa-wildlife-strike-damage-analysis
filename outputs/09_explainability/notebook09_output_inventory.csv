@@ -1,0 +1,32 @@
+artifact,file_size_mb,purpose
+09_notebook04_diagnostic_refresh.csv,0.0006837844848632812,Short diagnostic evidence refresh for comparison
+09_locked_threshold_confusion_matrix.png,0.03542327880859375,Classification behaviour at locked validation-derived threshold
+09_permutation_importance_original_features.csv,0.0011234283447265625,Held-out original-feature importance using PR-AUC
+09_permutation_importance_original_features.png,0.0693511962890625,Permutation-importance story figure
+09_shap_transformed_feature_importance.csv,0.025384902954101562,Ungrouped technical SHAP ranking
+09_shap_summary_transformed_features.png,0.22653865814208984,Ungrouped SHAP summary figure
+09_transformed_to_original_feature_mapping.csv,0.018309593200683594,Audit mapping for grouped SHAP
+09_shap_grouped_original_feature_importance.csv,0.0010232925415039062,Primary global grouped SHAP table
+09_shap_grouped_original_features.png,0.0692586898803711,Primary grouped SHAP story figure
+09_priority_feature_shap_summary.csv,0.0006437301635742188,Research-question feature summary
+09_shap_importance_by_year.csv,0.0008726119995117188,Temporal explanation stability
+09_shap_year_rank_spearman.csv,0.00012493133544921875,Year-to-year rank agreement
+09_shap_year_rank_stability.png,0.041464805603027344,Temporal rank-agreement heatmap
+09_shap_top_features_by_year.png,0.06330299377441406,Top feature trends across final-test years
+09_airport_dependence_summary.csv,0.00040721893310546875,Airport reliance audit
+09_shap_seen_unseen_support.csv,7.915496826171875e-05,Support for geographic SHAP comparison
+09_shap_importance_seen_vs_unseen_airports.csv,0.00043773651123046875,Seen/unseen explanation profiles
+09_shap_dedicated_airport_support.csv,0.00012874603271484375,Dedicated balanced geographic SHAP support table
+09_shap_dedicated_seen_vs_unseen_airports.csv,0.000667572021484375,Corrected dedicated seen/unseen grouped-SHAP profiles
+09_shap_dedicated_seen_unseen_rank_spearman.csv,0.00014781951904296875,Corrected dedicated seen/unseen rank agreement
+09_shap_dedicated_seen_vs_unseen_airports.png,0.08802127838134766,Dedicated geographic SHAP comparison figure
+09_shap_sampling_stability_features.csv,0.0008859634399414062,Two-seed SHAP ranking stability
+09_shap_sampling_stability_summary.csv,9.441375732421875e-05,Sampling stability correlation
+09_shap_sampling_stability.png,0.052519798278808594,Sampling stability figure
+09_notebook04_explainability_alignment.csv,0.0020809173583984375,Diagnostic-vs-model explanation comparison
+09_final_feature_leakage_sanity_check.csv,0.00036334991455078125,Predictor leakage-name audit
+09_explanation_concentration_check.csv,0.0007266998291015625,Attribution concentration audit
+09_representative_local_cases.csv,0.0010747909545898438,TP/TN/FP/FN scenarios at locked threshold
+09_local_grouped_shap_explanations.csv,0.006426811218261719,Grouped local feature contributions
+09_secondary_model_status.csv,0.0018053054809570312,Severity/component decision status
+09_consolidated_explainability_evidence.csv,0.0029516220092773438,Final evidence table

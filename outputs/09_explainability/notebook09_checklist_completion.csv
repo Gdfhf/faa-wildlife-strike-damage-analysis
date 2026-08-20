@@ -1,0 +1,10 @@
+requirement,notebook_location,status
+"Use logistic odds ratios, permutation importance, and/or SHAP as appropriate",Sections 9–13,COMPLETE: permutation + TreeSHAP
+"Show direction as well as importance for wildlife size, aircraft mass, phase, number struck, geography, and time",Section 14,COMPLETE
+Compare explanations across temporal evaluations,Section 15,COMPLETE
+Compare explanations across airport-held-out evaluations,Section 16,"COMPLETE: dedicated seen/unseen-airport SHAP comparison, Spearman rho = 0.890"
+Check whether the model depends excessively on airports or identifiers,Sections 16 and 19,COMPLETE
+Compare model explanations with Notebook 04 and investigate disagreements,Sections 8 and 18,COMPLETE
+Use explainability as a final leakage sanity check,Section 19,COMPLETE
+Provide local example explanations using non-causal language,Sections 20–21,COMPLETE
+Preserve secondary severity/component context without displacing primary model,Section 22,COMPLETE

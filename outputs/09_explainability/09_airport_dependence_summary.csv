@@ -1,0 +1,5 @@
+measure,value,interpretation
+Grouped SHAP importance rank,6.0,Lower numeric rank means greater attribution concentration
+Grouped SHAP share,0.03813691437244415,Share of total grouped absolute attribution in SHAP sample
+Permutation importance rank,5.0,Rank by final-test PR-AUC decrease after airport shuffle
+Permutation PR-AUC decrease,0.022564572471340638,Unique held-out discrimination lost when AIRPORT_ID is disrupted

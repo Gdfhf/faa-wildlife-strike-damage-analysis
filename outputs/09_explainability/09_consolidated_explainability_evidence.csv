@@ -1,0 +1,21 @@
+feature,shap_rank,mean_abs_grouped_shap,share_of_total_mean_abs_shap,permutation_rank,importance_mean_pr_auc_drop,research_priority,interpretation
+AC_MASS_GROUP,1,1.1359266,0.3270668,2,0.08884002187288127,True,Dominant driver; high importance under both SHAP and permutation analysis.
+SIZE,2,0.81023294,0.23328999,1,0.22018310798630703,True,Dominant driver; high importance under both SHAP and permutation analysis.
+PHASE_OF_FLIGHT,3,0.28623438,0.08241533,4,0.024532574996885503,True,Major contextual driver; high global importance with category-specific direction.
+AC_CLASS,4,0.24014421,0.06914461,12,0.006892064482309235,False,Moderate supporting predictor in the fitted multivariable model.
+NUM_STRUCK,5,0.13570479,0.039073415,7,0.016201618101032756,True,Meaningful secondary research-question driver with coherent directional evidence.
+AIRPORT_ID,6,0.13245225,0.038136914,5,0.022564572471340638,True,Useful geographic context; important but not dominant in the natural-distribution audit.
+MONTH_COS,7,0.123956494,0.035690736,10,0.010645783824437227,True,Temporal context; contribution is smaller than the dominant wildlife/aircraft factors.
+HEIGHT,8,0.11229147,0.03233203,3,0.03765434410872849,False,Moderate supporting predictor in the fitted multivariable model.
+STATE,9,0.09893993,0.028487729,14,0.006363498465168793,True,Geographic context; interpret jointly with airport-held-out validation.
+WILDLIFE_TYPE,10,0.07041001,0.020273121,6,0.019290902414222655,False,Moderate supporting predictor in the fitted multivariable model.
+SPEED,11,0.06651565,0.019151818,9,0.011072366169878101,False,Lower global importance; may still contribute through interactions or specific scenarios.
+MONTH_SIN,12,0.060915492,0.017539369,15,0.005503179503438238,True,Temporal context; contribution is smaller than the dominant wildlife/aircraft factors.
+TIME_OF_DAY,13,0.054444514,0.015676184,11,0.006993592275752169,True,Temporal context; contribution is smaller than the dominant wildlife/aircraft factors.
+FAAREGION,14,0.039458692,0.011361322,13,0.0063908700232078505,True,Geographic context; interpret jointly with airport-held-out validation.
+TYPE_ENG,15,0.03133529,0.009022355,8,0.012792524611755784,False,Lower global importance; may still contribute through interactions or specific scenarios.
+WARNED,16,0.026260883,0.0075612837,20,-0.0009489792622737858,False,Low unique predictive importance despite diagnostic association; redundancy is plausible.
+NUM_ENGS,17,0.019359823,0.005574265,19,-0.00044743032123879535,False,Lower global importance; may still contribute through interactions or specific scenarios.
+SKY,18,0.01512461,0.0043548215,16,0.003953879569622754,False,Lower global importance; may still contribute through interactions or specific scenarios.
+SEASON,19,0.010108674,0.0029105858,18,-0.0001995804204557472,True,Temporal context; contribution is smaller than the dominant wildlife/aircraft factors.
+PRECIPITATION,20,0.0032552108,0.00093727134,17,-0.00011477630089717916,False,Lower global importance; may still contribute through interactions or specific scenarios.
