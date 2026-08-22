@@ -1,0 +1,4 @@
+field,value,mean_probability,simulated_rate,exact_support,common_donor_support,common_donor_strategy,status,delta_vs_first
+SIZE,Small,0.007983979964535683,0.0083,417,1053,exact_user_specification,OK,0.0
+SIZE,Medium,0.0377739577729255,0.0347,456,1053,exact_user_specification,OK,0.029789977808389816
+SIZE,Large,0.1545031806241721,0.1601,48,1053,exact_user_specification,OK,0.14651920065963642

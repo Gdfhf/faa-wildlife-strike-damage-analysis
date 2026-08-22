@@ -1,0 +1,4 @@
+,0
+observed_minus_expected,0.0001922816854043538
+absolute_difference_percentage_points,0.01922816854043538
+observed_inside_95pct_simulation_interval,True

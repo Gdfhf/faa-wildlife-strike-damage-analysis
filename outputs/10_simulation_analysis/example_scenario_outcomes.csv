@@ -1,0 +1,10 @@
+outcome,rate,population
+Damage,0.0291,all simulated strikes
+No damage,0.9709,all simulated strikes
+Known severity: M,0.7697594501718213,simulated damaged strikes
+Known severity: S+D,0.23024054982817868,simulated damaged strikes
+ENGINE_DAMAGE,0.09621993127147767,simulated damaged strikes
+FORWARD_COCKPIT_DAMAGE,0.3333333333333333,simulated damaged strikes
+LANDING_GEAR_DAMAGE,0.024054982817869417,simulated damaged strikes
+PROPELLER_DAMAGE,0.0,simulated damaged strikes
+WING_ROTOR_DAMAGE,0.25773195876288657,simulated damaged strikes
