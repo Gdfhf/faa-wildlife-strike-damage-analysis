@@ -1,67 +1,53 @@
 import streamlit as st
 
-from src.data.loaders import (
-    load_analytical_data,
-    load_scenario_schema,
-)
-from src.models.loaders import (
-    load_damage_model,
-    load_severity_model,
-)
-
 
 st.set_page_config(
     page_title="FAA Wildlife Strike Dashboard",
+    page_icon="✈️",
     layout="wide",
 )
 
+
 st.title("FAA Wildlife Strike Damage Analysis")
 
+st.markdown(
+    """
+    This dashboard presents the results of the FAA wildlife strike
+    damage analysis and provides an operational what-if simulation
+    environment based on the models developed during the project.
 
-try:
-    df = load_analytical_data()
+    Use the pages in the sidebar to explore the historical data,
+    examine damage risk, and run Monte Carlo scenarios.
+    """
+)
 
-    st.success(
-        f"Analytical dataset loaded successfully: "
-        f"{len(df):,} records"
+st.divider()
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Historical Analysis")
+    st.markdown(
+        """
+        Explore reported FAA wildlife strike patterns across the
+        1990–2024 analytical dataset, including temporal patterns,
+        airports, wildlife, and observed aircraft damage.
+        """
     )
 
-except Exception as exc:
-    st.error(f"Dataset loading failed: {exc}")
-
-
-try:
-    damage_model = load_damage_model()
-
-    st.success(
-        f"Damage model loaded successfully: "
-        f"{type(damage_model).__name__}"
+with col2:
+    st.subheader("Operational Simulation")
+    st.markdown(
+        """
+        Construct supported what-if scenarios and estimate damage,
+        severity, and component-level outcomes using the project's
+        trained probability models and Monte Carlo simulation.
+        """
     )
 
-except Exception as exc:
-    st.error(f"Damage model loading failed: {exc}")
-
-
-try:
-    severity_model = load_severity_model()
-
-    st.success(
-        f"Severity model loaded successfully: "
-        f"{type(severity_model).__name__}"
-    )
-
-except Exception as exc:
-    st.error(f"Severity model loading failed: {exc}")
-
-
-try:
-    scenario_schema = load_scenario_schema()
-
-    st.success(
-        f"Simulation schema loaded successfully."
-    )
-
-    st.json(scenario_schema)
-
-except Exception as exc:
-    st.error(f"Scenario schema loading failed: {exc}")
+st.info(
+    "The simulation uses historical reference data through 2021. "
+    "The 2022–2024 period was kept separate from the simulation "
+    "reference population to preserve the project's temporal "
+    "evaluation design."
+)

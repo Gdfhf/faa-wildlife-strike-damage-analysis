@@ -1,6 +1,7 @@
 import __main__
 import joblib
 import numpy as np
+import sys
 
 from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LogisticRegression
@@ -92,12 +93,19 @@ def _register_serialization_compatibility():
     Expose notebook-defined compatibility classes under __main__
     so legacy joblib component artifacts can be deserialized.
     """
+    main_module = sys.modules.get("__main__")
+
+    if main_module is None:
+        return
+
     if not hasattr(
-        __main__,
+        main_module,
         "BinaryProbabilityCalibrator",
     ):
-        __main__.BinaryProbabilityCalibrator = (
-            BinaryProbabilityCalibrator
+        setattr(
+            main_module,
+            "BinaryProbabilityCalibrator",
+            BinaryProbabilityCalibrator,
         )
 
 

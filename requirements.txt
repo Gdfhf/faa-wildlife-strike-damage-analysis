@@ -31,3 +31,6 @@ plotly>=5.24,<7.0
 
 # Explainability
 shap==0.52.0
+
+# Software testing
+pytest
