@@ -5,6 +5,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 DATA_DIR = PROJECT_ROOT / "data"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
+DASHBOARD_DATA_DIR = DATA_DIR / "dashboard"
 
 MODELS_DIR = PROJECT_ROOT / "models"
 FINAL_MODELS_DIR = MODELS_DIR / "final"
@@ -23,6 +24,22 @@ BINARY_MODEL_DATA_PATH = (
 
 BINARY_MODEL_READY_PATH = (
     PROCESSED_DATA_DIR / "faa_strikes_binary_model_ready.csv"
+)
+
+HISTORICAL_EXPLORER_PATH = (
+    DASHBOARD_DATA_DIR / "historical_explorer.parquet"
+)
+
+SIMULATION_DONOR_POOL_PATH = (
+    DASHBOARD_DATA_DIR / "simulation_donor_pool.parquet"
+)
+
+SCENARIO_SUPPORT_PATH = (
+    DASHBOARD_DATA_DIR / "scenario_support.parquet"
+)
+
+OVERVIEW_SUMMARY_PATH = (
+    DASHBOARD_DATA_DIR / "overview_summary.json"
 )
 
 

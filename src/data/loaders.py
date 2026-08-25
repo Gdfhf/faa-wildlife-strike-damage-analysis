@@ -1,32 +1,53 @@
+from functools import lru_cache
 import json
 
 import pandas as pd
 
 from src.utils.paths import (
-    ANALYTICAL_DATA_PATH,
-    SCENARIO_SCHEMA_PATH,
+    HISTORICAL_EXPLORER_PATH,
+    SIMULATION_DONOR_POOL_PATH,
+    SCENARIO_SUPPORT_PATH,
+    OVERVIEW_SUMMARY_PATH,
 )
 
 
-def load_analytical_data() -> pd.DataFrame:
-    """Load the processed analytical FAA wildlife strike dataset."""
-    if not ANALYTICAL_DATA_PATH.exists():
+def _require_file(path):
+    if not path.exists():
         raise FileNotFoundError(
-            f"Analytical dataset not found: {ANALYTICAL_DATA_PATH}"
+            f"Required dashboard artifact was not found:\n{path}\n\n"
+            "Run:\n"
+            "python -m src.data.build_dashboard_artifacts"
         )
 
-    return pd.read_csv(
-        ANALYTICAL_DATA_PATH,
-        low_memory=False
-    )
+
+@lru_cache(maxsize=1)
+def load_historical_data():
+    _require_file(HISTORICAL_EXPLORER_PATH)
+    return pd.read_parquet(HISTORICAL_EXPLORER_PATH)
 
 
-def load_scenario_schema() -> dict:
-    """Load the input schema defined by Notebook 10."""
-    if not SCENARIO_SCHEMA_PATH.exists():
-        raise FileNotFoundError(
-            f"Scenario schema not found: {SCENARIO_SCHEMA_PATH}"
-        )
+@lru_cache(maxsize=1)
+def load_simulation_donors():
+    _require_file(SIMULATION_DONOR_POOL_PATH)
+    return pd.read_parquet(SIMULATION_DONOR_POOL_PATH)
 
-    with open(SCENARIO_SCHEMA_PATH, "r", encoding="utf-8") as file:
-        return json.load(file)
+
+@lru_cache(maxsize=1)
+def load_scenario_support():
+    _require_file(SCENARIO_SUPPORT_PATH)
+    return pd.read_parquet(SCENARIO_SUPPORT_PATH)
+
+
+@lru_cache(maxsize=1)
+def load_overview_summary():
+    _require_file(OVERVIEW_SUMMARY_PATH)
+
+    with open(OVERVIEW_SUMMARY_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def clear_data_caches():
+    load_historical_data.cache_clear()
+    load_simulation_donors.cache_clear()
+    load_scenario_support.cache_clear()
+    load_overview_summary.cache_clear()
