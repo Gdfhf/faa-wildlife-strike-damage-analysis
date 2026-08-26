@@ -11,6 +11,11 @@ from src.simulation.donor_sampling import DonorSampler
 from src.simulation.prediction import PredictionService
 from src.simulation.engine import SimulationEngine
 
+from src.utils.labels import (
+    build_airport_labels,
+    format_aircraft_class,
+)
+
 
 # =====================================================================
 # Page configuration
@@ -121,6 +126,7 @@ except Exception as exc:
     )
     st.stop()
 
+airport_labels = build_airport_labels(donor_data)
 
 # =====================================================================
 # Cache model / simulation infrastructure
@@ -198,8 +204,12 @@ if geography_mode == "Airport":
     )
 
     airport_id = st.selectbox(
-        "Airport ID",
+        "Airport",
         geography_options,
+        format_func=lambda airport_id: airport_labels.get(
+            airport_id,
+            airport_id,
+        ),
         key="required_airport_id",
     )
 
@@ -249,6 +259,7 @@ require_options(
 ac_class = st.selectbox(
     "Aircraft Class",
     ac_class_options,
+    format_func=format_aircraft_class,
     key="required_ac_class",
 )
 

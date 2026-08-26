@@ -11,6 +11,10 @@ from src.simulation.donor_sampling import DonorSampler
 from src.simulation.prediction import PredictionService
 from src.simulation.engine import SimulationEngine
 
+from src.utils.labels import (
+    build_airport_labels,
+    format_aircraft_class,
+)
 
 # =====================================================================
 # Page configuration
@@ -109,7 +113,7 @@ def component_label(component):
     )
 
 
-def build_required_scenario(prefix, title, support_data):
+def build_required_scenario(prefix, title, support_data, airport_labels):
     """
     Build one supported required scenario using cascading selections.
 
@@ -146,6 +150,10 @@ def build_required_scenario(prefix, title, support_data):
         airport_id = st.selectbox(
             "Airport ID",
             options,
+            format_func=lambda airport_id: airport_labels.get(
+                airport_id,
+                airport_id,
+            ),
             key=f"{prefix}_airport_id",
         )
 
@@ -192,6 +200,7 @@ def build_required_scenario(prefix, title, support_data):
     ac_class = st.selectbox(
         "Aircraft Class",
         ac_class_options,
+        format_func=format_aircraft_class,
         key=f"{prefix}_ac_class",
     )
 
@@ -313,6 +322,7 @@ except Exception as exc:
     )
     st.stop()
 
+airport_labels = build_airport_labels(donor_data)
 
 # =====================================================================
 # Cache simulation infrastructure
@@ -355,6 +365,7 @@ with col_a:
         "scenario_a",
         "Scenario A",
         support_data,
+        airport_labels,
     )
 
 with col_b:
@@ -362,6 +373,7 @@ with col_b:
         "scenario_b",
         "Scenario B",
         support_data,
+        airport_labels,
     )
 
 
