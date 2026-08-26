@@ -5,6 +5,7 @@ st.set_page_config(
     page_title="FAA Wildlife Strike Dashboard",
     page_icon="✈️",
     layout="wide",
+    initial_sidebar_state="auto",
 )
 
 
