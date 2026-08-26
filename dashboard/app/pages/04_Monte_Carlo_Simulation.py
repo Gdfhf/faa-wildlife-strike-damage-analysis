@@ -54,6 +54,37 @@ def sorted_values(data, column):
     return sorted(values.unique().tolist())
 
 
+def filter_equals(data, column, value):
+    """
+    Filter a dashboard artifact using normalized string comparison.
+
+    This mirrors the string cleanup used to populate the selectboxes so
+    that displayed choices and downstream filtering stay consistent.
+    """
+    if column not in data.columns or value is None:
+        return data.iloc[0:0].copy()
+
+    normalized = (
+        data[column]
+        .astype("string")
+        .str.strip()
+    )
+
+    return data.loc[normalized == str(value).strip()].copy()
+
+
+def require_options(options, message):
+    """
+    Stop the page cleanly if an upstream selection leaves no valid
+    downstream choices.
+    """
+    if options:
+        return
+
+    st.warning(message)
+    st.stop()
+
+
 def optional_selectbox(label, values, key):
     """
     Select an optional categorical scenario value.
@@ -131,42 +162,7 @@ st.caption(
 
 
 # ---------------------------------------------------------------------
-# Required context
-# ---------------------------------------------------------------------
-
-col1, col2 = st.columns(2)
-
-with col1:
-    ac_class = st.selectbox(
-        "Aircraft Class",
-        sorted_values(donor_data, "AC_CLASS"),
-    )
-
-    season = st.selectbox(
-        "Season",
-        sorted_values(donor_data, "SEASON"),
-    )
-
-with col2:
-    ac_mass_group = st.selectbox(
-        "Aircraft Mass Group",
-        sorted_values(
-            donor_data,
-            "AC_MASS_GROUP",
-        ),
-    )
-
-    phase_of_flight = st.selectbox(
-        "Phase of Flight",
-        sorted_values(
-            donor_data,
-            "PHASE_OF_FLIGHT",
-        ),
-    )
-
-
-# ---------------------------------------------------------------------
-# Geography
+# Cascading required context
 # ---------------------------------------------------------------------
 
 st.markdown("#### Geography")
@@ -183,26 +179,159 @@ geography_mode = st.radio(
 airport_id = None
 faa_region = None
 
+# The support artifact is the authoritative source for determining
+# which required scenario combinations are historically supported.
+# Each downstream selectbox is therefore restricted by the selections
+# already made above it.
+required_support = support_data.copy()
+
 if geography_mode == "Airport":
+
+    geography_options = sorted_values(
+        support_data,
+        "AIRPORT_ID",
+    )
+
+    require_options(
+        geography_options,
+        "No airports are available in the historical support artifact.",
+    )
 
     airport_id = st.selectbox(
         "Airport ID",
-        sorted_values(
-            donor_data,
-            "AIRPORT_ID",
-        ),
+        geography_options,
+        key="required_airport_id",
+    )
+
+    required_support = filter_equals(
+        required_support,
+        "AIRPORT_ID",
+        airport_id,
     )
 
 else:
 
-    faa_region = st.selectbox(
-        "FAA Region",
-        sorted_values(
-            donor_data,
-            "FAAREGION",
-        ),
+    geography_options = sorted_values(
+        support_data,
+        "FAAREGION",
     )
 
+    require_options(
+        geography_options,
+        "No FAA regions are available in the historical support artifact.",
+    )
+
+    faa_region = st.selectbox(
+        "FAA Region",
+        geography_options,
+        key="required_faa_region",
+    )
+
+    required_support = filter_equals(
+        required_support,
+        "FAAREGION",
+        faa_region,
+    )
+
+
+st.markdown("#### Required Flight Context")
+
+ac_class_options = sorted_values(
+    required_support,
+    "AC_CLASS",
+)
+
+require_options(
+    ac_class_options,
+    "The selected geography has no supported aircraft classes.",
+)
+
+ac_class = st.selectbox(
+    "Aircraft Class",
+    ac_class_options,
+    key="required_ac_class",
+)
+
+required_support = filter_equals(
+    required_support,
+    "AC_CLASS",
+    ac_class,
+)
+
+
+ac_mass_group_options = sorted_values(
+    required_support,
+    "AC_MASS_GROUP",
+)
+
+require_options(
+    ac_mass_group_options,
+    "No aircraft mass groups are supported for the current selections.",
+)
+
+ac_mass_group = st.selectbox(
+    "Aircraft Mass Group",
+    ac_mass_group_options,
+    key="required_ac_mass_group",
+)
+
+required_support = filter_equals(
+    required_support,
+    "AC_MASS_GROUP",
+    ac_mass_group,
+)
+
+
+season_options = sorted_values(
+    required_support,
+    "SEASON",
+)
+
+require_options(
+    season_options,
+    "No seasons are supported for the current selections.",
+)
+
+season = st.selectbox(
+    "Season",
+    season_options,
+    key="required_season",
+)
+
+required_support = filter_equals(
+    required_support,
+    "SEASON",
+    season,
+)
+
+
+phase_options = sorted_values(
+    required_support,
+    "PHASE_OF_FLIGHT",
+)
+
+require_options(
+    phase_options,
+    "No phases of flight are supported for the current selections.",
+)
+
+phase_of_flight = st.selectbox(
+    "Phase of Flight",
+    phase_options,
+    key="required_phase_of_flight",
+)
+
+required_support = filter_equals(
+    required_support,
+    "PHASE_OF_FLIGHT",
+    phase_of_flight,
+)
+
+
+st.caption(
+    f"Historical records matching the current required scenario: "
+    f"{len(required_support):,}"
+)
 
 # =====================================================================
 # Optional context
