@@ -51,6 +51,34 @@ data/processed/*
 *.pickle
 *.joblib
 
+# --------------------------------------------------
+# Dashboard runtime artifacts
+# --------------------------------------------------
+#
+# Most processed data remains excluded from Git. The lightweight
+# dashboard artifacts below are explicit exceptions because teammates
+# need them to run Streamlit without the ~300 MB analytical CSV.
+#
+# The parent dashboard directory is re-included in case the artifact
+# builder stores the runtime files under data/processed/dashboard/.
+
+!data/processed/dashboard/
+data/processed/dashboard/*
+
+# Allow the three dashboard Parquet artifacts
+!data/processed/dashboard/historical_explorer.parquet
+!data/processed/dashboard/simulation_donor_pool.parquet
+!data/processed/dashboard/scenario_support.parquet
+
+# Also allow these uniquely named runtime artifacts if paths.py places
+# them in another non-ignored dashboard data directory.
+!**/historical_explorer.parquet
+!**/simulation_donor_pool.parquet
+!**/scenario_support.parquet
+
+# The lightweight overview JSON may live beside the Parquet artifacts.
+!data/processed/dashboard/overview_summary.json
+
 
 # --------------------------------------------------
 # Generated model artifacts

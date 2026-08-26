@@ -7,6 +7,9 @@ numpy==2.2.5
 pandas==2.2.3
 scipy==1.15.3
 
+# Explicit Parquet runtime support for dashboard artifacts
+pyarrow>=17.0,<23.0
+
 # Visualization and notebook display
 matplotlib==3.10.3
 seaborn==0.13.2
@@ -33,4 +36,4 @@ plotly>=5.24,<7.0
 shap==0.52.0
 
 # Software testing
-pytest
+pytest==9.1.1
