@@ -126,6 +126,12 @@ class SimulationResult:
     # One randomly selected realized trial for optional visualization.
     visual_trial: VisualTrial | None = None
 
+    # One deliberately selected high-impact realized trial for optional
+    # presentation. This is kept separate from the random trial so the
+    # visualizer can distinguish representative sampling from an
+    # intentionally selected consequential example.
+    high_impact_visual_trial: VisualTrial | None = None
+
 
 class SimulationEngine:
     """
@@ -160,10 +166,14 @@ class SimulationEngine:
         """
         Run one Monte Carlo scenario.
 
-        The returned SimulationResult also retains one independently
-        selected realized trial for optional illustrative visualization.
-        Selecting that trial uses its own RNG stream and therefore does
-        not alter the existing Monte Carlo outcome sequence.
+        The returned SimulationResult also retains:
+        - one independently selected random realized trial; and
+        - one deliberately selected high-impact realized trial when at
+          least one damaged outcome exists.
+
+        Visualization selection uses RNG streams separate from the
+        scientific Monte Carlo outcome stream and therefore does not alter
+        damage, severity, or component results.
         """
         if n_trials <= 0:
             raise ValueError(
@@ -288,6 +298,7 @@ class SimulationEngine:
                 component_counts={},
                 component_rates_given_damage={},
                 visual_trial=visual_trial,
+                high_impact_visual_trial=None,
             )
 
         # -------------------------------------------------
@@ -383,80 +394,159 @@ class SimulationEngine:
             )
 
         # -------------------------------------------------
-        # Build retained visual trial
+        # Build retained visualization trials
         # -------------------------------------------------
 
-        visual_damaged = bool(
-            damage_outcomes[
-                visual_index
-            ]
-        )
+        def build_visual_trial(trial_index: int) -> VisualTrial:
+            """
+            Build a visualization payload from an already-realized trial.
 
-        visual_severity_probability = None
-        visual_severe = None
+            This helper only reads outcomes that have already been produced
+            by the scientific simulation. It performs no additional model
+            prediction or Monte Carlo sampling.
+            """
+            trial_context = _extract_visual_context(
+                rows.iloc[trial_index]
+            )
 
-        visual_component_probabilities = {}
-        visual_component_outcomes = {}
+            trial_damaged = bool(
+                damage_outcomes[
+                    trial_index
+                ]
+            )
 
-        if visual_damaged:
-            # `damaged_indices` is ordered, so searchsorted maps the
-            # original trial index into the compressed damaged-only
-            # severity/component population.
-            damaged_position = int(
-                np.searchsorted(
-                    damaged_indices,
-                    visual_index,
+            trial_severity_probability = None
+            trial_severe = None
+            trial_component_probabilities = {}
+            trial_component_outcomes = {}
+
+            if trial_damaged:
+                damaged_position = int(
+                    np.searchsorted(
+                        damaged_indices,
+                        trial_index,
+                    )
                 )
-            )
 
-            visual_severity_probability = float(
-                severity_probabilities[
-                    damaged_position
-                ]
-            )
-
-            visual_severe = bool(
-                severity_outcomes[
-                    damaged_position
-                ]
-            )
-
-            for component, probabilities in (
-                component_probabilities.items()
-            ):
-                visual_component_probabilities[
-                    component
-                ] = float(
-                    probabilities[
+                trial_severity_probability = float(
+                    severity_probabilities[
                         damaged_position
                     ]
                 )
 
-                visual_component_outcomes[
-                    component
-                ] = bool(
-                    component_outcome_arrays[
-                        component
-                    ][damaged_position]
+                trial_severe = bool(
+                    severity_outcomes[
+                        damaged_position
+                    ]
                 )
 
-        visual_trial = VisualTrial(
-            trial_index=visual_index,
-            scenario=scenario.to_dict(),
-            sampled_context=visual_context,
-            damage_probability=float(
-                damage_probabilities[
-                    visual_index
-                ]
-            ),
-            damaged=visual_damaged,
-            severity_probability=
-                visual_severity_probability,
-            severe=visual_severe,
-            component_probabilities=
-                visual_component_probabilities,
-            component_outcomes=
-                visual_component_outcomes,
+                for component, probabilities in (
+                    component_probabilities.items()
+                ):
+                    trial_component_probabilities[
+                        component
+                    ] = float(
+                        probabilities[
+                            damaged_position
+                        ]
+                    )
+
+                    trial_component_outcomes[
+                        component
+                    ] = bool(
+                        component_outcome_arrays[
+                            component
+                        ][damaged_position]
+                    )
+
+            return VisualTrial(
+                trial_index=trial_index,
+                scenario=scenario.to_dict(),
+                sampled_context=trial_context,
+                damage_probability=float(
+                    damage_probabilities[
+                        trial_index
+                    ]
+                ),
+                damaged=trial_damaged,
+                severity_probability=
+                    trial_severity_probability,
+                severe=trial_severe,
+                component_probabilities=
+                    trial_component_probabilities,
+                component_outcomes=
+                    trial_component_outcomes,
+            )
+
+        visual_trial = build_visual_trial(
+            visual_index
+        )
+
+        # -------------------------------------------------
+        # Select one high-impact realized trial
+        # -------------------------------------------------
+        #
+        # This is intentionally NOT a representative random draw. The
+        # selection prioritizes realized severe outcomes, then the number
+        # of realized damaged components. Ties are broken randomly using
+        # another independent visualization RNG stream.
+        #
+        # We deliberately do not rank by predicted probability as a primary
+        # criterion because probability is not itself a realized consequence.
+
+        realized_component_counts = np.zeros(
+            damage_count,
+            dtype=int,
+        )
+
+        for outcomes in component_outcome_arrays.values():
+            realized_component_counts += outcomes.astype(int)
+
+        severe_rank = severity_outcomes.astype(int)
+
+        max_severe_rank = int(
+            severe_rank.max()
+        )
+
+        severe_candidates = np.flatnonzero(
+            severe_rank == max_severe_rank
+        )
+
+        max_component_count = int(
+            realized_component_counts[
+                severe_candidates
+            ].max()
+        )
+
+        top_damaged_positions = severe_candidates[
+            realized_component_counts[
+                severe_candidates
+            ] == max_component_count
+        ]
+
+        if seed is None:
+            high_impact_rng = np.random.default_rng()
+        else:
+            high_impact_rng = np.random.default_rng(
+                np.random.SeedSequence(
+                    [int(seed), 2]
+                )
+            )
+
+        selected_damaged_position = int(
+            high_impact_rng.choice(
+                top_damaged_positions
+            )
+        )
+
+        high_impact_index = int(
+            damaged_indices[
+                selected_damaged_position
+            ]
+        )
+
+        high_impact_visual_trial = build_visual_trial(
+            high_impact_index
         )
 
         # -------------------------------------------------
@@ -499,4 +589,7 @@ class SimulationEngine:
 
             visual_trial=
                 visual_trial,
+
+            high_impact_visual_trial=
+                high_impact_visual_trial,
         )

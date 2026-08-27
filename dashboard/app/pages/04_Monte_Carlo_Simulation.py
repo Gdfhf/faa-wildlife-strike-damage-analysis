@@ -246,11 +246,11 @@ def simulation_run_signature(scenario, n_trials, seed):
     }
 
 
-def export_visual_trial(result):
-    """Write the retained random trial for the local Godot project."""
-    if result.visual_trial is None:
+def export_visual_trial(result, visual_trial):
+    """Write one retained visualization trial for the local Godot project."""
+    if visual_trial is None:
         raise ValueError(
-            "The simulation result does not contain a visual trial."
+            "The simulation result does not contain the requested visual trial."
         )
 
     GODOT_TRIAL_PATH.parent.mkdir(
@@ -264,7 +264,7 @@ def export_visual_trial(result):
             "n_trials": result.n_trials,
             "seed": result.seed,
         },
-        "visual_trial": asdict(result.visual_trial),
+        "visual_trial": asdict(visual_trial),
     }
 
     with GODOT_TRIAL_PATH.open(
@@ -1297,31 +1297,46 @@ if (
     section_header(
         "Single-Trial Visualization",
         (
-            "Open an illustrative 2D visualization of the one random "
-            "Monte Carlo realization retained from this simulation run."
+            "Open an illustrative 2D visualization of either a randomly "
+            "retained Monte Carlo realization or an intentionally selected "
+            "high-impact realized case from this simulation run."
         ),
     )
 
     with st.container(border=True):
         st.caption(
-            "The Godot scene consumes the already-realized Python trial. "
+            "The Godot scene consumes an already-realized Python trial. "
             "It does not rerun the model, resample the outcome, or simulate "
             "physical collision dynamics."
         )
 
-        if result.visual_trial is None:
-            st.info(
-                "No visual trial is available for this simulation result."
+        random_col, high_impact_col = st.columns(
+            2,
+            gap="medium",
+        )
+
+        with random_col:
+            st.markdown("#### Random realization")
+
+            st.caption(
+                "A randomly retained trial from the simulation run. "
+                "This is the default representative single-trial view."
             )
 
-        else:
-            if st.button(
+            if result.visual_trial is None:
+                st.info(
+                    "No random visual trial is available."
+                )
+
+            elif st.button(
                 "Visualize Random Trial",
-                key="launch_godot_visual_trial",
+                key="launch_godot_random_visual_trial",
+                use_container_width=True,
             ):
                 try:
                     exported_path = export_visual_trial(
-                        result
+                        result,
+                        result.visual_trial,
                     )
 
                     launch_local_godot_project()
@@ -1340,9 +1355,54 @@ if (
                     )
                     st.exception(exc)
 
+        with high_impact_col:
+            st.markdown("#### High-impact realized case")
+
+            st.caption(
+                "An intentionally selected consequential outcome from this "
+                "same run. Selection prioritizes realized severe damage, "
+                "then the number of realized damaged components."
+            )
+
+            if result.high_impact_visual_trial is None:
+                st.info(
+                    "No damaged trial occurred in this run, so a high-impact "
+                    "realized case is unavailable."
+                )
+
+            elif st.button(
+                "Visualize High-Impact Trial",
+                key="launch_godot_high_impact_visual_trial",
+                use_container_width=True,
+            ):
+                try:
+                    exported_path = export_visual_trial(
+                        result,
+                        result.high_impact_visual_trial,
+                    )
+
+                    launch_local_godot_project()
+
+                    st.success(
+                        "Godot visualizer launched using the selected "
+                        "high-impact realized case."
+                    )
+
+                    st.caption(
+                        f"Trial payload: {exported_path}"
+                    )
+
+                except Exception as exc:
+                    st.error(
+                        "The Godot visualizer could not be launched."
+                    )
+                    st.exception(exc)
+
         st.caption(
-            "Illustrative only — this is a schematic visualization of one "
-            "stochastic realization, not a physical wildlife-strike simulation."
+            "The high-impact case is deliberately selected for illustration "
+            "and should not be interpreted as the typical or most likely "
+            "outcome. Both views remain schematic rather than physical "
+            "wildlife-strike simulations."
         )
 
 
