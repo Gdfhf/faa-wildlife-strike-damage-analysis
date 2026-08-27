@@ -133,7 +133,6 @@ def count_full_specified_support(data, scenario):
         # Numeric fields need numeric comparison so values such as
         # 2 and 2.0 are treated as equivalent.
         if scenario_field in {
-            "num_struck",
             "num_engs",
             "height",
             "speed",
@@ -588,11 +587,14 @@ with st.expander(
         num_struck = None
 
         if specify_num_struck:
-            num_struck = st.number_input(
+            num_struck_options = sorted_values(
+                donor_data,
+                "NUM_STRUCK",
+            )
+
+            num_struck = st.selectbox(
                 "Number Struck",
-                min_value=0,
-                step=1,
-                value=1,
+                num_struck_options,
             )
 
         specify_num_engs = st.checkbox(

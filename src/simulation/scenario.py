@@ -83,8 +83,22 @@ class Scenario:
                 "A scenario requires either AIRPORT_ID or FAAREGION."
             )
 
-        if self.num_struck is not None and self.num_struck < 0:
-            errors.append("NUM_STRUCK cannot be negative.")
+        valid_num_struck = {
+            "1",
+            "2-10",
+            "2–10",
+            "11-100",
+            "11–100",
+            "More than 100",
+        }
+
+        if (
+            self.num_struck is not None
+            and str(self.num_struck).strip() not in valid_num_struck
+        ):
+            errors.append(
+                "num_struck must be one of: 1, 2–10, 11–100, or More than 100."
+            )
 
         if self.num_engs is not None and self.num_engs < 0:
             errors.append("NUM_ENGS cannot be negative.")
