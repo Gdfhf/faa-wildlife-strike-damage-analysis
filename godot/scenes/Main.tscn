@@ -20,6 +20,51 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.5294118, 0.80784315, 0.92156863, 1)
 
+[node name="Ground" type="ColorRect" parent="." unique_id=1043232119]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -76.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.23, 0.23, 0.23, 1)
+
+[node name="WeatherEffects" type="Control" parent="." unique_id=69270052]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CloudsLayer" type="Control" parent="WeatherEffects" unique_id=954545190]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PrecipitationLayer" type="Control" parent="WeatherEffects" unique_id=1605811634]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FogOverlay" type="ColorRect" parent="WeatherEffects" unique_id=161310072]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Aircraft" type="ColorRect" parent="." unique_id=1769753411]
 layout_mode = 0
 offset_left = 118.0
@@ -29,10 +74,10 @@ offset_bottom = 517.0
 
 [node name="Wildlife" type="ColorRect" parent="." unique_id=763832784]
 layout_mode = 0
-offset_left = 422.0
-offset_top = 277.0
-offset_right = 452.0
-offset_bottom = 307.0
+offset_left = 654.0
+offset_top = 335.0
+offset_right = 684.0
+offset_bottom = 365.0
 color = Color(0.25, 0.1525, 0.055000007, 1)
 
 [node name="ImpactEffect" type="ColorRect" parent="." unique_id=615973684]
@@ -46,18 +91,32 @@ color = Color(0.71, 0.71, 0.71, 1)
 
 [node name="TrialInfo" type="Label" parent="." unique_id=1859819502]
 layout_mode = 0
-offset_left = 130.0
-offset_top = 129.0
-offset_right = 304.0
-offset_bottom = 152.0
+offset_left = 74.0
+offset_top = 67.0
+offset_right = 248.0
+offset_bottom = 90.0
 text = "Waiting for trial data..."
+
+[node name="WeatherLabel" type="Label" parent="." unique_id=1546050211]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.5
+offset_top = 20.0
+offset_right = 72.5
+offset_bottom = 43.0
+grow_horizontal = 2
+text = "Weather Report: ..."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="OutcomePanel" type="ColorRect" parent="." unique_id=1668352450]
 layout_mode = 0
-offset_left = 765.0
-offset_top = 451.0
-offset_right = 1065.0
-offset_bottom = 591.0
+offset_left = 813.0
+offset_top = 229.0
+offset_right = 1113.0
+offset_bottom = 369.0
 color = Color(0.4894573, 0.6298179, 0.75477827, 1)
 
 [node name="OutcomeLabel" type="Label" parent="OutcomePanel" unique_id=1875805165]
