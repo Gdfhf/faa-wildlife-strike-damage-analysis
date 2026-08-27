@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://dha5muvywjmi5"]
 
 [ext_resource type="Script" uid="uid://cwwc0tjeftvmq" path="res://scripts/main.gd" id="1_elqb8"]
+[ext_resource type="Script" uid="uid://1ww4ipgqvy0l" path="res://scripts/environment_controller.gd" id="2_0bbpv"]
+[ext_resource type="Script" uid="uid://euhf0eh1gpk6" path="res://scripts/wildlife_controller.gd" id="3_rarhs"]
+[ext_resource type="Script" uid="uid://3pxe21tws3gc" path="res://scripts/outcome_controller.gd" id="4_rarhs"]
 
 [node name="Main" type="Control" unique_id=1425735014]
 layout_mode = 3
@@ -11,7 +14,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_elqb8")
 
-[node name="Background" type="ColorRect" parent="." unique_id=861249678]
+[node name="Environment" type="Control" parent="." unique_id=1301084759]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_0bbpv")
+
+[node name="Background" type="ColorRect" parent="Environment" unique_id=861249678]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,19 +32,19 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.5294118, 0.80784315, 0.92156863, 1)
 
-[node name="Ground" type="ColorRect" parent="." unique_id=1043232119]
+[node name="Ground" type="ColorRect" parent="Environment" unique_id=1043232119]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -76.0
-offset_bottom = 4.0
+offset_top = 532.0
+offset_bottom = 612.0
 grow_horizontal = 2
 grow_vertical = 0
 color = Color(0.23, 0.23, 0.23, 1)
 
-[node name="WeatherEffects" type="Control" parent="." unique_id=69270052]
+[node name="WeatherEffects" type="Control" parent="Environment" unique_id=69270052]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -40,7 +52,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CloudsLayer" type="Control" parent="WeatherEffects" unique_id=954545190]
+[node name="CloudsLayer" type="Control" parent="Environment/WeatherEffects" unique_id=954545190]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +60,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PrecipitationLayer" type="Control" parent="WeatherEffects" unique_id=1605811634]
+[node name="PrecipitationLayer" type="Control" parent="Environment/WeatherEffects" unique_id=1605811634]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -56,7 +68,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FogOverlay" type="ColorRect" parent="WeatherEffects" unique_id=161310072]
+[node name="FogOverlay" type="ColorRect" parent="Environment/WeatherEffects" unique_id=161310072]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -72,7 +84,13 @@ offset_top = 467.0
 offset_right = 298.0
 offset_bottom = 517.0
 
-[node name="Wildlife" type="ColorRect" parent="." unique_id=763832784]
+[node name="WildlifeGroup" type="Control" parent="." unique_id=169972656]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_rarhs")
+
+[node name="Wildlife" type="ColorRect" parent="WildlifeGroup" unique_id=763832784]
 layout_mode = 0
 offset_left = 654.0
 offset_top = 335.0
@@ -118,6 +136,7 @@ offset_top = 229.0
 offset_right = 1113.0
 offset_bottom = 369.0
 color = Color(0.4894573, 0.6298179, 0.75477827, 1)
+script = ExtResource("4_rarhs")
 
 [node name="OutcomeLabel" type="Label" parent="OutcomePanel" unique_id=1875805165]
 layout_mode = 1
