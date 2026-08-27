@@ -6,13 +6,22 @@ extends Control
 )
 
 var wildlife_nodes: Array[Control] = []
+var movement_mode: String = "generic"
 
 
 func configure_wildlife(
 	sampled_context: Dictionary,
-	aircraft: Control
+	aircraft: Control,
+	ground_y: float
 ) -> void:
 	clear_generated_wildlife()
+
+	var wildlife_type = str(
+		sampled_context.get(
+			"WILDLIFE_TYPE",
+			"Unknown"
+		)
+	)
 
 	var size_category = str(
 		sampled_context.get(
@@ -35,22 +44,25 @@ func configure_wildlife(
 		)
 	)
 
-	var bird_size = get_wildlife_size(
+	movement_mode = get_wildlife_movement_mode(
+		wildlife_type
+	)
+
+	var wildlife_size = get_wildlife_size(
 		size_category
 	)
 
-	var bird_count = get_wildlife_count(
+	var wildlife_count = get_wildlife_count(
 		num_struck
 	)
 
-	wildlife.size = bird_size
-	wildlife_placeholder.size = bird_size
+	wildlife.size = wildlife_size
+	wildlife_placeholder.size = wildlife_size
 
-	wildlife.position = (
-		aircraft.position
-		+ get_wildlife_start_offset(
-			phase
-		)
+	wildlife.position = get_wildlife_start_position(
+		aircraft,
+		phase,
+		ground_y
 	)
 
 	wildlife.visible = true
@@ -61,37 +73,78 @@ func configure_wildlife(
 
 	for i in range(
 		1,
-		bird_count
+		wildlife_count
 	):
-		var bird = wildlife.duplicate() as Control
+		var animal = wildlife.duplicate() as Control
 
 		add_child(
-			bird
+			animal
 		)
 
-		bird.size = bird_size
+		animal.size = wildlife_size
 
-		bird.position = (
+		animal.position = (
 			wildlife.position
-			+ get_flock_offset(i)
+			+ get_group_offset(
+				i,
+				movement_mode
+			)
 		)
 
 		wildlife_nodes.append(
-			bird
+			animal
 		)
 
 
-func clear_generated_wildlife() -> void:
-	for bird in wildlife_nodes:
-		if bird != wildlife and is_instance_valid(bird):
-			bird.queue_free()
+func get_wildlife_movement_mode(
+	wildlife_type: String
+) -> String:
+	match wildlife_type.to_lower():
+		"bird", "bat":
+			return "airborne"
 
-	wildlife_nodes.clear()
+		"terrestrial mammal", "reptile":
+			return "ground"
+
+		_:
+			return "generic"
 
 
-func get_wildlife_start_offset(
+func get_wildlife_start_position(
+	aircraft: Control,
+	phase: String,
+	ground_y: float
+) -> Vector2:
+	match movement_mode:
+		"airborne":
+			return (
+				aircraft.position
+				+ get_airborne_start_offset(
+					phase
+				)
+			)
+
+		"ground":
+			return Vector2(
+				aircraft.position.x + 320,
+				ground_y - wildlife.size.y
+			)
+
+		_:
+			# Generic/unknown wildlife uses a schematic right-side approach.
+			# This avoids inventing a specific flight or ground trajectory.
+			return Vector2(
+				aircraft.position.x + 320,
+				aircraft.position.y - 80
+			)
+
+
+func get_airborne_start_offset(
 	phase: String
 ) -> Vector2:
+	# Wildlife always enters from the right as a presentation convention.
+	# This is not intended to represent observed strike direction.
+
 	match phase:
 		"Take-off Run", "Landing Roll", "Taxi":
 			return Vector2(
@@ -182,10 +235,28 @@ func get_wildlife_count(
 			return 1
 
 
-func get_flock_offset(
-	index: int
+func get_group_offset(
+	index: int,
+	mode: String
 ) -> Vector2:
-	var offsets = [
+	if mode == "ground":
+		var ground_offsets = [
+			Vector2(35, 0),
+			Vector2(70, 0),
+			Vector2(105, 0),
+			Vector2(140, 0),
+			Vector2(175, 0),
+			Vector2(210, 0),
+			Vector2(245, 0),
+			Vector2(280, 0),
+			Vector2(315, 0),
+		]
+
+		return ground_offsets[
+			(index - 1) % ground_offsets.size()
+		]
+
+	var airborne_offsets = [
 		Vector2(35, -20),
 		Vector2(50, 15),
 		Vector2(75, -35),
@@ -197,12 +268,8 @@ func get_flock_offset(
 		Vector2(180, -5),
 	]
 
-	var offset_index = (
-		index - 1
-	) % offsets.size()
-
-	return offsets[
-		offset_index
+	return airborne_offsets[
+		(index - 1) % airborne_offsets.size()
 	]
 
 
@@ -218,15 +285,23 @@ func animate_to(
 	for i in range(
 		wildlife_nodes.size()
 	):
-		var bird = wildlife_nodes[i]
+		var animal = wildlife_nodes[i]
 
-		var target_offset = Vector2(
-			i * 8,
-			i * 3
-		)
+		var target_offset: Vector2
+
+		if movement_mode == "ground":
+			target_offset = Vector2(
+				i * 10,
+				0
+			)
+		else:
+			target_offset = Vector2(
+				i * 8,
+				i * 3
+			)
 
 		tween.tween_property(
-			bird,
+			animal,
 			"position",
 			target_position + target_offset,
 			1.5
@@ -235,7 +310,18 @@ func animate_to(
 	await tween.finished
 
 
+func clear_generated_wildlife() -> void:
+	for animal in wildlife_nodes:
+		if (
+			animal != wildlife
+			and is_instance_valid(animal)
+		):
+			animal.queue_free()
+
+	wildlife_nodes.clear()
+
+
 func hide_wildlife() -> void:
-	for bird in wildlife_nodes:
-		if is_instance_valid(bird):
-			bird.visible = false
+	for animal in wildlife_nodes:
+		if is_instance_valid(animal):
+			animal.visible = false

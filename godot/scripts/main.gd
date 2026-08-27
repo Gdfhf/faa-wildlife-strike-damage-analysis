@@ -1,17 +1,37 @@
 extends Control
 
-@onready var aircraft: Control = $Aircraft
-@onready var impact_effect: ColorRect = $ImpactEffect
-@onready var trial_info: Label = $TrialInfo
-@onready var weather_label: Label = $WeatherLabel
-
-@onready var environment: Control = $Environment
+@onready var aircraft_controller: Control = $Aircraft
 @onready var wildlife_controller: Control = $WildlifeGroup
+@onready var environment: Control = $Environment
 @onready var outcome_controller: Control = $OutcomePanel
+
+@onready var ground: ColorRect = $Environment/Ground
+@onready var impact_effect: ColorRect = $ImpactEffect
+@onready var trial_info: Label = $TrialInfoPanel/TrialInfo
+@onready var weather_label: Label = $WeatherPanel/WeatherLabel
 
 var visual_trial: Dictionary = {}
 var sampled_context: Dictionary = {}
 
+const AIRCRAFT_CLASS_LABELS := {
+	"A": "Airplane",
+	"B": "Helicopter",
+	"C": "Glider",
+	"D": "Balloon",
+	"F": "Dirigible",
+	"I": "Gyroplane",
+	"J": "Ultralight",
+	"Y": "Other",
+	"Z": "Unknown",
+}
+
+func get_aircraft_class_label(
+	ac_class: String
+) -> String:
+	return AIRCRAFT_CLASS_LABELS.get(
+		ac_class,
+		"Unknown"
+	)
 
 func _ready() -> void:
 	impact_effect.visible = false
@@ -51,6 +71,17 @@ func update_trial_info() -> void:
 		"Unknown"
 	)
 
+	var ac_class = str(
+		sampled_context.get(
+			"AC_CLASS",
+			"Z"
+		)
+	)
+
+	var aircraft_label = get_aircraft_class_label(
+		ac_class
+	)
+
 	var phase = sampled_context.get(
 		"PHASE_OF_FLIGHT",
 		"Unknown"
@@ -85,6 +116,7 @@ func update_trial_info() -> void:
 
 	trial_info.text = (
 		"Airport: %s\n"
+		+ "Aircraft: %s - %s\n"
 		+ "Phase: %s\n"
 		+ "Wildlife: %s\n"
 		+ "Size: %s\n"
@@ -93,6 +125,8 @@ func update_trial_info() -> void:
 		+ "Damage probability: %.2f%%"
 	) % [
 		airport,
+		ac_class,
+		aircraft_label,
 		phase,
 		wildlife_type,
 		wildlife_size,
@@ -107,28 +141,29 @@ func prepare_scene() -> void:
 
 	impact_effect.visible = false
 
+	aircraft_controller.configure_aircraft(
+		sampled_context
+	)
+
 	environment.configure_environment(
 		sampled_context
 	)
 
 	environment.configure_phase_of_flight(
 		sampled_context,
-		aircraft
+		aircraft_controller
 	)
 
 	update_weather_label()
 
 	impact_effect.position = (
-		aircraft.position
-		+ Vector2(
-			aircraft.size.x * 0.75,
-			aircraft.size.y * 0.15
-		)
+		aircraft_controller.get_impact_position()
 	)
 
 	wildlife_controller.configure_wildlife(
 		sampled_context,
-		aircraft
+		aircraft_controller,
+		ground.position.y
 	)
 
 

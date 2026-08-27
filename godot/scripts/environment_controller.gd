@@ -58,6 +58,17 @@ func configure_phase_of_flight(
 		)
 	)
 
+	# Place the ground at the bottom of Environment.
+	ground.size = Vector2(
+        size.x,
+        80
+    )
+
+	ground.position = Vector2(
+        0,
+        size.y - ground.size.y
+    )
+
 	ground.visible = false
 
 	match phase:
