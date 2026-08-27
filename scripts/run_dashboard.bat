@@ -9,7 +9,7 @@ REM ============================================================
 cd /d "%~dp0.."
 set "PROJECT_ROOT=%CD%"
 set "VENV_DIR=%PROJECT_ROOT%\.venv"
-set "APP_FILE=%PROJECT_ROOT%\dashboard\app\app.py"
+set "APP_FILE=%PROJECT_ROOT%\dashboard\app.py"
 
 if not exist "%VENV_DIR%\Scripts\python.exe" (
     echo [ERROR] .venv was not found.

@@ -1,40 +1,29 @@
+"""Damage-risk model performance and explainability page."""
+
+from __future__ import annotations
+
 from pathlib import Path
 import json
 
 import pandas as pd
+import plotly.express as px
 import streamlit as st
 
-
-# =====================================================================
-# Page configuration
-# =====================================================================
-
-st.title("Damage Risk & Model Insights")
-
-st.markdown(
-    """
-    Review the evidence behind the project's canonical aircraft-damage
-    probability system. This page presents saved validation and
-    explainability artifacts from Notebooks 06 and 09; it does **not**
-    retrain models or recompute SHAP values during dashboard use.
-
-    The primary model estimates **reported aircraft-damage probability
-    conditional on a reported wildlife strike**. Classification
-    thresholds shown here are analytical reference points, not
-    operational safety rules.
-    """
+from dashboard.components.charts import apply_chart_layout
+from dashboard.components.layout import (
+    page_header,
+    section_divider,
+    section_header,
 )
+from dashboard.components.metrics import metric_row
 
 
 # =====================================================================
 # Portable project paths
 # =====================================================================
 
-def find_project_root():
-    """
-    Find the repository root from the current working directory or from
-    this page's location.
-    """
+def find_project_root() -> Path:
+    """Find the repository root from the current working directory/page."""
     candidates = []
 
     try:
@@ -64,8 +53,6 @@ def find_project_root():
         ):
             return candidate
 
-    # Fallback consistent with the dashboard/app/pages layout:
-    # dashboard/app/pages/03_...py -> repository root is three parents up.
     try:
         return Path(__file__).resolve().parents[3]
     except Exception:
@@ -83,7 +70,7 @@ NB09_DIR = ROOT / "outputs" / "09_explainability"
 # =====================================================================
 
 @st.cache_data
-def load_csv(path_string):
+def load_csv(path_string: str):
     path = Path(path_string)
     if not path.exists():
         return None
@@ -91,7 +78,7 @@ def load_csv(path_string):
 
 
 @st.cache_data
-def load_json(path_string):
+def load_json(path_string: str):
     path = Path(path_string)
     if not path.exists():
         return None
@@ -99,7 +86,7 @@ def load_json(path_string):
         return json.load(file)
 
 
-def existing_image(directory, filename):
+def existing_image(directory: Path, filename: str):
     path = directory / filename
     return path if path.exists() else None
 
@@ -122,15 +109,14 @@ def find_column(data, candidates):
     return None
 
 
-def display_artifact_warning(name):
+def display_artifact_warning(name: str) -> None:
     st.info(
         f"{name} was not found in the expected output directory. "
-        "The rest of the page can still load from the available "
-        "Notebook 06/09 artifacts."
+        "The remaining sections will use the available Notebook 06/09 artifacts."
     )
 
 
-def format_feature_name(value):
+def format_feature_name(value) -> str:
     return (
         str(value)
         .replace("_", " ")
@@ -138,8 +124,21 @@ def format_feature_name(value):
     )
 
 
+def style_figure(fig, *, hovermode: str = "closest"):
+    """Apply shared dashboard Plotly styling."""
+    fig = apply_chart_layout(fig)
+    fig.update_layout(hovermode=hovermode)
+    return fig
+
+
+PLOTLY_CONFIG = {
+    "displaylogo": False,
+    "responsive": True,
+}
+
+
 # =====================================================================
-# Load core metadata
+# Load artifacts
 # =====================================================================
 
 manifest = load_csv(
@@ -198,10 +197,38 @@ secondary_status = load_csv(
 
 
 # =====================================================================
-# 1. Canonical model
+# Page introduction
 # =====================================================================
 
-st.subheader("1. Canonical Damage Probability Model")
+page_header(
+    "Damage Risk & Model Insights",
+    (
+        "Review the validated aircraft-damage probability system, its "
+        "out-of-time performance, and the explainability evidence used "
+        "to support the operational simulation."
+    ),
+)
+
+st.caption(
+    "The primary model estimates reported aircraft-damage probability "
+    "conditional on a reported wildlife strike. This page reads saved "
+    "Notebook 06 and 09 artifacts; it does not retrain models or recompute SHAP."
+)
+
+
+# =====================================================================
+# Canonical model
+# =====================================================================
+
+section_divider()
+
+section_header(
+    "Canonical damage probability model",
+    (
+        "The approved probability system was selected, calibrated, and "
+        "evaluated using a temporally separated workflow."
+    ),
+)
 
 if manifest is not None and not manifest.empty:
 
@@ -227,31 +254,33 @@ if manifest is not None and not manifest.empty:
         "Not available",
     )
 
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.metric(
-            "Base Candidate",
-            str(model_name),
-        )
-
-    with col2:
-        st.metric(
-            "Calibration",
-            str(calibration).title(),
-        )
-
-    with col3:
-        st.metric(
-            "Feature Set",
-            str(feature_set).replace("_", " ").title(),
-        )
-
-    with col4:
-        st.metric(
-            "Input Features",
-            str(n_features),
-        )
+    metric_row(
+        [
+            (
+                "Base candidate",
+                "XGBoost",
+                (
+                    "Selected base damage model before final calibration. "
+                    f"Artifact: {model_name}"
+                ),
+            ),
+            (
+                "Calibration",
+                str(calibration).title(),
+                "Probability-calibration method retained in Notebook 06.",
+            ),
+            (
+                "Feature set",
+                str(feature_set).replace("_", " ").title(),
+                "Feature set used by the final probability system.",
+            ),
+            (
+                "Input features",
+                str(n_features),
+                "Number of original inputs supplied to the final system.",
+            ),
+        ]
+    )
 
     base_period = row.get(
         "base_fit_period",
@@ -269,24 +298,21 @@ if manifest is not None and not manifest.empty:
     )
 
     st.caption(
-        f"Base-model fitting period: {base_period} | "
-        f"Calibration/selection period: {calibration_period} | "
-        f"Locked final-test period: {final_period}"
+        f"Base fit: {base_period} · "
+        f"Calibration/selection: {calibration_period} · "
+        f"Locked final test: {final_period}"
     )
 
 else:
     display_artifact_warning("Final model manifest")
 
-    st.markdown(
-        """
-        The approved primary system is the final calibrated
-        aircraft-damage probability pipeline exported by Notebook 06.
-        """
-    )
-
+st.info(
+    "The Monte Carlo simulator uses the model's continuous damage "
+    "probabilities directly. The classification threshold shown below "
+    "is a validation reference, not an operational safety rule."
+)
 
 if metadata is not None:
-
     with st.expander(
         "Validation design and locked decisions",
         expanded=False,
@@ -294,32 +320,21 @@ if metadata is not None:
         st.json(metadata)
 
 
-st.info(
-    "The model produces a continuous damage probability. The Monte "
-    "Carlo simulator uses that continuous probability directly; it does "
-    "not convert each scenario to damage/no-damage using the "
-    "classification threshold shown later on this page."
-)
-
-
 # =====================================================================
-# 2. Final-test probability performance
+# Final-test probability performance
 # =====================================================================
 
-st.subheader("2. Locked Final-Test Probability Performance")
+section_divider()
 
-st.caption(
-    "These are out-of-time results for 2022–2024 after model, "
-    "calibration, and threshold decisions had already been locked."
+section_header(
+    "Locked final-test probability performance",
+    (
+        "These results come from the 2022–2024 out-of-time test period "
+        "after model, calibration, and threshold choices had been locked."
+    ),
 )
 
 if probability_metrics is not None and not probability_metrics.empty:
-
-    st.dataframe(
-        probability_metrics,
-        use_container_width=True,
-        hide_index=True,
-    )
 
     system_col = find_column(
         probability_metrics,
@@ -349,63 +364,81 @@ if probability_metrics is not None and not probability_metrics.empty:
             .str.contains("final")
         ]
 
-        if final_rows.empty:
-            final_row = probability_metrics.iloc[-1]
-        else:
-            final_row = final_rows.iloc[-1]
+        final_row = (
+            probability_metrics.iloc[-1]
+            if final_rows.empty
+            else final_rows.iloc[-1]
+        )
 
-        metric_columns = st.columns(3)
+        summary_metrics = []
 
-        with metric_columns[0]:
-            if pr_col is not None:
-                st.metric(
+        if pr_col is not None:
+            summary_metrics.append(
+                (
                     "Final PR-AUC",
                     f"{float(final_row[pr_col]):.3f}",
+                    "Higher values indicate better discrimination for the uncommon damage outcome.",
                 )
-            else:
-                st.metric("Final PR-AUC", "See table")
+            )
 
-        with metric_columns[1]:
-            if brier_col is not None:
-                st.metric(
-                    "Final Brier Score",
+        if brier_col is not None:
+            summary_metrics.append(
+                (
+                    "Final Brier score",
                     f"{float(final_row[brier_col]):.4f}",
+                    "Lower values indicate better probability accuracy.",
                 )
-            else:
-                st.metric("Final Brier Score", "See table")
+            )
 
-        with metric_columns[2]:
-            if logloss_col is not None:
-                st.metric(
-                    "Final Log Loss",
+        if logloss_col is not None:
+            summary_metrics.append(
+                (
+                    "Final log loss",
                     f"{float(final_row[logloss_col]):.4f}",
+                    "Lower values indicate better probabilistic predictions, with stronger penalties for confident errors.",
                 )
-            else:
-                st.metric("Final Log Loss", "See table")
+            )
+
+        if summary_metrics:
+            metric_row(summary_metrics)
+
+    with st.expander(
+        "View probability-metric table",
+        expanded=False,
+    ):
+        st.dataframe(
+            probability_metrics,
+            use_container_width=True,
+            hide_index=True,
+        )
 
 else:
-    display_artifact_warning(
-        "Final-test probability metrics"
-    )
-
+    display_artifact_warning("Final-test probability metrics")
 
 st.caption(
-    "PR-AUC summarizes discrimination for the relatively uncommon "
-    "damage outcome. Brier score and log loss evaluate probability "
-    "quality; lower values indicate better probabilistic predictions."
+    "PR-AUC emphasizes discrimination for the relatively uncommon damage "
+    "class. Brier score and log loss evaluate probability quality rather "
+    "than only hard classifications."
 )
 
 
 # =====================================================================
-# 3. Classification reference
+# Locked-threshold classification reference
 # =====================================================================
 
-st.subheader("3. Classification Reference at the Locked Threshold")
+section_divider()
+
+section_header(
+    "Classification reference at the locked threshold",
+    (
+        "The threshold is retained for classification diagnostics and "
+        "error analysis, not as a recommended aviation decision threshold."
+    ),
+)
 
 st.warning(
-    "The classification threshold is included for interpretability and "
-    "error analysis only. It is not a recommended aviation decision "
-    "threshold and is not what drives the Monte Carlo simulation."
+    "Do not interpret the locked threshold as a safety rule. "
+    "The simulation uses continuous calibrated probabilities."
 )
 
 confusion_path = existing_image(
@@ -413,135 +446,156 @@ confusion_path = existing_image(
     "09_locked_threshold_confusion_matrix.png",
 )
 
-col1, col2 = st.columns([1.1, 1])
-
-with col1:
-
-    if confusion_path is not None:
-        st.image(
-            str(confusion_path),
-            caption=(
-                "Final-test confusion matrix at the locked "
-                "validation-derived threshold."
-            ),
-            use_container_width=True,
-        )
-
-    else:
-        st.markdown("#### Confusion Matrix")
-        st.write(
-            "TN = 55,651 | FP = 1,322 | "
-            "FN = 1,314 | TP = 932"
-        )
-
-with col2:
-
-    if threshold_metrics is not None and not threshold_metrics.empty:
-
-        st.markdown("#### Locked Threshold Metrics")
-
-        st.dataframe(
-            threshold_metrics,
-            use_container_width=True,
-            hide_index=True,
-        )
-
-    else:
-        st.markdown("#### Known F1-threshold result")
-
-        st.metric("Locked F1 Threshold", "0.20")
-        st.metric("Precision", "≈ 41.35%")
-        st.metric("Recall", "≈ 41.50%")
-
-
-st.caption(
-    "At threshold 0.20, the final test contained 55,651 true "
-    "negatives, 1,322 false positives, 1,314 false negatives, and "
-    "932 true positives. The similar FP and FN counts reflect the "
-    "validation-derived F1 trade-off rather than an accuracy-maximizing "
-    "or safety-cost-based policy."
+classification_col, threshold_col = st.columns(
+    [1.2, 1],
+    gap="medium",
 )
 
+with classification_col:
+    with st.container(border=True):
+        st.markdown("#### Confusion matrix")
 
-# =====================================================================
-# 4. Temporal and geographic generalization
-# =====================================================================
-
-st.subheader("4. Generalization Evidence")
-
-col1, col2 = st.columns(2)
-
-with col1:
-
-    st.markdown("#### Performance by Future Year")
-
-    if year_metrics is not None and not year_metrics.empty:
-
-        year_col = find_column(
-            year_metrics,
-            ["INCIDENT_YEAR", "year"],
-        )
-
-        pr_col = find_column(
-            year_metrics,
-            ["pr_auc", "average_precision"],
-        )
-
-        if year_col is not None and pr_col is not None:
-
-            chart = (
-                year_metrics[[year_col, pr_col]]
-                .dropna()
-                .set_index(year_col)
-            )
-
-            st.line_chart(
-                chart,
+        if confusion_path is not None:
+            st.image(
+                str(confusion_path),
+                caption=(
+                    "Final-test confusion matrix at the locked "
+                    "validation-derived threshold."
+                ),
                 use_container_width=True,
             )
+        else:
+            st.write(
+                "TN = 55,651 · FP = 1,322 · "
+                "FN = 1,314 · TP = 932"
+            )
 
-        st.dataframe(
-            year_metrics,
-            use_container_width=True,
-            hide_index=True,
-        )
+with threshold_col:
+    with st.container(border=True):
+        st.markdown("#### Threshold metrics")
 
-    else:
-        display_artifact_warning(
-            "Final-test metrics by year"
-        )
-
-
-with col2:
-
-    st.markdown("#### Unseen-Airport Evaluation")
-
-    if unseen_metrics is not None and not unseen_metrics.empty:
-
-        st.dataframe(
-            unseen_metrics,
-            use_container_width=True,
-            hide_index=True,
-        )
-
-    else:
-
-        st.write(
-            "Notebook 06 retained explicit unseen-airport testing as "
-            "part of the model's geographic generalization audit."
-        )
-
+        if threshold_metrics is not None and not threshold_metrics.empty:
+            st.dataframe(
+                threshold_metrics,
+                use_container_width=True,
+                hide_index=True,
+            )
+        else:
+            st.metric("Locked F1 threshold", "0.20")
+            st.metric("Precision", "≈ 41.35%")
+            st.metric("Recall", "≈ 41.50%")
 
 st.caption(
-    "Performance at unseen airports is informative but should be "
-    "interpreted together with sample size, damage prevalence, and "
-    "historical support. Small unusual subsets can produce unstable "
-    "metrics."
+    "At threshold 0.20, false-positive and false-negative counts are similar. "
+    "That reflects the validation-derived F1 trade-off rather than an "
+    "accuracy-maximizing or safety-cost-based policy."
 )
 
 
-if support_metrics is not None and not support_metrics.empty:
+# =====================================================================
+# Generalization evidence
+# =====================================================================
 
+section_divider()
+
+section_header(
+    "Temporal and geographic generalization",
+    (
+        "The final model was checked across future years, unseen airports, "
+        "and different levels of historical support."
+    ),
+)
+
+generalization_col1, generalization_col2 = st.columns(
+    2,
+    gap="medium",
+)
+
+with generalization_col1:
+    with st.container(border=True):
+        st.markdown("#### Performance by future year")
+
+        if year_metrics is not None and not year_metrics.empty:
+
+            year_col = find_column(
+                year_metrics,
+                ["INCIDENT_YEAR", "year"],
+            )
+
+            year_pr_col = find_column(
+                year_metrics,
+                ["pr_auc", "average_precision"],
+            )
+
+            if year_col is not None and year_pr_col is not None:
+
+                year_chart = (
+                    year_metrics[
+                        [year_col, year_pr_col]
+                    ]
+                    .dropna()
+                    .copy()
+                )
+
+                fig = px.line(
+                    year_chart,
+                    x=year_col,
+                    y=year_pr_col,
+                    markers=True,
+                    labels={
+                        year_col: "Year",
+                        year_pr_col: "PR-AUC",
+                    },
+                )
+                fig = style_figure(
+                    fig,
+                    hovermode="x unified",
+                )
+
+                st.plotly_chart(
+                    fig,
+                    use_container_width=True,
+                    config=PLOTLY_CONFIG,
+                )
+
+            with st.expander(
+                "View yearly metrics",
+                expanded=False,
+            ):
+                st.dataframe(
+                    year_metrics,
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+        else:
+            display_artifact_warning(
+                "Final-test metrics by year"
+            )
+
+with generalization_col2:
+    with st.container(border=True):
+        st.markdown("#### Unseen-airport evaluation")
+
+        if unseen_metrics is not None and not unseen_metrics.empty:
+            st.dataframe(
+                unseen_metrics,
+                use_container_width=True,
+                hide_index=True,
+            )
+        else:
+            st.write(
+                "Notebook 06 retained explicit unseen-airport testing "
+                "as part of the geographic generalization audit."
+            )
+
+st.caption(
+    "Unseen-airport results should be read together with sample size, "
+    "damage prevalence, and support. Small or unusual subsets can produce "
+    "unstable metrics."
+)
+
+if support_metrics is not None and not support_metrics.empty:
     with st.expander(
         "Performance by historical support tier",
         expanded=False,
@@ -554,171 +608,210 @@ if support_metrics is not None and not support_metrics.empty:
 
 
 # =====================================================================
-# 5. Global explainability
+# Global explainability
 # =====================================================================
 
-st.subheader("5. What Drives the Damage Model?")
+section_divider()
 
-st.markdown(
-    """
-    Notebook 09 uses two complementary approaches:
-
-    - **Grouped TreeSHAP** asks where the fitted XGBoost model places
-      attribution across the original scenario variables.
-    - **Permutation importance** asks how much held-out PR-AUC is lost
-      when one original input is disrupted.
-
-    Importance describes model reliance, not causation.
-    """
+section_header(
+    "What drives the damage model?",
+    (
+        "Notebook 09 used complementary explainability methods to measure "
+        "model reliance on the original scenario variables."
+    ),
 )
-
-
-col1, col2 = st.columns(2)
-
-with col1:
-
-    st.markdown("#### Grouped SHAP Importance")
-
-    if grouped_shap is not None and not grouped_shap.empty:
-
-        feature_col = find_column(
-            grouped_shap,
-            ["feature"],
-        )
-
-        importance_col = find_column(
-            grouped_shap,
-            ["mean_abs_grouped_shap"],
-        )
-
-        if feature_col is not None and importance_col is not None:
-
-            shap_chart = (
-                grouped_shap[
-                    [feature_col, importance_col]
-                ]
-                .head(12)
-                .copy()
-            )
-
-            shap_chart[feature_col] = (
-                shap_chart[feature_col]
-                .map(format_feature_name)
-            )
-
-            shap_chart = shap_chart.set_index(feature_col)
-
-            st.bar_chart(
-                shap_chart,
-                use_container_width=True,
-            )
-
-        st.dataframe(
-            grouped_shap.head(12),
-            use_container_width=True,
-            hide_index=True,
-        )
-
-    else:
-
-        shap_image = existing_image(
-            NB09_DIR,
-            "09_shap_grouped_original_features.png",
-        )
-
-        if shap_image is not None:
-            st.image(
-                str(shap_image),
-                use_container_width=True,
-            )
-        else:
-            display_artifact_warning(
-                "Grouped SHAP importance"
-            )
-
-
-with col2:
-
-    st.markdown("#### Permutation Importance")
-
-    if permutation is not None and not permutation.empty:
-
-        feature_col = find_column(
-            permutation,
-            ["feature"],
-        )
-
-        importance_col = find_column(
-            permutation,
-            ["importance_mean_pr_auc_drop"],
-        )
-
-        if feature_col is not None and importance_col is not None:
-
-            perm_chart = (
-                permutation[
-                    [feature_col, importance_col]
-                ]
-                .head(12)
-                .copy()
-            )
-
-            perm_chart[feature_col] = (
-                perm_chart[feature_col]
-                .map(format_feature_name)
-            )
-
-            perm_chart = perm_chart.set_index(feature_col)
-
-            st.bar_chart(
-                perm_chart,
-                use_container_width=True,
-            )
-
-        st.dataframe(
-            permutation.head(12),
-            use_container_width=True,
-            hide_index=True,
-        )
-
-    else:
-
-        perm_image = existing_image(
-            NB09_DIR,
-            "09_permutation_importance_original_features.png",
-        )
-
-        if perm_image is not None:
-            st.image(
-                str(perm_image),
-                use_container_width=True,
-            )
-        else:
-            display_artifact_warning(
-                "Permutation importance"
-            )
-
 
 st.caption(
-    "A feature can rank differently under SHAP and permutation "
-    "importance because the methods answer different questions and "
-    "because correlated or redundant predictors can share information."
+    "Grouped TreeSHAP measures attribution within the fitted model. "
+    "Permutation importance measures held-out PR-AUC loss when an input "
+    "is disrupted. Importance describes model reliance, not causation."
+)
+
+explain_col1, explain_col2 = st.columns(
+    2,
+    gap="medium",
+)
+
+with explain_col1:
+    with st.container(border=True):
+        st.markdown("#### Grouped SHAP importance")
+
+        if grouped_shap is not None and not grouped_shap.empty:
+
+            feature_col = find_column(
+                grouped_shap,
+                ["feature"],
+            )
+
+            importance_col = find_column(
+                grouped_shap,
+                ["mean_abs_grouped_shap"],
+            )
+
+            if feature_col is not None and importance_col is not None:
+
+                shap_chart = (
+                    grouped_shap[
+                        [feature_col, importance_col]
+                    ]
+                    .head(12)
+                    .copy()
+                )
+
+                shap_chart[feature_col] = (
+                    shap_chart[feature_col]
+                    .map(format_feature_name)
+                )
+
+                shap_chart = shap_chart.sort_values(
+                    importance_col,
+                    ascending=True,
+                )
+
+                fig = px.bar(
+                    shap_chart,
+                    x=importance_col,
+                    y=feature_col,
+                    orientation="h",
+                    labels={
+                        importance_col: "Mean |grouped SHAP|",
+                        feature_col: "Feature",
+                    },
+                )
+                fig = style_figure(fig)
+
+                st.plotly_chart(
+                    fig,
+                    use_container_width=True,
+                    config=PLOTLY_CONFIG,
+                )
+
+            with st.expander(
+                "View grouped SHAP table",
+                expanded=False,
+            ):
+                st.dataframe(
+                    grouped_shap.head(12),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+        else:
+            shap_image = existing_image(
+                NB09_DIR,
+                "09_shap_grouped_original_features.png",
+            )
+
+            if shap_image is not None:
+                st.image(
+                    str(shap_image),
+                    use_container_width=True,
+                )
+            else:
+                display_artifact_warning(
+                    "Grouped SHAP importance"
+                )
+
+with explain_col2:
+    with st.container(border=True):
+        st.markdown("#### Permutation importance")
+
+        if permutation is not None and not permutation.empty:
+
+            feature_col = find_column(
+                permutation,
+                ["feature"],
+            )
+
+            importance_col = find_column(
+                permutation,
+                ["importance_mean_pr_auc_drop"],
+            )
+
+            if feature_col is not None and importance_col is not None:
+
+                perm_chart = (
+                    permutation[
+                        [feature_col, importance_col]
+                    ]
+                    .head(12)
+                    .copy()
+                )
+
+                perm_chart[feature_col] = (
+                    perm_chart[feature_col]
+                    .map(format_feature_name)
+                )
+
+                perm_chart = perm_chart.sort_values(
+                    importance_col,
+                    ascending=True,
+                )
+
+                fig = px.bar(
+                    perm_chart,
+                    x=importance_col,
+                    y=feature_col,
+                    orientation="h",
+                    labels={
+                        importance_col: "Mean PR-AUC drop",
+                        feature_col: "Feature",
+                    },
+                )
+                fig = style_figure(fig)
+
+                st.plotly_chart(
+                    fig,
+                    use_container_width=True,
+                    config=PLOTLY_CONFIG,
+                )
+
+            with st.expander(
+                "View permutation table",
+                expanded=False,
+            ):
+                st.dataframe(
+                    permutation.head(12),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+        else:
+            perm_image = existing_image(
+                NB09_DIR,
+                "09_permutation_importance_original_features.png",
+            )
+
+            if perm_image is not None:
+                st.image(
+                    str(perm_image),
+                    use_container_width=True,
+                )
+            else:
+                display_artifact_warning(
+                    "Permutation importance"
+                )
+
+st.caption(
+    "A feature can rank differently under SHAP and permutation importance "
+    "because the methods answer different questions and correlated or "
+    "redundant predictors can share information."
 )
 
 
 # =====================================================================
-# 6. Directional interpretation
+# Directional interpretation
 # =====================================================================
 
-st.subheader("6. Direction of Selected Model Effects")
+section_divider()
 
-st.markdown(
-    """
-    Global importance says **how influential** a variable is but not
-    which values move the fitted damage score upward or downward.
-    Notebook 09 therefore created targeted directional SHAP summaries
-    for key research variables.
-    """
+section_header(
+    "Direction of selected model effects",
+    (
+        "Global importance indicates how influential a feature is; "
+        "directional SHAP views show which values tend to move the fitted "
+        "damage score upward or downward."
+    ),
 )
 
 direction_options = {
@@ -755,140 +848,152 @@ if available_direction_options:
     )
 
 else:
-
     st.info(
         "Directional SHAP figures were not found in the expected "
         "Notebook 09 output directory."
     )
 
-
-st.markdown(
-    """
-    The executed Notebook 09 interpretation found particularly clear
-    directional behavior for wildlife size: larger wildlife generally
-    moves the fitted damage score upward while small wildlife moves it
-    downward. These are conditional model effects and must not be
-    described as causal physical effects.
-    """
+st.caption(
+    "Notebook 09 found particularly clear directional behavior for wildlife "
+    "size: larger wildlife generally moved the fitted damage score upward "
+    "while small wildlife moved it downward. These are conditional model "
+    "effects and should not be described as causal physical effects."
 )
 
 
 # =====================================================================
-# 7. Airport dependence
+# Airport-dependence audit
 # =====================================================================
 
-st.subheader("7. Airport Dependence Audit")
+section_divider()
 
-st.markdown(
-    """
-    Exact airport identity was deliberately audited because an
-    airport-aware model can improve fit while also creating a risk of
-    memorizing persistent local patterns. The dashboard therefore
-    presents airport reliance as a model limitation as well as a source
-    of predictive information.
-    """
+section_header(
+    "Airport dependence audit",
+    (
+        "Exact airport identity can add predictive information, but it can "
+        "also encourage the model to rely on persistent local patterns."
+    ),
 )
 
-if airport_dependence is not None and not airport_dependence.empty:
-
-    st.dataframe(
-        airport_dependence,
-        use_container_width=True,
-        hide_index=True,
-    )
-
-airport_comparison_path = existing_image(
-    NB09_DIR,
-    "09_shap_dedicated_seen_vs_unseen_airports.png",
+airport_text_col, airport_visual_col = st.columns(
+    [1, 2],
+    gap="medium",
 )
 
-if airport_comparison_path is None:
+with airport_text_col:
+    if airport_dependence is not None and not airport_dependence.empty:
+        st.dataframe(
+            airport_dependence,
+            use_container_width=True,
+            hide_index=True,
+        )
+    else:
+        st.info(
+            "Airport-dependence summary data were not found."
+        )
+
+with airport_visual_col:
     airport_comparison_path = existing_image(
         NB09_DIR,
-        "09_shap_seen_vs_unseen_airports.png",
+        "09_shap_dedicated_seen_vs_unseen_airports.png",
     )
 
-if airport_comparison_path is not None:
+    if airport_comparison_path is None:
+        airport_comparison_path = existing_image(
+            NB09_DIR,
+            "09_shap_seen_vs_unseen_airports.png",
+        )
 
-    st.image(
-        str(airport_comparison_path),
-        caption=(
-            "Notebook 09 geographic explanation comparison."
-        ),
-        use_container_width=True,
-    )
-
+    if airport_comparison_path is not None:
+        st.image(
+            str(airport_comparison_path),
+            caption=(
+                "Notebook 09 geographic explanation comparison."
+            ),
+            use_container_width=True,
+        )
+    else:
+        st.info(
+            "Seen-versus-unseen airport explanation figure was not found."
+        )
 
 st.caption(
-    "Evidence from unseen airports is useful but does not prove "
-    "universal geographic generalization. This is one reason the "
-    "simulation separately checks historical scenario support."
+    "Unseen-airport evidence is useful but does not establish universal "
+    "geographic generalization. This is one reason the simulator separately "
+    "checks exact historical scenario support."
 )
 
 
 # =====================================================================
-# 8. Secondary probability systems
+# Downstream probability systems
 # =====================================================================
 
-st.subheader("8. Downstream Severity and Component Systems")
+section_divider()
 
-st.markdown(
-    """
-    The binary damage model is the primary probability system.
-    Severity and component models are downstream conditional systems
-    and are used only because their own Notebook 07/08 decision gates
-    permitted them.
-    """
+section_header(
+    "Downstream severity and component systems",
+    (
+        "Severity and component models are conditional downstream systems, "
+        "not replacements for the primary damage-probability model."
+    ),
 )
 
 if secondary_status is not None and not secondary_status.empty:
-
     st.dataframe(
         secondary_status,
         use_container_width=True,
         hide_index=True,
     )
-
 else:
-
-    st.markdown(
-        """
-        **Severity:** simplified known-severity binary system,
-        S + D versus M, conditional on a reported damaging strike with
-        usable severity information.
-
-        **Retained components:** engine damage, wing/rotor damage,
-        forward-cockpit damage, landing-gear damage, and propeller
-        damage. These component probabilities are conditional on
-        aircraft damage and are not mutually exclusive.
-        """
+    downstream_col1, downstream_col2 = st.columns(
+        2,
+        gap="medium",
     )
 
+    with downstream_col1:
+        with st.container(border=True):
+            st.markdown("#### Severity")
+            st.write(
+                "Simplified known-severity binary system: "
+                "S + D versus M, conditional on a reported damaging "
+                "strike with usable severity information."
+            )
+
+    with downstream_col2:
+        with st.container(border=True):
+            st.markdown("#### Components")
+            st.write(
+                "Retained systems include engine, wing/rotor, "
+                "forward-cockpit, landing-gear, and propeller damage. "
+                "Component outcomes are not mutually exclusive."
+            )
+
 
 # =====================================================================
-# 9. Monte Carlo trust decision
+# Suitability for simulation
 # =====================================================================
 
-st.subheader("9. Suitability for Simulation")
+section_divider()
+
+section_header(
+    "Suitability for simulation",
+    (
+        "Notebook 06 explicitly evaluated whether the calibrated damage "
+        "probability system was suitable for downstream Monte Carlo use."
+    ),
+)
 
 st.success("Notebook 06 decision: PASS WITH WARNINGS")
 
-st.markdown(
-    """
-    The calibrated damage-probability system was retained for
-    scenario-based Monte Carlo simulation because its probability
-    quality and future-period behavior were considered adequate for
-    the project's operational purpose.
-
-    The warning remains important: unseen airports, rare groups,
-    low-support combinations, reporting changes, and future
-    distribution shift should not be presented with the same confidence
-    as well-supported historical scenarios.
-    """
+st.write(
+    "The calibrated system was retained because its probability quality "
+    "and future-period behavior were considered adequate for the project's "
+    "scenario-based operational purpose. Confidence should still be reduced "
+    "for unseen airports, rare groups, low-support combinations, reporting "
+    "changes, and future distribution shift."
 )
 
 if trust_evidence is not None and not trust_evidence.empty:
-
     with st.expander(
         "Notebook 06 Monte Carlo decision evidence",
         expanded=False,
@@ -901,14 +1006,15 @@ if trust_evidence is not None and not trust_evidence.empty:
 
 
 # =====================================================================
-# 10. Interpretation boundaries
+# Interpretation boundaries
 # =====================================================================
+
+section_divider()
 
 with st.expander(
     "How to interpret this page",
     expanded=False,
 ):
-
     st.markdown(
         """
         - The primary probability is **P(reported aircraft damage |

@@ -1,23 +1,22 @@
+"""Interactive historical wildlife-strike explorer."""
+
+from __future__ import annotations
+
 import pandas as pd
+import plotly.express as px
 import streamlit as st
 
+from dashboard.components.charts import apply_chart_layout
+from dashboard.components.layout import (
+    page_header,
+    section_divider,
+    section_header,
+)
+from dashboard.components.metrics import metric_row
 from src.data.loaders import load_historical_data
-
-
-# =====================================================================
-# Page configuration
-# =====================================================================
-
-st.title("Historical Wildlife Strike Explorer")
-
-st.markdown(
-    """
-    Explore reported wildlife strikes from the project's 1990–2024
-    analytical dataset. All statistics on this page are **historical
-    observations among reported strikes**; they are not modeled risk
-    probabilities and should not be interpreted as exposure-adjusted
-    airport or flight risk.
-    """
+from src.utils.labels import (
+    build_airport_labels,
+    format_aircraft_class
 )
 
 
@@ -25,7 +24,7 @@ st.markdown(
 # Helpers
 # =====================================================================
 
-def clean_values(data, column):
+def clean_values(data: pd.DataFrame, column: str) -> list[str]:
     """Return sorted non-null, non-empty string values."""
     if column not in data.columns:
         return []
@@ -40,7 +39,11 @@ def clean_values(data, column):
     return sorted(values.unique().tolist())
 
 
-def apply_multiselect_filter(data, column, selected):
+def apply_multiselect_filter(
+    data: pd.DataFrame,
+    column: str,
+    selected: list[str],
+) -> pd.DataFrame:
     """Filter only when one or more values are explicitly selected."""
     if not selected or column not in data.columns:
         return data
@@ -49,14 +52,15 @@ def apply_multiselect_filter(data, column, selected):
     return data.loc[normalized.isin(selected)]
 
 
-def safe_rate(numerator, denominator):
+def safe_rate(numerator: float, denominator: float) -> float:
     """Return a valid proportion when the denominator is positive."""
     if denominator <= 0:
         return 0.0
     return numerator / denominator
 
 
-def format_component_name(column):
+def format_component_name(column: str) -> str:
+    """Return presentation-friendly component labels."""
     labels = {
         "DAM_RAD": "Radome",
         "DAM_WINDSHLD": "Windshield",
@@ -76,12 +80,47 @@ def format_component_name(column):
     return labels.get(column, column)
 
 
+def style_figure(fig, *, hovermode: str = "closest"):
+    """Apply the shared Plotly layout and chart-specific hover behavior."""
+    fig = apply_chart_layout(fig)
+    fig.update_layout(hovermode=hovermode)
+    return fig
+
+
+PLOTLY_CONFIG = {
+    "displaylogo": False,
+    "responsive": True,
+}
+
+
+
+# =====================================================================
+# Page introduction
+# =====================================================================
+
+page_header(
+    "Historical Wildlife Strike Explorer",
+    (
+        "Explore reported wildlife strikes from the project's 1990–2024 "
+        "analytical dataset and examine how historical patterns change "
+        "under different operational and wildlife filters."
+    ),
+)
+
+st.caption(
+    "All statistics on this page are historical observations among "
+    "reported strikes. They are not model-generated probabilities or "
+    "exposure-adjusted flight risk."
+)
+
+
 # =====================================================================
 # Load historical artifact
 # =====================================================================
 
 try:
     historical_data = load_historical_data()
+
 except Exception as exc:
     st.error(
         "Historical dashboard data could not be loaded. "
@@ -94,12 +133,21 @@ if historical_data.empty:
     st.warning("The historical explorer artifact contains no records.")
     st.stop()
 
+airport_labels = build_airport_labels(historical_data)
 
 # =====================================================================
 # Filters
 # =====================================================================
 
-st.subheader("1. Filter Historical Records")
+section_divider()
+
+section_header(
+    "Filter historical records",
+    (
+        "Start with time and operational context, then open the additional "
+        "filters only when a more specific comparison is needed."
+    ),
+)
 
 year_series = pd.to_numeric(
     historical_data["INCIDENT_YEAR"],
@@ -116,49 +164,69 @@ year_range = st.slider(
     value=(min_year, max_year),
 )
 
-with st.expander("Additional filters", expanded=True):
+filter_col1, filter_col2 = st.columns(
+    2,
+    gap="medium",
+)
 
-    col1, col2 = st.columns(2)
+with filter_col1:
+    faa_regions = st.multiselect(
+        "FAA region",
+        options=clean_values(historical_data, "FAAREGION"),
+    )
 
-    with col1:
-        faa_regions = st.multiselect(
-            "FAA Region",
-            options=clean_values(historical_data, "FAAREGION"),
-        )
+    seasons = st.multiselect(
+        "Season",
+        options=clean_values(historical_data, "SEASON"),
+    )
 
-        airports = st.multiselect(
-            "Airport ID",
-            options=clean_values(historical_data, "AIRPORT_ID"),
-        )
+with filter_col2:
+    airports = st.multiselect(
+        "Airport",
+        options=clean_values(
+            historical_data,
+            "AIRPORT_ID",
+        ),
+        format_func=lambda airport_id: airport_labels.get(
+            airport_id,
+            airport_id,
+        ),
+    )
 
+    phases = st.multiselect(
+        "Phase of flight",
+        options=clean_values(historical_data, "PHASE_OF_FLIGHT"),
+    )
+
+with st.expander("Aircraft and wildlife filters", expanded=False):
+    aircraft_col, wildlife_col = st.columns(
+        2,
+        gap="medium",
+    )
+
+    with aircraft_col:
         aircraft_classes = st.multiselect(
-            "Aircraft Class",
-            options=clean_values(historical_data, "AC_CLASS"),
+            "Aircraft class",
+            options=clean_values(
+                historical_data,
+                "AC_CLASS",
+            ),
+            format_func=format_aircraft_class,
         )
 
         mass_groups = st.multiselect(
-            "Aircraft Mass Group",
+            "Aircraft mass group",
             options=clean_values(historical_data, "AC_MASS_GROUP"),
         )
 
-    with col2:
-        seasons = st.multiselect(
-            "Season",
-            options=clean_values(historical_data, "SEASON"),
-        )
-
-        phases = st.multiselect(
-            "Phase of Flight",
-            options=clean_values(historical_data, "PHASE_OF_FLIGHT"),
-        )
-
+    with wildlife_col:
         wildlife_types = st.multiselect(
-            "Wildlife Type",
+            "Wildlife type",
             options=clean_values(historical_data, "WILDLIFE_TYPE"),
         )
 
         wildlife_sizes = st.multiselect(
-            "Wildlife Size",
+            "Wildlife size",
             options=clean_values(historical_data, "SIZE"),
         )
 
@@ -169,10 +237,10 @@ filtered = historical_data.loc[
 
 filtered = apply_multiselect_filter(filtered, "FAAREGION", faa_regions)
 filtered = apply_multiselect_filter(filtered, "AIRPORT_ID", airports)
-filtered = apply_multiselect_filter(filtered, "AC_CLASS", aircraft_classes)
-filtered = apply_multiselect_filter(filtered, "AC_MASS_GROUP", mass_groups)
 filtered = apply_multiselect_filter(filtered, "SEASON", seasons)
 filtered = apply_multiselect_filter(filtered, "PHASE_OF_FLIGHT", phases)
+filtered = apply_multiselect_filter(filtered, "AC_CLASS", aircraft_classes)
+filtered = apply_multiselect_filter(filtered, "AC_MASS_GROUP", mass_groups)
 filtered = apply_multiselect_filter(filtered, "WILDLIFE_TYPE", wildlife_types)
 filtered = apply_multiselect_filter(filtered, "SIZE", wildlife_sizes)
 
@@ -189,7 +257,12 @@ if filtered.empty:
 # Filtered KPI summary
 # =====================================================================
 
-st.subheader("2. Filtered Historical Summary")
+section_divider()
+
+section_header(
+    "Filtered historical summary",
+    "These metrics update with the selections above.",
+)
 
 n_records = len(filtered)
 
@@ -201,52 +274,74 @@ damage = pd.to_numeric(
 n_damaged = int(damage.sum())
 damage_rate = safe_rate(n_damaged, n_records)
 
-n_airports = (
+airport_values = (
     filtered["AIRPORT_ID"]
     .dropna()
     .astype(str)
     .str.strip()
 )
-n_airports = int(n_airports[n_airports != ""].nunique())
+n_airports = int(
+    airport_values[airport_values != ""].nunique()
+)
 
-n_species = (
+species_values = (
     filtered["SPECIES"]
     .dropna()
     .astype(str)
     .str.strip()
 )
-n_species = int(n_species[n_species != ""].nunique())
+n_species = int(
+    species_values[species_values != ""].nunique()
+)
 
-col1, col2, col3, col4, col5 = st.columns(5)
-
-with col1:
-    st.metric("Reported Strikes", f"{n_records:,}")
-
-with col2:
-    st.metric("Damaged Strikes", f"{n_damaged:,}")
-
-with col3:
-    st.metric("Observed Damage Rate", f"{damage_rate:.2%}")
-
-with col4:
-    st.metric("Airports Represented", f"{n_airports:,}")
-
-with col5:
-    st.metric("Species Represented", f"{n_species:,}")
-
+metric_row(
+    [
+        (
+            "Reported strikes",
+            f"{n_records:,}",
+            "Reported wildlife-strike records matching the current filters.",
+        ),
+        (
+            "Damaging strikes",
+            f"{n_damaged:,}",
+            "Filtered records with indicated aircraft damage.",
+        ),
+        (
+            "Observed damage rate",
+            f"{damage_rate:.2%}",
+            (
+                "Share of filtered reported strikes with indicated damage. "
+                "This is not a probability per flight."
+            ),
+        ),
+        (
+            "Airports represented",
+            f"{n_airports:,}",
+            "Distinct airports represented by the current filtered records.",
+        ),
+    ]
+)
 
 st.caption(
-    "The damage rate is the proportion of filtered reported strikes "
-    "with indicated aircraft damage. It is not a strike probability "
-    "per flight because flight-exposure denominators are unavailable."
+    f"{n_species:,} species/categories are represented in the current "
+    "selection. The observed damage rate is conditional on reported strikes; "
+    "flight-exposure denominators are unavailable."
 )
 
 
 # =====================================================================
-# Time trends
+# Historical trends
 # =====================================================================
 
-st.subheader("3. Historical Trends")
+section_divider()
+
+section_header(
+    "Historical trends",
+    (
+        "Compare reporting volume with the observed share of reported "
+        "strikes associated with aircraft damage."
+    ),
+)
 
 trend = (
     filtered.assign(
@@ -268,44 +363,71 @@ trend = (
 )
 
 trend["Observed_Damage_Rate"] = (
-    trend["Damaged_Strikes"] / trend["Reported_Strikes"]
+    trend["Damaged_Strikes"] / trend["Reported_Strikes"] * 100
 )
 
 trend["INCIDENT_YEAR"] = trend["INCIDENT_YEAR"].astype(int)
 
+trend_col1, trend_col2 = st.columns(
+    2,
+    gap="medium",
+)
 
-col1, col2 = st.columns(2)
+with trend_col1:
+    with st.container(border=True):
+        st.markdown("#### Reported strikes by year")
 
-with col1:
-    st.markdown("#### Reported Strikes by Year")
+        strike_fig = px.line(
+            trend,
+            x="INCIDENT_YEAR",
+            y="Reported_Strikes",
+            labels={
+                "INCIDENT_YEAR": "Year",
+                "Reported_Strikes": "Reported strikes",
+            },
+        )
+        strike_fig = style_figure(
+            strike_fig,
+            hovermode="x unified",
+        )
 
-    strike_chart = (
-        trend[["INCIDENT_YEAR", "Reported_Strikes"]]
-        .set_index("INCIDENT_YEAR")
-    )
+        st.plotly_chart(
+            strike_fig,
+            use_container_width=True,
+            config=PLOTLY_CONFIG,
+        )
 
-    st.line_chart(
-        strike_chart,
-        use_container_width=True,
-    )
+with trend_col2:
+    with st.container(border=True):
+        st.markdown("#### Observed damage rate by year")
 
-with col2:
-    st.markdown("#### Observed Damage Rate by Year")
+        rate_fig = px.line(
+            trend,
+            x="INCIDENT_YEAR",
+            y="Observed_Damage_Rate",
+            labels={
+                "INCIDENT_YEAR": "Year",
+                "Observed_Damage_Rate": "Damage rate (%)",
+            },
+        )
+        rate_fig.update_traces(
+            hovertemplate="%{y:.2f}%<extra></extra>",
+        )
+        rate_fig = style_figure(
+            rate_fig,
+            hovermode="x unified",
+        )
 
-    rate_chart = (
-        trend[["INCIDENT_YEAR", "Observed_Damage_Rate"]]
-        .set_index("INCIDENT_YEAR")
-        .mul(100)
-    )
-
-    st.line_chart(
-        rate_chart,
-        use_container_width=True,
-    )
+        st.plotly_chart(
+            rate_fig,
+            use_container_width=True,
+            config=PLOTLY_CONFIG,
+        )
 
 st.caption(
-    "Changes over time may reflect both operational conditions and "
-    "changes in wildlife-strike reporting practices or data completeness."
+    "Changes over time can reflect operational conditions, reporting "
+    "practices, and data completeness. The two charts should therefore "
+    "be interpreted together rather than as exposure-adjusted risk."
 )
 
 
@@ -313,158 +435,275 @@ st.caption(
 # Operational and wildlife patterns
 # =====================================================================
 
-st.subheader("4. Operational and Wildlife Patterns")
+section_divider()
 
-col1, col2 = st.columns(2)
+section_header(
+    "Operational and wildlife patterns",
+    (
+        "Compare where reported strikes occur in the flight profile and "
+        "how observed damage differs across wildlife-size categories."
+    ),
+)
 
-with col1:
-    st.markdown("#### Phase of Flight")
+pattern_col1, pattern_col2 = st.columns(
+    2,
+    gap="medium",
+)
 
-    phase_summary = (
-        filtered.assign(
-            INDICATED_DAMAGE=pd.to_numeric(
-                filtered["INDICATED_DAMAGE"],
-                errors="coerce",
-            ).fillna(0)
+with pattern_col1:
+    with st.container(border=True):
+        st.markdown("#### Phase of flight")
+
+        phase_summary = (
+            filtered.assign(
+                INDICATED_DAMAGE=pd.to_numeric(
+                    filtered["INDICATED_DAMAGE"],
+                    errors="coerce",
+                ).fillna(0)
+            )
+            .dropna(subset=["PHASE_OF_FLIGHT"])
+            .groupby("PHASE_OF_FLIGHT", as_index=False)
+            .agg(
+                Reported_Strikes=("INDICATED_DAMAGE", "size"),
+                Damaged_Strikes=("INDICATED_DAMAGE", "sum"),
+            )
         )
-        .dropna(subset=["PHASE_OF_FLIGHT"])
-        .groupby("PHASE_OF_FLIGHT", as_index=False)
-        .agg(
-            Reported_Strikes=("INDICATED_DAMAGE", "size"),
-            Damaged_Strikes=("INDICATED_DAMAGE", "sum"),
+
+        phase_display = (
+            phase_summary
+            .sort_values("Reported_Strikes", ascending=True)
+            .tail(12)
         )
-    )
 
-    phase_summary["Observed Damage Rate"] = (
-        phase_summary["Damaged_Strikes"]
-        / phase_summary["Reported_Strikes"]
-    )
-
-    phase_display = (
-        phase_summary
-        .sort_values("Reported_Strikes", ascending=False)
-        .head(12)
-        .set_index("PHASE_OF_FLIGHT")[["Reported_Strikes"]]
-    )
-
-    st.bar_chart(
-        phase_display,
-        use_container_width=True,
-    )
-
-with col2:
-    st.markdown("#### Wildlife Size")
-
-    size_summary = (
-        filtered.assign(
-            INDICATED_DAMAGE=pd.to_numeric(
-                filtered["INDICATED_DAMAGE"],
-                errors="coerce",
-            ).fillna(0)
+        phase_fig = px.bar(
+            phase_display,
+            x="Reported_Strikes",
+            y="PHASE_OF_FLIGHT",
+            orientation="h",
+            labels={
+                "Reported_Strikes": "Reported strikes",
+                "PHASE_OF_FLIGHT": "Phase of flight",
+            },
         )
-        .dropna(subset=["SIZE"])
-        .groupby("SIZE", as_index=False)
-        .agg(
-            Reported_Strikes=("INDICATED_DAMAGE", "size"),
-            Damaged_Strikes=("INDICATED_DAMAGE", "sum"),
+        phase_fig = style_figure(phase_fig)
+
+        st.plotly_chart(
+            phase_fig,
+            use_container_width=True,
+            config=PLOTLY_CONFIG,
         )
-    )
 
-    size_summary["Observed Damage Rate"] = (
-        size_summary["Damaged_Strikes"]
-        / size_summary["Reported_Strikes"]
-    )
+with pattern_col2:
+    with st.container(border=True):
+        st.markdown("#### Wildlife size")
 
-    size_chart = (
-        size_summary
-        .sort_values("Observed Damage Rate", ascending=False)
-        .set_index("SIZE")[["Observed Damage Rate"]]
-        .mul(100)
-    )
+        size_summary = (
+            filtered.assign(
+                INDICATED_DAMAGE=pd.to_numeric(
+                    filtered["INDICATED_DAMAGE"],
+                    errors="coerce",
+                ).fillna(0)
+            )
+            .dropna(subset=["SIZE"])
+            .groupby("SIZE", as_index=False)
+            .agg(
+                Reported_Strikes=("INDICATED_DAMAGE", "size"),
+                Damaged_Strikes=("INDICATED_DAMAGE", "sum"),
+            )
+        )
 
-    st.bar_chart(
-        size_chart,
-        use_container_width=True,
-    )
+        size_summary["Observed_Damage_Rate"] = (
+            size_summary["Damaged_Strikes"]
+            / size_summary["Reported_Strikes"]
+            * 100
+        )
+
+        size_summary = size_summary.sort_values(
+            "Observed_Damage_Rate",
+            ascending=False,
+        )
+
+        size_fig = px.bar(
+            size_summary,
+            x="SIZE",
+            y="Observed_Damage_Rate",
+            labels={
+                "SIZE": "Wildlife size",
+                "Observed_Damage_Rate": "Observed damage rate (%)",
+            },
+        )
+        size_fig.update_traces(
+            hovertemplate="%{x}<br>%{y:.2f}%<extra></extra>",
+        )
+        size_fig = style_figure(size_fig)
+
+        st.plotly_chart(
+            size_fig,
+            use_container_width=True,
+            config=PLOTLY_CONFIG,
+        )
 
 
 # =====================================================================
-# Top wildlife and airports
+# Most frequently reported wildlife and airports
 # =====================================================================
 
-st.subheader("5. Most Frequently Reported Wildlife and Airports")
+section_divider()
 
-col1, col2 = st.columns(2)
+section_header(
+    "Most frequently reported wildlife and airports",
+    (
+        "These rankings describe report volume only. They do not account "
+        "for differences in traffic or other exposure."
+    ),
+)
 
-with col1:
-    species_counts = (
-        filtered["SPECIES"]
-        .dropna()
-        .astype(str)
-        .str.strip()
-    )
-    species_counts = species_counts[species_counts != ""]
-    species_counts = (
-        species_counts
-        .value_counts()
-        .head(15)
-        .rename("Reported Strikes")
-        .to_frame()
-    )
+ranking_col1, ranking_col2 = st.columns(
+    2,
+    gap="medium",
+)
 
-    st.markdown("#### Top Species")
-    st.bar_chart(
-        species_counts,
-        use_container_width=True,
-    )
+with ranking_col1:
+    with st.container(border=True):
+        st.markdown("#### Top species")
 
-with col2:
-    airport_labels = filtered.copy()
+        species_counts = (
+            filtered["SPECIES"]
+            .dropna()
+            .astype(str)
+            .str.strip()
+        )
+        species_counts = species_counts[
+            species_counts != ""
+        ]
 
-    airport_labels["Airport Label"] = (
-        airport_labels["AIRPORT_ID"]
-        .astype("string")
-        .fillna("")
-        .str.strip()
-    )
+        species_counts = (
+            species_counts
+            .value_counts()
+            .head(15)
+            .rename_axis("Species")
+            .reset_index(name="Reported_Strikes")
+            .sort_values("Reported_Strikes", ascending=True)
+        )
 
-    if "AIRPORT" in airport_labels.columns:
-        airport_name = (
-            airport_labels["AIRPORT"]
+        species_fig = px.bar(
+            species_counts,
+            x="Reported_Strikes",
+            y="Species",
+            orientation="h",
+            labels={
+                "Reported_Strikes": "Reported strikes",
+                "Species": "Species",
+            },
+        )
+        species_fig = style_figure(species_fig)
+
+        st.plotly_chart(
+            species_fig,
+            use_container_width=True,
+            config=PLOTLY_CONFIG,
+        )
+
+with ranking_col2:
+    with st.container(border=True):
+        st.markdown("#### Top airports by reports")
+
+        # Keep the chart axis compact by using only AIRPORT_ID.
+        # The full airport name is retained for the hover tooltip.
+        airport_rank = filtered[
+            ["AIRPORT_ID", "AIRPORT"]
+        ].copy()
+
+        airport_rank["AIRPORT_ID"] = (
+            airport_rank["AIRPORT_ID"]
             .astype("string")
             .fillna("")
             .str.strip()
         )
 
-        airport_labels["Airport Label"] = airport_labels[
-            "Airport Label"
-        ].where(
-            airport_name.eq(""),
-            airport_labels["Airport Label"]
-            + " — "
-            + airport_name,
+        airport_rank["AIRPORT"] = (
+            airport_rank["AIRPORT"]
+            .astype("string")
+            .fillna("")
+            .str.strip()
         )
 
-    airport_counts = (
-        airport_labels["Airport Label"]
-        .replace("", pd.NA)
-        .dropna()
-        .value_counts()
-        .head(15)
-        .rename("Reported Strikes")
-        .to_frame()
-    )
+        airport_rank = airport_rank[
+            airport_rank["AIRPORT_ID"] != ""
+        ]
 
-    st.markdown("#### Top Airports by Reports")
-    st.bar_chart(
-        airport_counts,
-        use_container_width=True,
-    )
+        # Determine a representative airport name for each airport ID.
+        airport_names = (
+            airport_rank[
+                airport_rank["AIRPORT"] != ""
+            ]
+            .groupby("AIRPORT_ID")["AIRPORT"]
+            .agg(
+                lambda values: (
+                    values.mode().iloc[0]
+                    if not values.mode().empty
+                    else values.iloc[0]
+                )
+            )
+        )
+
+        # Count reports by airport ID.
+        airport_counts = (
+            airport_rank["AIRPORT_ID"]
+            .value_counts()
+            .head(15)
+            .rename_axis("Airport ID")
+            .reset_index(name="Reported_Strikes")
+        )
+
+        # Attach the readable name only for hover information.
+        airport_counts["Airport Name"] = (
+            airport_counts["Airport ID"]
+            .map(airport_names)
+            .fillna("Name unavailable")
+        )
+
+        # Ascending order makes the largest horizontal bar appear at top.
+        airport_counts = airport_counts.sort_values(
+            "Reported_Strikes",
+            ascending=True,
+        )
+
+        airport_fig = px.bar(
+            airport_counts,
+            x="Reported_Strikes",
+            y="Airport ID",
+            orientation="h",
+            custom_data=["Airport Name"],
+            labels={
+                "Reported_Strikes": "Reported strikes",
+                "Airport ID": "Airport",
+            },
+        )
+
+        airport_fig.update_traces(
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                "%{customdata[0]}<br>"
+                "Reported strikes: %{x:,}"
+                "<extra></extra>"
+            ),
+        )
+
+        airport_fig = style_figure(
+            airport_fig
+        )
+
+        st.plotly_chart(
+            airport_fig,
+            use_container_width=True,
+            config=PLOTLY_CONFIG,
+        )
 
 st.caption(
-    "High report counts do not necessarily mean an airport or species "
-    "has higher underlying strike risk. Exposure volume is not available "
-    "in this dataset."
+    "High report counts do not necessarily indicate higher underlying "
+    "strike risk because airport and flight-exposure denominators are "
+    "not available in this analytical dataset."
 )
 
 
@@ -472,7 +711,15 @@ st.caption(
 # Damage severity
 # =====================================================================
 
-st.subheader("6. Damage Severity Among Damaged Strikes")
+section_divider()
+
+section_header(
+    "Damage severity among damaged strikes",
+    (
+        "This section is conditional on aircraft damage having already "
+        "been indicated in the historical record."
+    ),
+)
 
 damaged_records = filtered.loc[
     pd.to_numeric(
@@ -501,22 +748,35 @@ else:
             "Damage occurred in the filtered records, but no usable "
             "damage-level values are available."
         )
+
     else:
         severity_counts = (
             severity
             .value_counts()
-            .rename("Damaged Strikes")
-            .to_frame()
+            .rename_axis("Damage level")
+            .reset_index(name="Damaged_Strikes")
         )
 
-        st.bar_chart(
+        severity_fig = px.bar(
             severity_counts,
+            x="Damage level",
+            y="Damaged_Strikes",
+            labels={
+                "Damage level": "Damage level",
+                "Damaged_Strikes": "Damaged strikes",
+            },
+        )
+        severity_fig = style_figure(severity_fig)
+
+        st.plotly_chart(
+            severity_fig,
             use_container_width=True,
+            config=PLOTLY_CONFIG,
         )
 
         st.caption(
             "Severity is shown only among records where aircraft damage "
-            "was indicated. It is therefore conditional on damage."
+            "was indicated and is therefore conditional on damage."
         )
 
 
@@ -524,7 +784,15 @@ else:
 # Component damage
 # =====================================================================
 
-st.subheader("7. Reported Component Damage")
+section_divider()
+
+section_header(
+    "Reported component damage",
+    (
+        "Component indicators describe which aircraft areas were reported "
+        "as damaged among the filtered damaged-strike records."
+    ),
+)
 
 component_columns = [
     "DAM_RAD",
@@ -572,9 +840,12 @@ else:
             {
                 "Component": format_component_name(column),
                 "Damaged Records": count,
-                "Rate Among Damaged Strikes": safe_rate(
-                    count,
-                    len(damaged_records),
+                "Rate Among Damaged Strikes": (
+                    safe_rate(
+                        count,
+                        len(damaged_records),
+                    )
+                    * 100
                 ),
             }
         )
@@ -582,35 +853,48 @@ else:
     component_df = (
         pd.DataFrame(component_rows)
         .sort_values(
-            "Damaged Records",
-            ascending=False,
+            "Rate Among Damaged Strikes",
+            ascending=True,
         )
     )
 
-    component_chart = (
-        component_df[
-            ["Component", "Rate Among Damaged Strikes"]
-        ]
-        .set_index("Component")
-        .mul(100)
+    component_fig = px.bar(
+        component_df,
+        x="Rate Among Damaged Strikes",
+        y="Component",
+        orientation="h",
+        labels={
+            "Rate Among Damaged Strikes": "Rate among damaged strikes (%)",
+            "Component": "Component",
+        },
     )
+    component_fig.update_traces(
+        hovertemplate="%{y}<br>%{x:.2f}%<extra></extra>",
+    )
+    component_fig = style_figure(component_fig)
 
-    st.bar_chart(
-        component_chart,
+    st.plotly_chart(
+        component_fig,
         use_container_width=True,
+        config=PLOTLY_CONFIG,
     )
 
-    component_display = component_df.copy()
-    component_display["Rate Among Damaged Strikes"] = (
-        component_display["Rate Among Damaged Strikes"]
-        .map(lambda value: f"{value:.2%}")
-    )
+    with st.expander("View component summary table", expanded=False):
+        component_display = component_df.copy()
 
-    st.dataframe(
-        component_display,
-        use_container_width=True,
-        hide_index=True,
-    )
+        component_display["Rate Among Damaged Strikes"] = (
+            component_display["Rate Among Damaged Strikes"]
+            .map(lambda value: f"{value:.2f}%")
+        )
+
+        st.dataframe(
+            component_display.sort_values(
+                "Damaged Records",
+                ascending=False,
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
 
     st.caption(
         "Component indicators are not mutually exclusive. A single "
@@ -622,6 +906,8 @@ else:
 # =====================================================================
 # Optional record preview
 # =====================================================================
+
+section_divider()
 
 with st.expander("Preview filtered records", expanded=False):
 

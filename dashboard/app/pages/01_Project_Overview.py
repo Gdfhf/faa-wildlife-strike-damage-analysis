@@ -1,21 +1,33 @@
-import pandas as pd
-import streamlit as st
+"""High-level landing page for the wildlife-strike dashboard."""
 
+from __future__ import annotations
+
+import streamlit as st
+import plotly.express as px
+
+from dashboard.components.layout import (
+    page_header,
+    section_divider,
+    section_header,
+)
+from dashboard.components.metrics import metric_row
 from src.data.loaders import (
     load_historical_data,
     load_overview_summary,
 )
 
+from dashboard.components.charts import apply_chart_layout
 
-st.title("Project Overview")
+# ---------------------------------------------------------------------
+# Page introduction
+# ---------------------------------------------------------------------
 
-st.markdown(
-    """
-    This page provides a high-level view of the FAA wildlife strike
-    dataset used in the project. It summarizes the scale of the data,
-    historical reporting patterns, and observed aircraft damage before
-    moving into the predictive and simulation sections of the dashboard.
-    """
+page_header(
+    "Wildlife Strike Risk Analysis",
+    (
+        "Explore historical FAA wildlife-strike patterns, predictive "
+        "damage models, and supported operational what-if scenarios."
+    ),
 )
 
 
@@ -36,61 +48,61 @@ except Exception as exc:
 
 
 # ---------------------------------------------------------------------
-# KPI cards
+# Dataset summary
 # ---------------------------------------------------------------------
 
-st.subheader("Dataset Summary")
+section_header(
+    "Dataset summary",
+    (
+        "A high-level snapshot of the analytical dataset used throughout "
+        "the dashboard."
+    ),
+)
 
-col1, col2, col3, col4 = st.columns(4)
+metric_row(
+    [
+        (
+            "Reported strikes",
+            f"{summary['n_records']:,}",
+            "Wildlife-strike records included in the analytical dataset.",
+        ),
+        (
+            "Damaging strikes",
+            f"{summary['n_damaged']:,}",
+            "Records reporting aircraft damage.",
+        ),
+        (
+            "Airports represented",
+            f"{summary['n_airports']:,}",
+            "Distinct airports represented in the analytical dataset.",
+        ),
+        (
+            "Study period",
+            f"{summary['start_year']}–{summary['end_year']}",
+            "Years covered by the analytical dataset.",
+        ),
+    ]
+)
 
-with col1:
-    st.metric(
-        "Reported Strikes",
-        f"{summary['n_records']:,}",
-    )
-
-with col2:
-    st.metric(
-        "Historical Period",
-        f"{summary['start_year']}–{summary['end_year']}",
-    )
-
-with col3:
-    st.metric(
-        "Airports",
-        f"{summary['n_airports']:,}",
-    )
-
-with col4:
-    st.metric(
-        "Wildlife Species",
-        f"{summary['n_species']:,}",
-    )
-
-
-col5, col6 = st.columns(2)
-
-with col5:
-    st.metric(
-        "Records with Damage",
-        f"{summary['n_damaged']:,}",
-    )
-
-with col6:
-    st.metric(
-        "Historical Damage Rate",
-        f"{summary['damage_rate']:.2%}",
-    )
-
-
-st.divider()
+st.caption(
+    f"Overall reported damage rate: {summary['damage_rate']:.2%} · "
+    f"{summary['n_species']:,} wildlife species/categories represented."
+)
 
 
 # ---------------------------------------------------------------------
-# Annual strike volume
+# Historical overview
 # ---------------------------------------------------------------------
 
-st.subheader("Reported Wildlife Strikes Over Time")
+section_divider()
+
+section_header(
+    "Historical overview",
+    (
+        "Reported wildlife strikes provide the historical context for the "
+        "predictive and simulation sections of the dashboard."
+    ),
+)
 
 if "INCIDENT_YEAR" in df.columns:
 
@@ -102,18 +114,53 @@ if "INCIDENT_YEAR" in df.columns:
         .sort_values("INCIDENT_YEAR")
     )
 
-    st.line_chart(
-        annual_strikes,
-        x="INCIDENT_YEAR",
-        y="Reported Strikes",
-        use_container_width=True,
+    chart_col, interpretation_col = st.columns(
+        [2, 1],
+        gap="medium",
     )
 
-    st.caption(
-        "Annual counts represent reported wildlife strike records in "
-        "the 1990–2024 analytical dataset. Changes over time can reflect "
-        "both underlying strike activity and changes in reporting."
-    )
+    with chart_col:
+        with st.container(border=True):
+            st.markdown("#### Reported wildlife strikes over time")
+
+            fig = px.line(
+                annual_strikes,
+                x="INCIDENT_YEAR",
+                y="Reported Strikes",
+                labels={
+                    "INCIDENT_YEAR": "Year",
+                    "Reported Strikes": "Reported strikes",
+                },
+            )
+
+            fig = apply_chart_layout(fig)
+
+            st.plotly_chart(
+                fig,
+                use_container_width=True,
+            )
+
+            st.caption(
+                "Annual counts represent reported wildlife-strike records "
+                "in the analytical dataset."
+            )
+
+    with interpretation_col:
+        with st.container(border=True):
+            st.markdown("#### Why this matters")
+
+            st.write(
+                "Reported strike counts change substantially across the "
+                "study period. These trends provide historical exposure and "
+                "reporting context, but they are not direct estimates of "
+                "flight-level risk."
+            )
+
+            st.caption(
+                "Changes over time can reflect both underlying wildlife-strike "
+                "activity and changes in reporting. Use the Historical Data "
+                "page for deeper filtering and descriptive analysis."
+            )
 
 else:
     st.warning(
@@ -122,207 +169,178 @@ else:
 
 
 # ---------------------------------------------------------------------
-# Historical damage rate
+# Predictive model overview
 # ---------------------------------------------------------------------
 
-st.subheader("Observed Damage Rate Over Time")
+section_divider()
 
-if (
-    "INCIDENT_YEAR" in df.columns
-    and "INDICATED_DAMAGE" in df.columns
-):
-
-    damage = df[
-        ["INCIDENT_YEAR", "INDICATED_DAMAGE"]
-    ].copy()
-
-    # Make the calculation tolerant of either numeric/bool or
-    # common string representations.
-    if pd.api.types.is_numeric_dtype(
-        damage["INDICATED_DAMAGE"]
-    ):
-        damage["damage_flag"] = (
-            damage["INDICATED_DAMAGE"]
-            .fillna(0)
-            .astype(float)
-        )
-
-    elif pd.api.types.is_bool_dtype(
-        damage["INDICATED_DAMAGE"]
-    ):
-        damage["damage_flag"] = (
-            damage["INDICATED_DAMAGE"]
-            .fillna(False)
-            .astype(int)
-        )
-
-    else:
-        damage["damage_flag"] = (
-            damage["INDICATED_DAMAGE"]
-            .astype(str)
-            .str.strip()
-            .str.upper()
-            .isin(
-                [
-                    "1",
-                    "TRUE",
-                    "T",
-                    "YES",
-                    "Y",
-                    "DAMAGE",
-                    "DAMAGED",
-                ]
-            )
-            .astype(int)
-        )
-
-    annual_damage = (
-        damage.groupby("INCIDENT_YEAR")["damage_flag"]
-        .mean()
-        .mul(100)
-        .rename("Damage Rate (%)")
-        .reset_index()
-        .sort_values("INCIDENT_YEAR")
-    )
-
-    st.line_chart(
-        annual_damage,
-        x="INCIDENT_YEAR",
-        y="Damage Rate (%)",
-        use_container_width=True,
-    )
-
-    st.caption(
-        "Damage rate is the percentage of reported wildlife strikes "
-        "associated with indicated aircraft damage in each year."
-    )
-
-else:
-    st.warning(
-        "The fields required for the historical damage-rate chart "
-        "are not available."
-    )
-
-
-st.divider()
-
-
-# ---------------------------------------------------------------------
-# Top wildlife and airports
-# ---------------------------------------------------------------------
-
-left, right = st.columns(2)
-
-
-with left:
-    st.subheader("Most Frequently Reported Wildlife")
-
-    wildlife_column = None
-
-    if "SPECIES" in df.columns:
-        wildlife_column = "SPECIES"
-
-    elif "WILDLIFE_TYPE" in df.columns:
-        wildlife_column = "WILDLIFE_TYPE"
-
-    if wildlife_column is not None:
-
-        top_wildlife = (
-            df[wildlife_column]
-            .dropna()
-            .astype(str)
-            .value_counts()
-            .head(10)
-            .rename("Reported Strikes")
-            .reset_index()
-        )
-
-        top_wildlife.columns = [
-            "Wildlife",
-            "Reported Strikes",
-        ]
-
-        st.bar_chart(
-            top_wildlife,
-            x="Wildlife",
-            y="Reported Strikes",
-            use_container_width=True,
-        )
-
-    else:
-        st.warning(
-            "No wildlife field is available in the historical artifact."
-        )
-
-
-with right:
-    st.subheader("Airports with the Most Reported Strikes")
-
-    airport_column = None
-
-    if "AIRPORT" in df.columns:
-        airport_column = "AIRPORT"
-
-    elif "AIRPORT_ID" in df.columns:
-        airport_column = "AIRPORT_ID"
-
-    if airport_column is not None:
-
-        top_airports = (
-            df[airport_column]
-            .dropna()
-            .astype(str)
-            .value_counts()
-            .head(10)
-            .rename("Reported Strikes")
-            .reset_index()
-        )
-
-        top_airports.columns = [
-            "Airport",
-            "Reported Strikes",
-        ]
-
-        st.bar_chart(
-            top_airports,
-            x="Airport",
-            y="Reported Strikes",
-            use_container_width=True,
-        )
-
-    else:
-        st.warning(
-            "No airport field is available in the historical artifact."
-        )
-
-
-st.divider()
-
-
-# ---------------------------------------------------------------------
-# Methodology context
-# ---------------------------------------------------------------------
-
-st.subheader("How to Interpret This Dashboard")
-
-st.markdown(
-    """
-    **Historical exploration:** The descriptive sections use the complete
-    analytical period from **1990 through 2024**.
-
-    **Operational simulation:** Simulation scenarios use historical donor
-    and support information from **1990 through 2021**. The 2022–2024
-    period is intentionally excluded from that reference population to
-    preserve the temporal evaluation design used during model development.
-
-    **Observed versus predicted risk:** Historical damage rates shown on
-    this page describe what was reported in the dataset. They are not the
-    same as the model-generated probabilities presented in the damage-risk
-    and simulation pages.
-
-    **Reporting context:** FAA wildlife strike records represent reported
-    events. Trends should therefore be interpreted as trends in the
-    recorded dataset rather than as a direct measurement of every wildlife
-    strike that occurred in the United States.
-    """
+section_header(
+    "What the predictive models estimate",
+    (
+        "The modelling workflow separates damage occurrence, damage severity, "
+        "and affected aircraft components into related but distinct questions."
+    ),
 )
+
+damage_col, severity_col, component_col = st.columns(
+    3,
+    gap="medium",
+)
+
+with damage_col:
+    with st.container(border=True):
+        st.markdown("#### Damage risk")
+        st.write(
+            "Estimates the probability that a reported wildlife strike "
+            "results in aircraft damage."
+        )
+        st.caption("Primary binary prediction task.")
+
+with severity_col:
+    with st.container(border=True):
+        st.markdown("#### Damage severity")
+        st.write(
+            "Estimates the probability of the more severe damage outcome "
+            "within the severity model's defined conditional scope."
+        )
+        st.caption("Conditional severity modelling.")
+
+with component_col:
+    with st.container(border=True):
+        st.markdown("#### Affected components")
+        st.write(
+            "Estimates probabilities of damage to specific aircraft "
+            "areas or components."
+        )
+        st.caption("Component-level damage modelling.")
+
+
+# ---------------------------------------------------------------------
+# Operational simulation overview
+# ---------------------------------------------------------------------
+
+section_divider()
+
+section_header(
+    "Operational what-if simulation",
+    (
+        "The simulation layer combines supported scenario inputs with "
+        "historical donor records and the trained predictive models."
+    ),
+)
+
+with st.container(border=True):
+    simulation_col, trial_col = st.columns(
+        [3, 1],
+        gap="medium",
+    )
+
+    with simulation_col:
+        st.markdown("#### From scenario to simulated outcomes")
+
+        st.write(
+            "Users define operational conditions such as aircraft class, "
+            "aircraft mass group, season, phase of flight, and airport. "
+            "Optional wildlife and aircraft details may be supplied when "
+            "appropriate or sampled from historically supported records."
+        )
+
+        st.write(
+            "The Monte Carlo engine repeatedly evaluates compatible "
+            "conditions to summarize damage, severity, and component-risk "
+            "outputs while preserving the scenario's historical support."
+        )
+
+    with trial_col:
+        st.metric(
+            "Default simulation",
+            "10,000 trials",
+            help=(
+                "Default number of Monte Carlo trials used by the "
+                "operational simulation."
+            ),
+        )
+
+
+# ---------------------------------------------------------------------
+# Analytical workflow
+# ---------------------------------------------------------------------
+
+section_divider()
+
+section_header(
+    "Analytical workflow",
+    (
+        "The dashboard is the presentation layer of the modelling workflow "
+        "developed across the project notebooks."
+    ),
+)
+
+workflow = [
+    (
+        "1. Historical data",
+        "FAA wildlife-strike records are cleaned, structured, and explored.",
+    ),
+    (
+        "2. Predictive modelling",
+        "Damage, severity, and component models are trained.",
+    ),
+    (
+        "3. Validation",
+        "Performance, thresholds, and probability calibration are assessed.",
+    ),
+    (
+        "4. Explainability",
+        "Model behaviour and major predictors are investigated.",
+    ),
+    (
+        "5. Simulation",
+        "Supported scenarios are evaluated through Monte Carlo trials.",
+    ),
+]
+
+workflow_cols = st.columns(
+    len(workflow),
+    gap="small",
+)
+
+for column, (title, text) in zip(workflow_cols, workflow):
+    with column:
+        with st.container(border=True):
+            st.markdown(f"**{title}**")
+            st.caption(text)
+
+
+# ---------------------------------------------------------------------
+# Interpretation and scope
+# ---------------------------------------------------------------------
+
+section_divider()
+
+section_header(
+    "How to interpret this dashboard",
+    "Key scope distinctions that apply across the dashboard.",
+)
+
+with st.expander("Methodology and interpretation notes"):
+    st.markdown(
+        """
+        **Historical exploration:** Descriptive sections use the complete
+        analytical period from **1990 through 2024**.
+
+        **Operational simulation:** Simulation scenarios use historical donor
+        and support information from **1990 through 2021**. The 2022–2024
+        period is intentionally excluded from that reference population to
+        preserve the temporal evaluation design used during model development.
+
+        **Observed versus predicted risk:** Historical damage rates describe
+        what was reported in the dataset. They are not the same as the
+        model-generated probabilities presented in the damage-risk and
+        simulation pages.
+
+        **Reporting context:** FAA wildlife-strike records represent reported
+        events. Trends should therefore be interpreted as trends in the
+        recorded dataset rather than as a direct measurement of every wildlife
+        strike that occurred in the United States.
+        """
+    )
