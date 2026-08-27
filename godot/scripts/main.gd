@@ -1,6 +1,6 @@
 extends Control
 
-@onready var aircraft: ColorRect = $Aircraft
+@onready var aircraft: Control = $Aircraft
 @onready var impact_effect: ColorRect = $ImpactEffect
 @onready var trial_info: Label = $TrialInfo
 @onready var weather_label: Label = $WeatherLabel

@@ -77,12 +77,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Aircraft" type="ColorRect" parent="." unique_id=1769753411]
+[node name="Aircraft" type="Control" parent="." unique_id=1828126260]
+anchors_preset = 0
+offset_left = 127.0
+offset_top = 386.0
+offset_right = 307.0
+offset_bottom = 436.0
+
+[node name="Placeholder" type="ColorRect" parent="Aircraft" unique_id=1769753411]
 layout_mode = 0
-offset_left = 118.0
-offset_top = 467.0
-offset_right = 298.0
-offset_bottom = 517.0
+offset_right = 180.0
+offset_bottom = 50.0
 
 [node name="WildlifeGroup" type="Control" parent="." unique_id=169972656]
 anchors_preset = 0
@@ -90,12 +95,17 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("3_rarhs")
 
-[node name="Wildlife" type="ColorRect" parent="WildlifeGroup" unique_id=763832784]
+[node name="Wildlife" type="Control" parent="WildlifeGroup" unique_id=2112998680]
+anchors_preset = 0
+offset_left = 639.0
+offset_top = 229.0
+offset_right = 669.0
+offset_bottom = 259.0
+
+[node name="Placeholder" type="ColorRect" parent="WildlifeGroup/Wildlife" unique_id=763832784]
 layout_mode = 0
-offset_left = 654.0
-offset_top = 335.0
-offset_right = 684.0
-offset_bottom = 365.0
+offset_right = 30.0
+offset_bottom = 30.0
 color = Color(0.25, 0.1525, 0.055000007, 1)
 
 [node name="ImpactEffect" type="ColorRect" parent="." unique_id=615973684]

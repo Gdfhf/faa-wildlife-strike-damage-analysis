@@ -1,8 +1,11 @@
 extends Control
 
-@onready var wildlife: ColorRect = $Wildlife
+@onready var wildlife: Control = $Wildlife
+@onready var wildlife_placeholder: ColorRect = (
+	$Wildlife/Placeholder
+)
 
-var wildlife_nodes: Array[ColorRect] = []
+var wildlife_nodes: Array[Control] = []
 
 
 func configure_wildlife(
@@ -41,6 +44,7 @@ func configure_wildlife(
 	)
 
 	wildlife.size = bird_size
+	wildlife_placeholder.size = bird_size
 
 	wildlife.position = (
 		aircraft.position
@@ -59,7 +63,7 @@ func configure_wildlife(
 		1,
 		bird_count
 	):
-		var bird = wildlife.duplicate() as ColorRect
+		var bird = wildlife.duplicate() as Control
 
 		add_child(
 			bird
