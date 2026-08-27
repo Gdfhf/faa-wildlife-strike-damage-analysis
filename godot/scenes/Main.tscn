@@ -84,6 +84,18 @@ layout_mode = 0
 offset_right = 180.0
 offset_bottom = 50.0
 
+[node name="DamageEffects" type="Control" parent="Aircraft" unique_id=1791927353]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DamageMarker" type="ColorRect" parent="Aircraft/DamageEffects" unique_id=1852348779]
+visible = false
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 22.0
+color = Color(1, 0.25633335, 0.029999971, 1)
+
 [node name="WildlifeGroup" type="Control" parent="." unique_id=169972656]
 anchors_preset = 0
 offset_right = 40.0
@@ -164,9 +176,9 @@ autowrap_mode = 3
 [node name="OutcomePanel" type="ColorRect" parent="." unique_id=1668352450]
 layout_mode = 0
 offset_left = 801.0
-offset_top = 376.0
-offset_right = 1101.0
-offset_bottom = 516.0
+offset_top = 324.0
+offset_right = 1091.0
+offset_bottom = 585.0
 color = Color(0.4894573, 0.6298179, 0.75477827, 1)
 script = ExtResource("4_rarhs")
 

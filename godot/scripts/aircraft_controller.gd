@@ -1,6 +1,9 @@
 extends Control
 
 @onready var placeholder: ColorRect = $Placeholder
+@onready var damage_marker: ColorRect = (
+	$DamageEffects/DamageMarker
+)
 
 var aircraft_visual_type: String = "generic"
 
@@ -11,7 +14,7 @@ func configure_aircraft(
 	var ac_class = str(
 		sampled_context.get(
 			"AC_CLASS",
-			"Not reported"
+			"Z"
 		)
 	)
 
@@ -21,6 +24,33 @@ func configure_aircraft(
 
 	apply_placeholder_presentation()
 
+	damage_marker.visible = false
+
+	damage_marker.size = Vector2(
+		22,
+		22
+	)
+
+	damage_marker.position = Vector2(
+		size.x * 0.75,
+		size.y * 0.15
+	)
+
+func show_damage_state(
+	visual_trial: Dictionary
+) -> void:
+	var damaged = bool(
+		visual_trial.get(
+			"damaged",
+			false
+		)
+	)
+
+	if not damaged:
+		damage_marker.visible = false
+		return
+
+	damage_marker.visible = true
 
 func get_aircraft_visual_type(
 	ac_class: String

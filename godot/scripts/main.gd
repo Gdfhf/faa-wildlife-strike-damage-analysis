@@ -217,6 +217,10 @@ func play_trial_animation() -> void:
 
 	await show_impact()
 
+	aircraft_controller.show_damage_state(
+		visual_trial
+	)
+
 	outcome_controller.show_outcome(
 		visual_trial
 	)

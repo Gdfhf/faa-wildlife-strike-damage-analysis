@@ -327,6 +327,9 @@ func create_rain() -> void:
 
 
 func animate_rain() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+
 	while is_inside_tree():
 		await get_tree().process_frame
 
@@ -337,7 +340,16 @@ func animate_rain() -> void:
 			)
 
 			if drop.position.y > size.y:
-				drop.position.y = -20
+				drop.position = Vector2(
+					rng.randf_range(
+						250,
+						size.x
+					),
+					rng.randf_range(
+						-180,
+						-20
+					)
+				)
 
 
 func create_snow() -> void:
