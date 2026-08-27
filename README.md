@@ -77,25 +77,27 @@ The final operational simulation uses calibrated probabilities rather than conve
 
 The Streamlit application is the operational integration layer of the project. It reuses saved analytical artifacts and trained models instead of retraining models or recomputing expensive explainability analyses during normal dashboard use.
 
-The current dashboard contains six user-facing analytical pages:
+The application now uses an explicit **Home / landing page** plus six numbered analytical pages:
 
 1. **Project Overview**  
-   Headline dataset KPIs and major historical patterns.
+   Headline dataset KPIs, major historical patterns, model-system overview, and the project analytical workflow.
 
-2. **Historical Wildlife Strike Explorer**  
+2. **Historical Data**  
    Interactive filtering of historical reported strikes, damage rates, operational factors, wildlife, severity, and component patterns.
 
 3. **Damage Risk & Model Insights**  
-   Locked final-model performance, confusion-matrix evidence, generalization diagnostics, SHAP/permutation explainability, and downstream model status.
+   Locked final-model performance, confusion-matrix evidence, temporal/geographic generalization diagnostics, SHAP/permutation explainability, airport dependence, and downstream model status.
 
-4. **Monte Carlo What-If Simulation**  
-   Guided scenario construction with cascading historically supported inputs, historical-support validation, empirical donor sampling, aircraft-damage simulation, and conditional severity/component outcomes.
+4. **Monte Carlo Simulation**  
+   Guided scenario construction with cascading historically supported required inputs, optional historical sampling or explicit overrides, historical-support diagnostics, aircraft-damage simulation, and conditional severity/component outcomes.
 
 5. **Scenario Comparison**  
-   Side-by-side comparison of two supported scenarios using the same Monte Carlo trial count and random seed, emphasizing percentage-point differences.
+   Controlled A/B comparison under a shared scenario context. Users select one comparison variable when possible, both scenarios use the same Monte Carlo trial count and random seed, and percentage-point differences are emphasized over relative percentage changes.
 
-6. **How to Read This Dashboard**  
-   User-friendly guidance explaining historical statistics, model probabilities, Monte Carlo estimates, conditional outcomes, support limitations, and common interpretation mistakes.
+6. **How to Read the Dashboard**  
+   User-facing guidance explaining historical statistics, modeled probabilities, Monte Carlo outcomes, support limitations, counterfactual overrides, conditional outcomes, uncertainty, and common interpretation mistakes.
+
+The **Home** page provides direct internal links to the recommended analytical and simulation pages and mirrors the numbered sidebar navigation.
 
 ### Important simulation behavior
 
@@ -109,7 +111,21 @@ Required scenario context includes:
 
 The dashboard narrows these selections using the historical support population so users are guided toward combinations that actually exist in the reference data.
 
+Two support concepts are intentionally distinguished:
+
+- **Required-context support** determines whether a simulation is allowed to run. If the required combination has no exact support in the 1990–2021 simulation reference population, the simulation is blocked.
+- **Full specified-context support** is checked when optional values are explicitly overridden. It measures whether the complete combination of required and specified optional values was observed in the historical donor data.
+
+If required-context support exists but full specified-context support is zero, the simulation may still run as a **counterfactual override**, but the dashboard explicitly warns that the estimate extends beyond an exactly observed historical combination and should be interpreted with greater caution.
+
 Optional fields may be specified manually or left as **Historical sampling**. When left unspecified, compatible whole historical donor rows are sampled so jointly observed relationships among optional variables are preserved.
+
+`NUM_STRUCK` is treated as an ordered categorical variable in the operational system rather than as an arbitrary exact integer. Historical categories include values such as:
+
+- `1`
+- `2–10`
+- `11–100`
+- `More than 100`
 
 The operational default is **10,000 Monte Carlo trials** with a reproducible random seed.
 
@@ -119,8 +135,9 @@ The operational default is **10,000 Monte Carlo trials** with a reproducible ran
 faa-wildlife-strike-damage-analysis/
 │
 ├── dashboard/
-│   ├── app.py                         # Main Streamlit entry point
+│   ├── app.py                         # Streamlit entry point and explicit navigation/router
 │   ├── app/
+│   │   ├── Home.py                    # Dashboard landing/navigation page
 │   │   └── pages/
 │   │       ├── 01_Project_Overview.py
 │   │       ├── 02_Historical_Data.py
@@ -128,12 +145,12 @@ faa-wildlife-strike-damage-analysis/
 │   │       ├── 04_Monte_Carlo_Simulation.py
 │   │       ├── 05_Scenario_Comparison.py
 │   │       └── 06_How_to_Read_the_Dashboard.py
-│   └── components/                    # Shared presentation helpers
+│   └── components/                    # Shared layout, metric, chart, and theme helpers
 │
 ├── data/
 │   ├── raw/                           # Raw source data (not tracked by Git)
-│   ├── processed/                     # Large processed research data ignored;
-│   └── dashboard/                     # lightweight dashboard artifacts allowed
+│   ├── processed/                     # Large processed research data ignored
+│   └── dashboard/                     # Lightweight dashboard artifacts allowed
 │
 ├── models/
 │   ├── candidates/                    # Candidate binaries generally ignored
@@ -147,7 +164,7 @@ faa-wildlife-strike-damage-analysis/
 │   ├── data/                          # Dashboard artifact builders/loaders
 │   ├── models/                        # Saved-model loading compatibility
 │   ├── simulation/                    # Scenario, support, donor, prediction, engine logic
-│   └── utils/                         # Centralized project paths
+│   └── utils/                         # Centralized project paths and reusable display-label utilities
 │
 ├── scripts/
 │   ├── run_dashboard.bat              # Script to start up the dashboard
@@ -189,10 +206,13 @@ macOS / Linux:
 ```bash
 source .venv/bin/activate
 ```
-The shortcut script, which currently only works on Windows is the following. It will also install the needed dependencies inside `requirements.txt`.
+
+The shortcut script, which currently only works on Windows, is the following. It will also install the needed dependencies inside `requirements.txt`.
+
 ```bash
 setup_windows.bat
 ```
+
 ### 3. Install dependencies
 
 ```bash
@@ -293,27 +313,34 @@ This separation keeps the repository practical while allowing teammates to run t
 
 The analytical notebooks are effectively complete through Notebook 10.
 
-The dashboard is now **functionally feature-complete for its first implementation pass**:
+The Streamlit dashboard is now **functionally and visually complete for the capstone implementation scope**:
 
 - reusable data/model loaders are operational;
 - the compact automated simulation tests pass;
 - historical dashboard artifacts are validated;
-- the Overview page is functional;
-- the Historical Explorer is functional;
-- the Model Insights page is functional;
-- the Monte Carlo simulator is functional;
-- cascading supported scenario inputs are operational;
+- explicit numbered navigation and the Home landing page are operational;
+- the Overview page has been visually and structurally redesigned;
+- the Historical Data page is responsive and uses interactive Plotly charts;
+- the Damage Risk & Model Insights page is visually consolidated and artifact-driven;
+- the Monte Carlo simulator is operational with cascading required-context support;
+- optional historical sampling and explicit counterfactual overrides are supported;
+- required-context and full specified-context support are distinguished;
+- human-readable airport, aircraft, engine, and state/location labels are integrated;
+- `NUM_STRUCK` is handled consistently as an ordered categorical field;
 - conditional severity and component simulation is operational;
-- Scenario Comparison is functional;
-- the user-facing interpretation guide is functional.
+- Scenario Comparison uses a controlled shared-context A/B design;
+- optional comparison values are constrained to historically observed values under the selected shared context;
+- the user-facing interpretation guide reflects the final simulation and comparison behavior;
+- responsive desktop/mobile presentation has been checked during development;
+- shared layout, chart, metric, and theme helpers are in use across the dashboard.
 
 Remaining work is primarily:
 
-- presentation and UX refinement, especially the Model Insights page;
-- visual consistency across pages;
-- selected chart improvements;
-- final fresh-environment/reproducibility checks;
-- final demonstration and documentation polish.
+- final regression and fresh-environment QA;
+- final documentation synchronization;
+- Streamlit Community Cloud deployment;
+- presentation/demo preparation;
+- optional Godot visualization only if time remains.
 
 ## Interpretation Notes
 
@@ -324,6 +351,14 @@ Three different result types appear in the dashboard:
 - **Monte Carlo estimate** — simulated consequence outcome after integrating over compatible historical context and stochastic draws.
 
 These quantities should not be treated as interchangeable.
+
+For simulation support:
+
+- **required-context support** determines whether the scenario may run;
+- **full specified-context support** describes whether explicitly selected optional values were observed together with that required context;
+- a counterfactual optional override may therefore have zero full specified-context support even when the required scenario remains eligible for simulation.
+
+For Scenario Comparison, modeled probability and **percentage-point differences** are the primary comparison quantities. Relative percentage change is secondary context, and realized Monte Carlo rates contain random simulation noise.
 
 More Monte Carlo trials reduce random simulation noise, but they do **not** remove model uncertainty, reporting bias, sparse historical support, or future distribution shift.
 

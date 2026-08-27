@@ -48,6 +48,37 @@ GLOBAL_CSS = """
     }
 }
 
+/* ---------------------------------------------------------
+   Internal page links
+   --------------------------------------------------------- */
+
+div[data-testid="stPageLink"] a {
+    border: 1px solid rgba(128, 128, 128, 0.35);
+    border-radius: 0.5rem;
+    padding: 0.55rem 0.75rem;
+    margin-bottom: 0.35rem;
+    transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+div[data-testid="stPageLink"] a:hover {
+    border-color: var(--primary-color);
+    background-color: color-mix(
+        in srgb,
+        var(--primary-color) 10%,
+        transparent
+    );
+    transform: translateX(2px);
+}
+
+div[data-testid="stPageLink"] a p {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+
 </style>
 """
 
