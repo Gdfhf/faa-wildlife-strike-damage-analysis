@@ -7,6 +7,9 @@ extends Control
 @onready var precipitation_layer: Control = $WeatherEffects/PrecipitationLayer
 @onready var fog_overlay: ColorRect = $WeatherEffects/FogOverlay
 
+var rain_animation_running := false
+var snow_animation_running := false
+
 
 func configure_environment(
 	sampled_context: Dictionary
@@ -232,10 +235,10 @@ func configure_clouds(
 	sky: String
 ) -> void:
 	match sky.to_lower():
-		"clear":
+		"no cloud":
 			pass
 
-		"some cloud", "some clouds":
+		"some cloud":
 			create_cloud(
 				Vector2(400, 70),
 				0.8
@@ -325,8 +328,17 @@ func create_rain() -> void:
 			drop
 		)
 
+		drop.add_to_group(
+			"rain_drop"
+		)
+
 
 func animate_rain() -> void:
+	if rain_animation_running:
+		return
+
+	rain_animation_running = true
+
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 
@@ -334,6 +346,11 @@ func animate_rain() -> void:
 		await get_tree().process_frame
 
 		for drop in precipitation_layer.get_children():
+			if not drop.is_in_group(
+				"rain_drop"
+			):
+				continue
+
 			drop.position += Vector2(
 				-1.5,
 				8.0
@@ -392,12 +409,26 @@ func create_snow() -> void:
 			flake
 		)
 
+		flake.add_to_group(
+			"snow_flake"
+		)
+
 
 func animate_snow() -> void:
+	if snow_animation_running:
+		return
+
+	snow_animation_running = true
+
 	while is_inside_tree():
 		await get_tree().process_frame
 
 		for flake in precipitation_layer.get_children():
+			if not flake.is_in_group(
+				"snow_flake"
+			):
+				continue
+
 			flake.position += Vector2(
 				sin(
 					Time.get_ticks_msec()
@@ -425,17 +456,43 @@ func create_fog() -> void:
 func configure_precipitation(
 	precipitation: String
 ) -> void:
-	match precipitation.to_lower():
-		"rain":
-			create_rain()
-			animate_rain()
+	var normalized := (
+		precipitation
+		.strip_edges()
+		.to_lower()
+	)
 
-		"snow":
-			create_snow()
-			animate_snow()
+	if (
+		normalized.is_empty()
+		or normalized == "not reported"
+		or normalized == "unknown"
+	):
+		return
 
-		"fog":
-			create_fog()
+	var effects := normalized.split(",")
 
-		"none", "not reported", "unknown":
-			pass
+	var has_fog := false
+	var has_rain := false
+	var has_snow := false
+
+	for effect in effects:
+		match effect.strip_edges():
+			"fog":
+				has_fog = true
+
+			"rain":
+				has_rain = true
+
+			"snow":
+				has_snow = true
+
+	if has_fog:
+		create_fog()
+
+	if has_rain:
+		create_rain()
+		animate_rain()
+
+	if has_snow:
+		create_snow()
+		animate_snow()

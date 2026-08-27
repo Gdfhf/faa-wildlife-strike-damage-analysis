@@ -9,6 +9,8 @@ extends Control
 @onready var impact_effect: ColorRect = $ImpactEffect
 @onready var trial_info: Label = $TrialInfoPanel/TrialInfo
 @onready var weather_label: Label = $WeatherPanel/WeatherLabel
+@onready var play_button: Button = $PlayButton
+@onready var exit_button: Button = $ExitButton
 
 var visual_trial: Dictionary = {}
 var sampled_context: Dictionary = {}
@@ -39,11 +41,59 @@ func _ready() -> void:
 	if not load_trial():
 		return
 
+	DisplayServer.window_set_mode(
+		DisplayServer.WINDOW_MODE_FULLSCREEN
+	)
+
 	update_trial_info()
 	prepare_scene()
 
+	play_button.text = "Play Trial"
+	play_button.visible = true
+	play_button.disabled = false
+	exit_button.visible = true
+	exit_button.disabled = false
+
+	if not play_button.pressed.is_connected(
+		_on_play_button_pressed
+	):
+		play_button.pressed.connect(
+			_on_play_button_pressed
+		)
+	
+	if not exit_button.pressed.is_connected(
+		_on_exit_button_pressed
+	):
+		exit_button.pressed.connect(
+			_on_exit_button_pressed
+		)
+
+func _on_play_button_pressed() -> void:
+	play_button.visible = false
+	play_button.disabled = true
+	exit_button.visible = false
+	exit_button.disabled = true
+
+	prepare_scene()
+
+	await get_tree().create_timer(
+		0.5
+	).timeout
+
 	await play_trial_animation()
 
+	await get_tree().create_timer(
+		1.5
+	).timeout
+
+	play_button.text = "Replay Trial"
+	play_button.visible = true
+	play_button.disabled = false
+	exit_button.visible = true
+	exit_button.disabled = false
+
+func _on_exit_button_pressed() -> void:
+	get_tree().quit()
 
 func load_trial() -> bool:
 	var parsed: Dictionary = TrialLoader.load_trial()

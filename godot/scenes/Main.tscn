@@ -6,6 +6,18 @@
 [ext_resource type="Script" uid="uid://dbvyyvw1guwhh" path="res://scripts/aircraft_controller.gd" id="3_vcsgt"]
 [ext_resource type="Script" uid="uid://3pxe21tws3gc" path="res://scripts/outcome_controller.gd" id="4_rarhs"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vcsgt"]
+bg_color = Color(0.4238027, 0.6928419, 0.32255232, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c01mt"]
+bg_color = Color(0.7756338, 0.96982354, 0.70944226, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxtc6"]
+bg_color = Color(0.42, 0.08399999, 0.08399999, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jlsqs"]
+bg_color = Color(0.9128024, 0.2804948, 0.265733, 1)
+
 [node name="Main" type="Control" unique_id=1425735014]
 layout_mode = 3
 anchors_preset = 15
@@ -154,7 +166,7 @@ anchor_right = 0.5
 offset_left = -150.0
 offset_top = 22.0
 offset_right = 150.0
-offset_bottom = 62.0
+offset_bottom = 80.0
 grow_horizontal = 2
 color = Color(0.08640001, 0.24144, 0.36, 0.91764706)
 
@@ -171,7 +183,43 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Waiting for the weather report: ..."
 horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="PlayButton" type="Button" parent="." unique_id=1006674513]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -37.5
+offset_right = 90.0
+offset_bottom = 37.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_vcsgt")
+theme_override_styles/hover = SubResource("StyleBoxFlat_c01mt")
+text = "[ Play Trial ]"
+
+[node name="ExitButton" type="Button" parent="." unique_id=874124299]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.619
+anchor_right = 0.5
+anchor_bottom = 0.619
+offset_left = -67.5
+offset_top = -25.0
+offset_right = 67.5
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_nxtc6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jlsqs")
+text = "[ Exit Trial ]"
 
 [node name="OutcomePanel" type="ColorRect" parent="." unique_id=1668352450]
 layout_mode = 0

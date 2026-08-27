@@ -2,6 +2,13 @@
 
 from __future__ import annotations
 
+from dataclasses import asdict
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -219,6 +226,103 @@ PLOTLY_CONFIG = {
     "displaylogo": False,
     "responsive": True,
 }
+
+
+# =====================================================================
+# Local Godot visualization bridge
+# =====================================================================
+
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+GODOT_PROJECT_DIR = PROJECT_ROOT / "godot"
+GODOT_TRIAL_PATH = GODOT_PROJECT_DIR / "data" / "latest_trial.json"
+
+
+def simulation_run_signature(scenario, n_trials, seed):
+    """Return the inputs that define the currently displayed simulation run."""
+    return {
+        "scenario": scenario.to_dict(),
+        "n_trials": int(n_trials),
+        "seed": int(seed),
+    }
+
+
+def export_visual_trial(result):
+    """Write the retained random trial for the local Godot project."""
+    if result.visual_trial is None:
+        raise ValueError(
+            "The simulation result does not contain a visual trial."
+        )
+
+    GODOT_TRIAL_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    payload = {
+        "schema_version": "1.0",
+        "simulation": {
+            "n_trials": result.n_trials,
+            "seed": result.seed,
+        },
+        "visual_trial": asdict(result.visual_trial),
+    }
+
+    with GODOT_TRIAL_PATH.open(
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            payload,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
+
+    return GODOT_TRIAL_PATH
+
+
+def find_godot_executable():
+    """Resolve a local Godot executable without hard-coding one machine path."""
+    configured = os.environ.get("GODOT_EXECUTABLE")
+
+    if configured:
+        configured_path = Path(configured).expanduser()
+        if configured_path.is_file():
+            return configured_path
+
+    for command in ("godot", "godot4"):
+        resolved = shutil.which(command)
+        if resolved:
+            return Path(resolved)
+
+    return None
+
+
+def launch_local_godot_project():
+    """Launch the local Godot project so it reads the newly exported JSON."""
+    godot_executable = find_godot_executable()
+
+    if godot_executable is None:
+        raise FileNotFoundError(
+            "Godot could not be located. Set the GODOT_EXECUTABLE environment "
+            "variable to the full path of godot.exe, or add Godot to PATH."
+        )
+
+    project_file = GODOT_PROJECT_DIR / "project.godot"
+
+    if not project_file.is_file():
+        raise FileNotFoundError(
+            f"Godot project file was not found at: {project_file}"
+        )
+
+    subprocess.Popen(
+        [
+            str(godot_executable),
+            "--path",
+            str(GODOT_PROJECT_DIR),
+        ],
+        cwd=str(GODOT_PROJECT_DIR),
+    )
 
 
 # =====================================================================
@@ -892,6 +996,35 @@ if run_clicked:
 
         st.stop()
 
+    st.session_state["latest_monte_carlo_result"] = result
+    st.session_state["latest_monte_carlo_signature"] = (
+        simulation_run_signature(
+            scenario,
+            n_trials,
+            seed,
+        )
+    )
+
+
+current_run_signature = simulation_run_signature(
+    scenario,
+    n_trials,
+    seed,
+)
+
+result = st.session_state.get(
+    "latest_monte_carlo_result"
+)
+
+stored_run_signature = st.session_state.get(
+    "latest_monte_carlo_signature"
+)
+
+
+if (
+    result is not None
+    and stored_run_signature == current_run_signature
+):
 
     # =================================================================
     # Main damage results
@@ -1154,3 +1287,69 @@ if run_clicked:
         st.json(
             scenario_display
         )
+
+    # =================================================================
+    # Optional Godot single-trial visualization
+    # =================================================================
+
+    section_divider()
+
+    section_header(
+        "Single-Trial Visualization",
+        (
+            "Open an illustrative 2D visualization of the one random "
+            "Monte Carlo realization retained from this simulation run."
+        ),
+    )
+
+    with st.container(border=True):
+        st.caption(
+            "The Godot scene consumes the already-realized Python trial. "
+            "It does not rerun the model, resample the outcome, or simulate "
+            "physical collision dynamics."
+        )
+
+        if result.visual_trial is None:
+            st.info(
+                "No visual trial is available for this simulation result."
+            )
+
+        else:
+            if st.button(
+                "Visualize Random Trial",
+                key="launch_godot_visual_trial",
+            ):
+                try:
+                    exported_path = export_visual_trial(
+                        result
+                    )
+
+                    launch_local_godot_project()
+
+                    st.success(
+                        "Godot visualizer launched using the retained random trial."
+                    )
+
+                    st.caption(
+                        f"Trial payload: {exported_path}"
+                    )
+
+                except Exception as exc:
+                    st.error(
+                        "The Godot visualizer could not be launched."
+                    )
+                    st.exception(exc)
+
+        st.caption(
+            "Illustrative only — this is a schematic visualization of one "
+            "stochastic realization, not a physical wildlife-strike simulation."
+        )
+
+
+elif result is not None:
+    st.info(
+        "The scenario or simulation settings have changed since the last run. "
+        "Run the Monte Carlo simulation again to refresh the results and "
+        "single-trial visualization."
+    )
+
