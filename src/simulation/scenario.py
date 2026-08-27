@@ -45,7 +45,7 @@ class Scenario:
     # Optional scenario context
     wildlife_type: str | None = None
     size: str | None = None
-    num_struck: int | None = None
+    num_struck: str | None = None
 
     type_eng: str | None = None
     num_engs: float | None = None
@@ -90,6 +90,7 @@ class Scenario:
             "11-100",
             "11–100",
             "More than 100",
+            "Not reported"
         }
 
         if (

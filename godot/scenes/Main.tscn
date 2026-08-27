@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://dha5muvywjmi5"]
+
+[ext_resource type="Script" uid="uid://cwwc0tjeftvmq" path="res://scripts/main.gd" id="1_elqb8"]
+
+[node name="Main" type="Control" unique_id=1425735014]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_elqb8")
+
+[node name="Background" type="ColorRect" parent="." unique_id=861249678]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.5294118, 0.80784315, 0.92156863, 1)
+
+[node name="Aircraft" type="ColorRect" parent="." unique_id=1769753411]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 467.0
+offset_right = 298.0
+offset_bottom = 517.0
+
+[node name="Wildlife" type="ColorRect" parent="." unique_id=763832784]
+layout_mode = 0
+offset_left = 422.0
+offset_top = 277.0
+offset_right = 452.0
+offset_bottom = 307.0
+color = Color(0.25, 0.1525, 0.055000007, 1)
+
+[node name="ImpactEffect" type="ColorRect" parent="." unique_id=615973684]
+visible = false
+layout_mode = 0
+offset_left = 234.0
+offset_top = 447.0
+offset_right = 274.0
+offset_bottom = 487.0
+color = Color(0.71, 0.71, 0.71, 1)
+
+[node name="TrialInfo" type="Label" parent="." unique_id=1859819502]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 129.0
+offset_right = 304.0
+offset_bottom = 152.0
+text = "Waiting for trial data..."
+
+[node name="OutcomePanel" type="ColorRect" parent="." unique_id=1668352450]
+layout_mode = 0
+offset_left = 765.0
+offset_top = 451.0
+offset_right = 1065.0
+offset_bottom = 591.0
+color = Color(0.4894573, 0.6298179, 0.75477827, 1)
+
+[node name="OutcomeLabel" type="Label" parent="OutcomePanel" unique_id=1875805165]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Outcome pending..."
+autowrap_mode = 3
