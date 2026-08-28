@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+from dataclasses import asdict
+import json
+from pathlib import Path
+import subprocess
+
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -219,6 +224,80 @@ PLOTLY_CONFIG = {
     "displaylogo": False,
     "responsive": True,
 }
+
+
+# =====================================================================
+# Local Godot visualization bridge
+# =====================================================================
+
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+GODOT_PROJECT_DIR = PROJECT_ROOT / "godot"
+GODOT_TRIAL_PATH = GODOT_PROJECT_DIR / "data" / "latest_trial.json"
+GODOT_BUILD_PATH = (
+    GODOT_PROJECT_DIR
+    / "builds"
+    / "CapstoneAirstrikeVisualizer.exe"
+)
+
+
+def simulation_run_signature(scenario, n_trials, seed):
+    """Return the inputs that define the currently displayed simulation run."""
+    return {
+        "scenario": scenario.to_dict(),
+        "n_trials": int(n_trials),
+        "seed": int(seed),
+    }
+
+
+def export_visual_trial(result, visual_trial):
+    """Write one retained visualization trial for the local Godot project."""
+    if visual_trial is None:
+        raise ValueError(
+            "The simulation result does not contain the requested visual trial."
+        )
+
+    GODOT_TRIAL_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    payload = {
+        "schema_version": "1.0",
+        "simulation": {
+            "n_trials": result.n_trials,
+            "seed": result.seed,
+        },
+        "visual_trial": asdict(visual_trial),
+    }
+
+    with GODOT_TRIAL_PATH.open(
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            payload,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
+
+    return GODOT_TRIAL_PATH
+
+
+
+def launch_local_godot_project():
+    """Launch the exported standalone Godot visualizer."""
+
+    if not GODOT_BUILD_PATH.is_file():
+        raise FileNotFoundError(
+            "Godot visualizer executable was not found at: "
+            f"{GODOT_BUILD_PATH}"
+        )
+
+    subprocess.Popen(
+        [str(GODOT_BUILD_PATH)],
+        cwd=str(GODOT_PROJECT_DIR),
+    )
 
 
 # =====================================================================
@@ -892,6 +971,35 @@ if run_clicked:
 
         st.stop()
 
+    st.session_state["latest_monte_carlo_result"] = result
+    st.session_state["latest_monte_carlo_signature"] = (
+        simulation_run_signature(
+            scenario,
+            n_trials,
+            seed,
+        )
+    )
+
+
+current_run_signature = simulation_run_signature(
+    scenario,
+    n_trials,
+    seed,
+)
+
+result = st.session_state.get(
+    "latest_monte_carlo_result"
+)
+
+stored_run_signature = st.session_state.get(
+    "latest_monte_carlo_signature"
+)
+
+
+if (
+    result is not None
+    and stored_run_signature == current_run_signature
+):
 
     # =================================================================
     # Main damage results
@@ -1154,3 +1262,148 @@ if run_clicked:
         st.json(
             scenario_display
         )
+
+    # =================================================================
+    # Optional Godot single-trial visualization
+    # =================================================================
+
+    section_divider()
+
+    section_header(
+        "Single-Trial Visualization",
+        (
+            "Open an illustrative 2D visualization of either a randomly "
+            "retained Monte Carlo realization or an intentionally selected "
+            "high-impact realized case from this simulation run."
+        ),
+    )
+
+    with st.container(border=True):
+        st.caption(
+            "The Godot scene consumes an already-realized Python trial. "
+            "It does not rerun the model, resample the outcome, or simulate "
+            "physical collision dynamics."
+        )
+
+        visualizer_available = GODOT_BUILD_PATH.is_file()
+
+        if not visualizer_available:
+            st.warning(
+                "The optional standalone Godot visualizer is not installed "
+                "locally. The analytical dashboard and Monte Carlo results "
+                "remain fully available."
+            )
+
+            st.info(
+                "To enable the visualization buttons, download "
+                "`CapstoneAirstrikeVisualizer.exe` from the project's GitHub "
+                "Releases and place it at "
+                "`godot/builds/CapstoneAirstrikeVisualizer.exe`, then refresh "
+                "this page."
+            )
+
+        random_col, high_impact_col = st.columns(
+            2,
+            gap="medium",
+        )
+
+        with random_col:
+            st.markdown("#### Random realization")
+
+            st.caption(
+                "A randomly retained trial from the simulation run. "
+                "This is the default representative single-trial view."
+            )
+
+            if result.visual_trial is None:
+                st.info(
+                    "No random visual trial is available."
+                )
+
+            elif st.button(
+                "Visualize Random Trial",
+                key="launch_godot_random_visual_trial",
+                use_container_width=True,
+                disabled=not visualizer_available,
+            ):
+                try:
+                    exported_path = export_visual_trial(
+                        result,
+                        result.visual_trial,
+                    )
+
+                    launch_local_godot_project()
+
+                    st.success(
+                        "Godot visualizer launched using the retained random trial."
+                    )
+
+                    st.caption(
+                        f"Trial payload: {exported_path}"
+                    )
+
+                except Exception as exc:
+                    st.error(
+                        "The Godot visualizer could not be launched."
+                    )
+                    st.exception(exc)
+
+        with high_impact_col:
+            st.markdown("#### High-impact realized case")
+
+            st.caption(
+                "An intentionally selected consequential outcome from this "
+                "same run. Selection prioritizes realized severe damage, "
+                "then the number of realized damaged components."
+            )
+
+            if result.high_impact_visual_trial is None:
+                st.info(
+                    "No damaged trial occurred in this run, so a high-impact "
+                    "realized case is unavailable."
+                )
+
+            elif st.button(
+                "Visualize High-Impact Trial",
+                key="launch_godot_high_impact_visual_trial",
+                use_container_width=True,
+                disabled=not visualizer_available,
+            ):
+                try:
+                    exported_path = export_visual_trial(
+                        result,
+                        result.high_impact_visual_trial,
+                    )
+
+                    launch_local_godot_project()
+
+                    st.success(
+                        "Godot visualizer launched using the selected "
+                        "high-impact realized case."
+                    )
+
+                    st.caption(
+                        f"Trial payload: {exported_path}"
+                    )
+
+                except Exception as exc:
+                    st.error(
+                        "The Godot visualizer could not be launched."
+                    )
+                    st.exception(exc)
+
+        st.caption(
+            "The high-impact case is deliberately selected for illustration "
+            "and should not be interpreted as the typical or most likely "
+            "outcome. Both views remain schematic rather than physical "
+            "wildlife-strike simulations."
+        )
+
+
+elif result is not None:
+    st.info(
+        "The scenario or simulation settings have changed since the last run. "
+        "Run the Monte Carlo simulation again to refresh the results and "
+        "single-trial visualization."
+    )
+
