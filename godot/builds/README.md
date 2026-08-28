@@ -5,7 +5,11 @@ GitHub Releases and is not stored in normal Git history.
 
 Download:
 
-`CapstoneAirstrikeVisualizer.exe`
+[`CapstoneAirstrikeVisualizer.exe`](https://github.com/Gdhf/faa-wildlife-strike-damage-analysis/releases/download/v1.0.0/CapstoneAirstrikeVisualizer.exe)
+
+The full release page is available at:
+
+https://github.com/Gdhf/faa-wildlife-strike-damage-analysis/releases/tag/v1.0.0
 
 and place it in this directory:
 

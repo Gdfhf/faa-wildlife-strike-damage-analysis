@@ -116,11 +116,11 @@ The visualization represents scenario context such as aircraft class, aircraft m
 
 The visualizer is exported as a **Windows x86_64 standalone executable**. A user does not need to install the Godot editor to run the compiled visualizer.
 
-Because the compiled executable is approximately 145 MB, it is **not stored in normal Git history**. The precompiled build is distributed through the project's GitHub Releases.
+Because the compiled executable is approximately 145 MB, it is **not stored in normal Git history**. The precompiled build is distributed through the project's [GitHub Releases](https://github.com/Gdhf/faa-wildlife-strike-damage-analysis/releases/tag/v1.0.0).
 
 To enable the visualization buttons in a cloned repository:
 
-1. Download `CapstoneAirstrikeVisualizer.exe` from the project's latest GitHub Release.
+1. Download [`CapstoneAirstrikeVisualizer.exe`](https://github.com/Gdhf/faa-wildlife-strike-damage-analysis/releases/download/v1.0.0/CapstoneAirstrikeVisualizer.exe).
 2. Place the executable at:
 
    ```text
@@ -409,13 +409,12 @@ The optional Godot visualization is also implemented and integrated:
 - the Windows x86_64 standalone build has been exported and tested independently;
 - the exported application reads the external runtime JSON so newly generated Streamlit trials are reflected without rebuilding the executable;
 - Page 04 detects whether the standalone executable is installed and gracefully disables the visualization actions when it is absent;
-- the standalone build is planned for distribution through GitHub Releases rather than normal Git history.
+- the standalone Windows build is distributed through the project's GitHub Releases rather than normal Git history.
 
 Remaining work is primarily:
 
 - final regression and fresh-environment QA;
 - final documentation and attribution synchronization;
-- creation of the GitHub Release containing the Windows visualizer executable;
 - Streamlit Community Cloud deployment, if retained in the final delivery plan;
 - presentation/demo preparation.
 

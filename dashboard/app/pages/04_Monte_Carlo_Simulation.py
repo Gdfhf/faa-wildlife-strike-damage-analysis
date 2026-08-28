@@ -1296,10 +1296,18 @@ if (
 
             st.info(
                 "To enable the visualization buttons, download "
-                "`CapstoneAirstrikeVisualizer.exe` from the project's GitHub "
-                "Releases and place it at "
-                "`godot/builds/CapstoneAirstrikeVisualizer.exe`, then refresh "
-                "this page."
+                "`CapstoneAirstrikeVisualizer.exe` from the project release, place it at "
+                "`godot/builds/CapstoneAirstrikeVisualizer.exe`, then refresh this page."
+            )
+
+            st.link_button(
+                "Download Godot Visualizer",
+                (
+                    "https://github.com/Gdhf/"
+                    "faa-wildlife-strike-damage-analysis/"
+                    "releases/download/v1.0.0/"
+                    "CapstoneAirstrikeVisualizer.exe"
+                ),
             )
 
         random_col, high_impact_col = st.columns(
