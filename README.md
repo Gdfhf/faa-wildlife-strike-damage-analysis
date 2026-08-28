@@ -19,9 +19,10 @@ The project aims to:
 - model conditional damage severity and affected aircraft components where supported by the data;
 - use scenario-based Monte Carlo simulation to represent probabilistic consequence outcomes;
 - compare historically supported what-if scenarios under common simulation settings;
-- communicate historical, model, and simulation results through an interactive Streamlit dashboard.
+- communicate historical, model, and simulation results through an interactive Streamlit dashboard;
+- provide an optional Godot-based 2D visualization of already-realized Monte Carlo trials.
 
-An optional Godot visualization layer may be explored only if time remains. Scientific and predictive logic remains in Python.
+The Godot layer is a secondary illustrative interface only. Scientific, predictive, sampling, severity, and component-outcome logic remains in Python. Godot does not independently rerun the models or perform a physical collision simulation.
 
 ## Data Source
 
@@ -99,6 +100,49 @@ The application now uses an explicit **Home / landing page** plus six numbered a
 
 The **Home** page provides direct internal links to the recommended analytical and simulation pages and mirrors the numbered sidebar navigation.
 
+
+### Optional Godot single-trial visualizer
+
+Page 04 includes two optional visualization actions after a Monte Carlo simulation has completed:
+
+- **Visualize Random Trial** — displays a randomly retained realization from the current simulation run.
+- **Visualize High-Impact Trial** — displays an intentionally selected consequential realized case from the same run. Selection prioritizes realized severe damage and then the number of realized damaged components.
+
+Both visualizations consume a trial that has already been realized by the Python simulation engine. The Godot application does **not** rerun the model, resample the outcome, or simulate aircraft-wildlife collision physics.
+
+The visualization represents scenario context such as aircraft class, aircraft mass group, wildlife type/size, phase of flight, time of day, sky condition, precipitation, realized damage, severity, and modeled component outcomes using a schematic 2D scene with audio/visual effects.
+
+#### Standalone Windows build
+
+The visualizer is exported as a **Windows x86_64 standalone executable**. A user does not need to install the Godot editor to run the compiled visualizer.
+
+Because the compiled executable is approximately 145 MB, it is **not stored in normal Git history**. The precompiled build is distributed through the project's GitHub Releases.
+
+To enable the visualization buttons in a cloned repository:
+
+1. Download `CapstoneAirstrikeVisualizer.exe` from the project's latest GitHub Release.
+2. Place the executable at:
+
+   ```text
+   godot/builds/CapstoneAirstrikeVisualizer.exe
+   ```
+
+3. Run the Streamlit dashboard normally.
+4. On Page 04, run a supported Monte Carlo scenario.
+5. Select **Visualize Random Trial** or **Visualize High-Impact Trial**.
+
+When a visualization button is selected, Streamlit writes the selected realized trial to:
+
+```text
+godot/data/latest_trial.json
+```
+
+The standalone Godot executable reads that external JSON file at runtime and displays the current trial.
+
+If the executable is not present, Page 04 leaves the analytical dashboard fully functional, shows installation guidance, and disables the two visualization buttons rather than failing at launch.
+
+The precompiled visualizer currently targets Windows x86_64. The Godot source project and export preset remain in the repository so the visualization can be inspected, reproduced, or exported for another supported platform if required.
+
 ### Important simulation behavior
 
 Required scenario context includes:
@@ -151,6 +195,17 @@ faa-wildlife-strike-damage-analysis/
 │   ├── raw/                           # Raw source data (not tracked by Git)
 │   ├── processed/                     # Large processed research data ignored
 │   └── dashboard/                     # Lightweight dashboard artifacts allowed
+│
+├── godot/
+│   ├── assets/                        # Aircraft, wildlife, environment, effect, and audio assets
+│   ├── builds/                        # Local standalone exports (compiled binary ignored by Git)
+│   ├── data/
+│   │   └── latest_trial.json          # Runtime payload written by Streamlit
+│   ├── scenes/                        # Godot scenes
+│   ├── scripts/                       # Visualization controllers and trial loader
+│   ├── ATTRIBUTION.md                 # Third-party asset/audio attribution
+│   ├── export_presets.cfg             # Reproducible Godot export configuration
+│   └── project.godot                  # Godot project definition
 │
 ├── models/
 │   ├── candidates/                    # Candidate binaries generally ignored
@@ -260,6 +315,14 @@ A teammate who only wants to **run the dashboard** should not need the large raw
 - the Python source under `src/`;
 - the Streamlit files under `dashboard/`.
 
+The optional Godot single-trial visualization additionally requires the standalone Windows executable at:
+
+```text
+godot/builds/CapstoneAirstrikeVisualizer.exe
+```
+
+If that file is absent, the dashboard still runs normally; Page 04 disables only the visualization buttons and provides instructions for obtaining the build from GitHub Releases.
+
 If the lightweight dashboard artifacts are missing, regenerate them from the canonical analytical dataset with:
 
 ```bash
@@ -303,11 +366,15 @@ The repository intentionally does **not** track:
 - the large canonical processed CSV;
 - general Parquet/Feather/Pickle artifacts;
 - candidate model binaries;
+- Godot-generated cache/import data;
+- compiled Godot builds such as `godot/builds/CapstoneAirstrikeVisualizer.exe`;
 - logs, caches, virtual environments, and local secrets.
 
 Exceptions are made for the small runtime artifacts and final trained-model files required to reproduce the current Streamlit dashboard.
 
-This separation keeps the repository practical while allowing teammates to run the operational application without rebuilding the full analytical workflow.
+The Godot source project, assets, scripts, attribution, and `export_presets.cfg` are version controlled for reproducibility. The much larger precompiled Windows executable is distributed separately through GitHub Releases rather than normal Git history.
+
+This separation keeps the repository practical while allowing teammates to reproduce the analytical application and optionally install the precompiled visualization without installing Godot.
 
 ## Current Project Status
 
@@ -334,13 +401,23 @@ The Streamlit dashboard is now **functionally and visually complete for the caps
 - responsive desktop/mobile presentation has been checked during development;
 - shared layout, chart, metric, and theme helpers are in use across the dashboard.
 
+The optional Godot visualization is also implemented and integrated:
+
+- Page 04 can export either a randomly retained trial or an intentionally selected high-impact realized trial;
+- the visualization consumes the Python-generated `latest_trial.json` payload rather than reproducing analytical logic in Godot;
+- aircraft, wildlife, weather, damage, outcome, and audio presentation are implemented;
+- the Windows x86_64 standalone build has been exported and tested independently;
+- the exported application reads the external runtime JSON so newly generated Streamlit trials are reflected without rebuilding the executable;
+- Page 04 detects whether the standalone executable is installed and gracefully disables the visualization actions when it is absent;
+- the standalone build is planned for distribution through GitHub Releases rather than normal Git history.
+
 Remaining work is primarily:
 
 - final regression and fresh-environment QA;
-- final documentation synchronization;
-- Streamlit Community Cloud deployment;
-- presentation/demo preparation;
-- optional Godot visualization only if time remains.
+- final documentation and attribution synchronization;
+- creation of the GitHub Release containing the Windows visualizer executable;
+- Streamlit Community Cloud deployment, if retained in the final delivery plan;
+- presentation/demo preparation.
 
 ## Interpretation Notes
 
@@ -382,6 +459,8 @@ This project is an academic analytical investigation based on historical reporte
 Model and simulation outputs are conditional, probabilistic estimates. They should not be interpreted as predictions that a specific flight will experience a wildlife strike, as physical simulations of aircraft-wildlife impacts, or as operational aviation safety thresholds.
 
 The project is not intended to replace FAA guidance, aircraft inspections, wildlife-management practices, or professional aviation safety and operational decision-making.
+
+The Godot visualization is schematic and illustrative. Visual/audio effects communicate the already-realized Python trial and should not be interpreted as a physical reconstruction of a wildlife strike or as an engineering damage simulation.
 
 ## License
 

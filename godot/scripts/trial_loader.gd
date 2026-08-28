@@ -1,16 +1,29 @@
 class_name TrialLoader
 extends RefCounted
 
-const TRIAL_PATH := "res://data/latest_trial.json"
+
+static func get_trial_path() -> String:
+	if OS.has_feature("editor"):
+		return "res://data/latest_trial.json"
+
+	var executable_dir := OS.get_executable_path().get_base_dir()
+
+	return executable_dir.path_join(
+		"../data/latest_trial.json"
+	).simplify_path()
 
 
 static func load_trial() -> Dictionary:
-	if not FileAccess.file_exists(TRIAL_PATH):
-		push_error("Trial JSON not found: %s" % TRIAL_PATH)
+	var trial_path := get_trial_path()
+
+	if not FileAccess.file_exists(trial_path):
+		push_error(
+			"Trial JSON not found: %s" % trial_path
+		)
 		return {}
 
 	var file := FileAccess.open(
-		TRIAL_PATH,
+		trial_path,
 		FileAccess.READ
 	)
 
@@ -27,7 +40,9 @@ static func load_trial() -> Dictionary:
 		return {}
 
 	if not parsed is Dictionary:
-		push_error("Trial JSON root must be a Dictionary.")
+		push_error(
+			"Trial JSON root must be a Dictionary."
+		)
 		return {}
 
 	return parsed

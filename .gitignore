@@ -166,7 +166,10 @@ logs/
 
 # Exported builds
 exports/
-builds/
+
+# Ignore compiled Godot builds, but keep installation instructions
+godot/builds/*
+!godot/builds/README.md
 
 
 # =========================

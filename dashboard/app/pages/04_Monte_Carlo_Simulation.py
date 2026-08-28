@@ -4,9 +4,7 @@ from __future__ import annotations
 
 from dataclasses import asdict
 import json
-import os
 from pathlib import Path
-import shutil
 import subprocess
 
 import pandas as pd
@@ -235,6 +233,11 @@ PLOTLY_CONFIG = {
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 GODOT_PROJECT_DIR = PROJECT_ROOT / "godot"
 GODOT_TRIAL_PATH = GODOT_PROJECT_DIR / "data" / "latest_trial.json"
+GODOT_BUILD_PATH = (
+    GODOT_PROJECT_DIR
+    / "builds"
+    / "CapstoneAirstrikeVisualizer.exe"
+)
 
 
 def simulation_run_signature(scenario, n_trials, seed):
@@ -281,46 +284,18 @@ def export_visual_trial(result, visual_trial):
     return GODOT_TRIAL_PATH
 
 
-def find_godot_executable():
-    """Resolve a local Godot executable without hard-coding one machine path."""
-    configured = os.environ.get("GODOT_EXECUTABLE")
-
-    if configured:
-        configured_path = Path(configured).expanduser()
-        if configured_path.is_file():
-            return configured_path
-
-    for command in ("godot", "godot4"):
-        resolved = shutil.which(command)
-        if resolved:
-            return Path(resolved)
-
-    return None
-
 
 def launch_local_godot_project():
-    """Launch the local Godot project so it reads the newly exported JSON."""
-    godot_executable = find_godot_executable()
+    """Launch the exported standalone Godot visualizer."""
 
-    if godot_executable is None:
+    if not GODOT_BUILD_PATH.is_file():
         raise FileNotFoundError(
-            "Godot could not be located. Set the GODOT_EXECUTABLE environment "
-            "variable to the full path of godot.exe, or add Godot to PATH."
-        )
-
-    project_file = GODOT_PROJECT_DIR / "project.godot"
-
-    if not project_file.is_file():
-        raise FileNotFoundError(
-            f"Godot project file was not found at: {project_file}"
+            "Godot visualizer executable was not found at: "
+            f"{GODOT_BUILD_PATH}"
         )
 
     subprocess.Popen(
-        [
-            str(godot_executable),
-            "--path",
-            str(GODOT_PROJECT_DIR),
-        ],
+        [str(GODOT_BUILD_PATH)],
         cwd=str(GODOT_PROJECT_DIR),
     )
 
@@ -1310,6 +1285,23 @@ if (
             "physical collision dynamics."
         )
 
+        visualizer_available = GODOT_BUILD_PATH.is_file()
+
+        if not visualizer_available:
+            st.warning(
+                "The optional standalone Godot visualizer is not installed "
+                "locally. The analytical dashboard and Monte Carlo results "
+                "remain fully available."
+            )
+
+            st.info(
+                "To enable the visualization buttons, download "
+                "`CapstoneAirstrikeVisualizer.exe` from the project's GitHub "
+                "Releases and place it at "
+                "`godot/builds/CapstoneAirstrikeVisualizer.exe`, then refresh "
+                "this page."
+            )
+
         random_col, high_impact_col = st.columns(
             2,
             gap="medium",
@@ -1332,6 +1324,7 @@ if (
                 "Visualize Random Trial",
                 key="launch_godot_random_visual_trial",
                 use_container_width=True,
+                disabled=not visualizer_available,
             ):
                 try:
                     exported_path = export_visual_trial(
@@ -1374,6 +1367,7 @@ if (
                 "Visualize High-Impact Trial",
                 key="launch_godot_high_impact_visual_trial",
                 use_container_width=True,
+                disabled=not visualizer_available,
             ):
                 try:
                     exported_path = export_visual_trial(
