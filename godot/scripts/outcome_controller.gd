@@ -1,4 +1,4 @@
-extends ColorRect
+extends Panel
 
 @onready var outcome_label: Label = $OutcomeLabel
 

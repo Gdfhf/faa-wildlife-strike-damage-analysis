@@ -6,6 +6,20 @@
 [ext_resource type="Script" uid="uid://dbvyyvw1guwhh" path="res://scripts/aircraft_controller.gd" id="3_vcsgt"]
 [ext_resource type="Script" uid="uid://3pxe21tws3gc" path="res://scripts/outcome_controller.gd" id="4_rarhs"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_velac"]
+bg_color = Color(0.30359998, 0.45210007, 0.66, 0.74509805)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wj7bd"]
+bg_color = Color(0.08627451, 0.24313726, 0.36078432, 0.91764706)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vcsgt"]
 bg_color = Color(0.4238027, 0.6928419, 0.32255232, 1)
 
@@ -17,6 +31,13 @@ bg_color = Color(0.42, 0.08399999, 0.08399999, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jlsqs"]
 bg_color = Color(0.9128024, 0.2804948, 0.265733, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pnlk3"]
+bg_color = Color(0.4862745, 0.627451, 0.7490196, 0.7607843)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [node name="Main" type="Control" unique_id=1425735014]
 layout_mode = 3
@@ -136,13 +157,13 @@ offset_right = 274.0
 offset_bottom = 487.0
 color = Color(0.71, 0.71, 0.71, 1)
 
-[node name="TrialInfoPanel" type="ColorRect" parent="." unique_id=664966254]
+[node name="TrialInfoPanel" type="Panel" parent="." unique_id=942614387]
 layout_mode = 0
 offset_left = 64.0
 offset_top = 87.0
 offset_right = 381.0
 offset_bottom = 324.0
-color = Color(0.35999998, 0.4, 0.39733335, 0.7176471)
+theme_override_styles/panel = SubResource("StyleBoxFlat_velac")
 
 [node name="TrialInfo" type="Label" parent="TrialInfoPanel" unique_id=1859819502]
 layout_mode = 1
@@ -158,7 +179,7 @@ grow_vertical = 2
 text = "Waiting for trial data..."
 autowrap_mode = 3
 
-[node name="WeatherPanel" type="ColorRect" parent="." unique_id=1388497053]
+[node name="WeatherPanel" type="Panel" parent="." unique_id=1750260770]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -168,7 +189,7 @@ offset_top = 22.0
 offset_right = 150.0
 offset_bottom = 80.0
 grow_horizontal = 2
-color = Color(0.08640001, 0.24144, 0.36, 0.91764706)
+theme_override_styles/panel = SubResource("StyleBoxFlat_wj7bd")
 
 [node name="WeatherLabel" type="Label" parent="WeatherPanel" unique_id=1546050211]
 layout_mode = 1
@@ -221,13 +242,13 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_nxtc6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_jlsqs")
 text = "[ Exit Trial ]"
 
-[node name="OutcomePanel" type="ColorRect" parent="." unique_id=1668352450]
+[node name="OutcomePanel" type="Panel" parent="." unique_id=1742524783]
 layout_mode = 0
 offset_left = 801.0
 offset_top = 324.0
 offset_right = 1091.0
 offset_bottom = 585.0
-color = Color(0.4894573, 0.6298179, 0.75477827, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_pnlk3")
 script = ExtResource("4_rarhs")
 
 [node name="OutcomeLabel" type="Label" parent="OutcomePanel" unique_id=1875805165]
