@@ -1,6 +1,5 @@
 extends Control
 
-@onready var placeholder: ColorRect = $Placeholder
 @onready var damage_marker: Panel = (
 	$DamageEffects/DamageMarker
 )
@@ -273,35 +272,6 @@ func get_aircraft_visual_type(
 			return "unknown"
 
 
-func apply_placeholder_presentation() -> void:
-	# Placeholder-only presentation.
-	# When real assets are added later, this function can be replaced
-	# by sprite/texture selection without changing Main.
-
-	match aircraft_visual_type:
-		"airplane":
-			size = Vector2(
-				180,
-				50
-			)
-
-			placeholder.size = size
-
-		"helicopter":
-			size = Vector2(
-				120,
-				70
-			)
-
-			placeholder.size = size
-
-		_:
-			size = Vector2(
-				140,
-				55
-			)
-
-			placeholder.size = size
 
 func get_ground_contact_offset() -> float:
 	match aircraft_visual_type:

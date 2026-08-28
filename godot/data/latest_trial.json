@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "simulation": {
     "n_trials": 10000,
-    "seed": 42
+    "seed": 50
   },
   "visual_trial": {
-    "trial_index": 6379,
+    "trial_index": 8654,
     "scenario": {
       "ac_class": "A",
       "ac_mass_group": "Light",
@@ -27,7 +27,7 @@
       "state": null
     },
     "sampled_context": {
-      "AIRPORT_ID": "KHOU",
+      "AIRPORT_ID": "KRVS",
       "FAAREGION": "ASW",
       "AC_CLASS": "A",
       "AC_MASS_GROUP": "Light",
@@ -36,17 +36,17 @@
       "WILDLIFE_TYPE": "Bird",
       "SIZE": "Small",
       "NUM_STRUCK": "1",
-      "TYPE_ENG": "C",
-      "NUM_ENGS": 2.0,
-      "WARNED": "Unknown",
-      "HEIGHT": null,
-      "SPEED": null,
-      "TIME_OF_DAY": "Not reported",
-      "SKY": "Overcast",
-      "PRECIPITATION": "Not Reported",
-      "STATE": "TX"
+      "TYPE_ENG": "A",
+      "NUM_ENGS": 1.0,
+      "WARNED": "No",
+      "HEIGHT": 800.0,
+      "SPEED": 85.0,
+      "TIME_OF_DAY": "Day",
+      "SKY": "Not reported",
+      "PRECIPITATION": "Not reported",
+      "STATE": "OK"
     },
-    "damage_probability": 0.03512084484100342,
+    "damage_probability": 0.056296296417713165,
     "damaged": false,
     "severity_probability": null,
     "severe": null,
