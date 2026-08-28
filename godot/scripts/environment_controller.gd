@@ -79,21 +79,27 @@ func configure_phase_of_flight(
 			ground.visible = true
 			aircraft.position = Vector2(
 				120,
-				ground.position.y - aircraft.size.y
+				ground.position.y \
+				- aircraft.size.y \
+				+ aircraft.get_ground_contact_offset()
 			)
 
 		"Landing Roll":
 			ground.visible = true
 			aircraft.position = Vector2(
 				320,
-				ground.position.y - aircraft.size.y
+				ground.position.y \
+				- aircraft.size.y \
+				+ aircraft.get_ground_contact_offset()
 			)
 
 		"Taxi":
 			ground.visible = true
 			aircraft.position = Vector2(
 				180,
-				ground.position.y - aircraft.size.y
+				ground.position.y \
+				- aircraft.size.y \
+				+ aircraft.get_ground_contact_offset()
 			)
 
 		"Climb":
@@ -106,13 +112,13 @@ func configure_phase_of_flight(
 		"Approach":
 			ground.visible = true
 			aircraft.position = Vector2(
-				520,
+				320,
 				ground.position.y - 220
 			)
 
 		"Descent":
 			aircraft.position = Vector2(
-				500,
+				400,
 				270
 			)
 

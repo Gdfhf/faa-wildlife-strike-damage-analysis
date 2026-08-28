@@ -6,11 +6,33 @@ extends Control
 @onready var outcome_controller: Control = $OutcomePanel
 
 @onready var ground: ColorRect = $Environment/Ground
-@onready var impact_effect: ColorRect = $ImpactEffect
+@onready var impact_effect: Polygon2D = $ImpactEffect
 @onready var trial_info: Label = $TrialInfoPanel/TrialInfo
 @onready var weather_label: Label = $WeatherPanel/WeatherLabel
 @onready var play_button: Button = $PlayButton
 @onready var exit_button: Button = $ExitButton
+
+@onready var engine_audio: AudioStreamPlayer = $EngineAudio
+@onready var rain_audio: AudioStreamPlayer = $RainAudio
+@onready var impact_audio: AudioStreamPlayer = $ImpactAudio
+@onready var snow_audio: AudioStreamPlayer = $SnowAudio
+@onready var button_audio: AudioStreamPlayer = $ButtonAudio
+
+const ENGINE_NORMAL_DB := -5.0
+const ENGINE_DUCKED_DB := -14.0
+
+const RAIN_NORMAL_DB := -3.0
+const RAIN_DUCKED_DB := -18.0
+
+const SNOW_NORMAL_DB := 0.0
+const SNOW_DUCKED_DB := -12.0
+
+const IMPACT_AUDIO_START := 0.5
+const IMPACT_DUCK_TIME := 3.0
+const IMPACT_AUDIO_CUTOFF := 12.0
+
+const IMPACT_NORMAL_DB := -3.0
+const IMPACT_FADED_DB := -20.0
 
 var visual_trial: Dictionary = {}
 var sampled_context: Dictionary = {}
@@ -37,6 +59,7 @@ func get_aircraft_class_label(
 
 func _ready() -> void:
 	impact_effect.visible = false
+	configure_impact_shape()
 
 	if not load_trial():
 		return
@@ -47,6 +70,9 @@ func _ready() -> void:
 
 	update_trial_info()
 	prepare_scene()
+	configure_weather_audio(
+		sampled_context
+	)
 
 	play_button.text = "Play Trial"
 	play_button.visible = true
@@ -69,12 +95,20 @@ func _ready() -> void:
 		)
 
 func _on_play_button_pressed() -> void:
+	button_audio.stop()
+	button_audio.play()
+
 	play_button.visible = false
 	play_button.disabled = true
 	exit_button.visible = false
 	exit_button.disabled = true
 
+	stop_trial_audio()
 	prepare_scene()
+
+	engine_audio.play(
+		225.0
+	)
 
 	await get_tree().create_timer(
 		0.5
@@ -83,7 +117,13 @@ func _on_play_button_pressed() -> void:
 	await play_trial_animation()
 
 	await get_tree().create_timer(
-		1.5
+		3.5
+	).timeout
+
+	engine_audio.stop()
+
+	await get_tree().create_timer(
+		1.0
 	).timeout
 
 	play_button.text = "Replay Trial"
@@ -93,6 +133,13 @@ func _on_play_button_pressed() -> void:
 	exit_button.disabled = false
 
 func _on_exit_button_pressed() -> void:
+	button_audio.stop()
+	button_audio.play()
+
+	await get_tree().create_timer(
+		0.08
+	).timeout
+
 	get_tree().quit()
 
 func load_trial() -> bool:
@@ -281,9 +328,119 @@ func show_impact() -> void:
 
 	impact_effect.visible = true
 	outcome_controller.show_impact()
+	
+	play_impact_audio()
 
 	await get_tree().create_timer(
 		0.35
 	).timeout
 
 	impact_effect.visible = false
+
+func configure_impact_shape() -> void:
+	impact_effect.polygon = PackedVector2Array([
+		Vector2(0, -38),
+		Vector2(9, -18),
+		Vector2(28, -28),
+		Vector2(18, -8),
+		Vector2(38, 0),
+		Vector2(18, 8),
+		Vector2(28, 28),
+		Vector2(9, 18),
+		Vector2(0, 38),
+		Vector2(-9, 18),
+		Vector2(-28, 28),
+		Vector2(-18, 8),
+		Vector2(-38, 0),
+		Vector2(-18, -8),
+		Vector2(-28, -28),
+		Vector2(-9, -18),
+	])
+
+func stop_trial_audio() -> void:
+	engine_audio.stop()
+	impact_audio.stop()
+
+func duck_background_audio() -> void:
+	engine_audio.volume_db = ENGINE_DUCKED_DB
+	rain_audio.volume_db = RAIN_DUCKED_DB
+	snow_audio.volume_db = SNOW_DUCKED_DB
+
+
+func restore_background_audio() -> void:
+	if engine_audio.playing:
+		engine_audio.volume_db = ENGINE_NORMAL_DB
+
+	if rain_audio.playing:
+		rain_audio.volume_db = RAIN_NORMAL_DB
+
+	if snow_audio.playing:
+		snow_audio.volume_db = SNOW_NORMAL_DB
+
+func configure_weather_audio(
+	sampled_context: Dictionary
+) -> void:
+	rain_audio.stop()
+	snow_audio.stop()
+
+	var precipitation = str(
+		sampled_context.get(
+			"PRECIPITATION",
+			"Not reported"
+		)
+	).to_lower()
+
+	if "rain" in precipitation:
+		rain_audio.play()
+
+	if "snow" in precipitation:
+		snow_audio.play()
+
+func play_impact_audio() -> void:
+	impact_audio.stop()
+
+	impact_audio.volume_db = IMPACT_NORMAL_DB
+
+	# Skip the leading section so the audible hit aligns
+	# closely with the visual impact burst.
+	impact_audio.play(
+		IMPACT_AUDIO_START
+	)
+
+	duck_background_audio()
+
+	# After the initial hit, bring engine/weather back
+	# while fading the long impact reverb into the background.
+	get_tree().create_timer(
+		IMPACT_DUCK_TIME
+	).timeout.connect(
+		_restore_audio_after_impact
+	)
+
+	# Stop the otherwise ~60-second source after its useful
+	# impact/reverb section.
+	get_tree().create_timer(
+		IMPACT_AUDIO_CUTOFF
+	).timeout.connect(
+		_stop_impact_audio
+	)
+
+func _restore_audio_after_impact() -> void:
+	restore_background_audio()
+
+	if impact_audio.playing:
+		var tween := create_tween()
+
+		tween.tween_property(
+			impact_audio,
+			"volume_db",
+			IMPACT_FADED_DB,
+			1.5
+		)
+
+
+func _stop_impact_audio() -> void:
+	if impact_audio.playing:
+		impact_audio.stop()
+
+	impact_audio.volume_db = IMPACT_NORMAL_DB

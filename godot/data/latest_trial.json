@@ -5,14 +5,14 @@
     "seed": 42
   },
   "visual_trial": {
-    "trial_index": 281,
+    "trial_index": 6379,
     "scenario": {
       "ac_class": "A",
-      "ac_mass_group": "Heavy",
-      "season": "Summer",
+      "ac_mass_group": "Light",
+      "season": "Autumn",
       "phase_of_flight": "Approach",
-      "airport_id": "KDEN",
-      "faa_region": null,
+      "airport_id": null,
+      "faa_region": "ASW",
       "wildlife_type": null,
       "size": null,
       "num_struck": null,
@@ -27,42 +27,30 @@
       "state": null
     },
     "sampled_context": {
-      "AIRPORT_ID": "KDEN",
-      "FAAREGION": "ANM",
+      "AIRPORT_ID": "KHOU",
+      "FAAREGION": "ASW",
       "AC_CLASS": "A",
-      "AC_MASS_GROUP": "Heavy",
-      "SEASON": "Summer",
+      "AC_MASS_GROUP": "Light",
+      "SEASON": "Autumn",
       "PHASE_OF_FLIGHT": "Approach",
-      "WILDLIFE_TYPE": "Other wildlife",
-      "SIZE": "Medium",
-      "NUM_STRUCK": "2–10",
-      "TYPE_ENG": "D",
+      "WILDLIFE_TYPE": "Bird",
+      "SIZE": "Small",
+      "NUM_STRUCK": "1",
+      "TYPE_ENG": "C",
       "NUM_ENGS": 2.0,
       "WARNED": "Unknown",
-      "HEIGHT": 5500.0,
-      "SPEED": 350.0,
-      "TIME_OF_DAY": "Day",
-      "SKY": "No Cloud",
-      "PRECIPITATION": "Not reported",
-      "STATE": "CO"
+      "HEIGHT": null,
+      "SPEED": null,
+      "TIME_OF_DAY": "Not reported",
+      "SKY": "Overcast",
+      "PRECIPITATION": "Not Reported",
+      "STATE": "TX"
     },
-    "damage_probability": 0.517241358757019,
-    "damaged": true,
-    "severity_probability": 0.5299567580223083,
-    "severe": true,
-    "component_probabilities": {
-      "engine_damage": 0.06521739130434782,
-      "forward_cockpit_damage": 0.6067430811430683,
-      "landing_gear_damage": 0.0341223320807067,
-      "propeller_damage": 0.0,
-      "wing_rotor_damage": 0.24389063244035794
-    },
-    "component_outcomes": {
-      "engine_damage": false,
-      "forward_cockpit_damage": true,
-      "landing_gear_damage": false,
-      "propeller_damage": false,
-      "wing_rotor_damage": true
-    }
+    "damage_probability": 0.03512084484100342,
+    "damaged": false,
+    "severity_probability": null,
+    "severe": null,
+    "component_probabilities": {},
+    "component_outcomes": {}
   }
 }

@@ -1,12 +1,38 @@
 extends Control
 
 @onready var wildlife: Control = $Wildlife
-@onready var wildlife_placeholder: ColorRect = (
-	$Wildlife/Placeholder
-)
+@onready var visual: TextureRect = $Wildlife/Visual
 
 var wildlife_nodes: Array[Control] = []
 var movement_mode: String = "generic"
+
+const LARGE_BIRD = preload(
+	"res://assets/wildlife/bird/canadian_goose.png"
+)
+
+const MEDIUM_BIRD = preload(
+	"res://assets/wildlife/generic/flying swallow.png"
+)
+
+const SMALL_BIRD = preload(
+	"res://assets/wildlife/generic/flying swallow.png"
+)
+
+const GENERIC = preload(
+	"res://assets/wildlife/generic/flying swallow.png"
+)
+
+const TERRESTRIAL_MAMMAL = preload(
+	"res://assets/wildlife/terrestrial/high_res_deer.png"
+)
+
+const REPTILE = preload(
+	"res://assets/wildlife/reptile/snake.png"
+)
+
+const BAT = preload(
+	"res://assets/wildlife/bat/bat.png"
+)
 
 
 func configure_wildlife(
@@ -20,6 +46,12 @@ func configure_wildlife(
 		sampled_context.get(
 			"WILDLIFE_TYPE",
 			"Unknown"
+		)
+	)
+
+	var ground_contact_offset = (
+		get_ground_contact_offset(
+			wildlife_type
 		)
 	)
 
@@ -57,12 +89,18 @@ func configure_wildlife(
 	)
 
 	wildlife.size = wildlife_size
-	wildlife_placeholder.size = wildlife_size
+
+	apply_wildlife_visual(
+		wildlife_type,
+		size_category,
+		wildlife_size
+	)
 
 	wildlife.position = get_wildlife_start_position(
 		aircraft,
 		phase,
-		ground_y
+		ground_y,
+		ground_contact_offset
 	)
 
 	wildlife.visible = true
@@ -96,6 +134,68 @@ func configure_wildlife(
 		)
 
 
+func apply_wildlife_visual(
+	wildlife_type: String,
+	size_category: String,
+	wildlife_size: Vector2
+) -> void:
+	var flip_horizontal := false
+
+	match wildlife_type.to_lower():
+		"bird":
+			match size_category.to_lower():
+				"large":
+					visual.texture = LARGE_BIRD
+
+				"medium":
+					visual.texture = MEDIUM_BIRD
+
+				"small":
+					visual.texture = SMALL_BIRD
+
+				_:
+					visual.texture = MEDIUM_BIRD
+
+			# Bird assets face right; wildlife approaches from the right
+			# and therefore needs to face left.
+			flip_horizontal = true
+
+		"bat":
+			visual.texture = BAT
+
+			# The bat asset already faces left.
+			flip_horizontal = false
+
+		"terrestrial mammal":
+			visual.texture = TERRESTRIAL_MAMMAL
+			flip_horizontal = true
+
+		"reptile":
+			visual.texture = REPTILE
+			flip_horizontal = true
+
+		_:
+			visual.texture = GENERIC
+			flip_horizontal = true
+
+	visual.position = Vector2.ZERO
+	visual.size = wildlife_size
+
+	# Flip around the visual center so orientation changes do not
+	# shift the wildlife away from its movement/impact coordinates.
+	visual.pivot_offset = (
+		visual.size / 2.0
+	)
+
+	visual.scale = Vector2(
+		1.0,
+		1.0
+	)
+
+	if flip_horizontal:
+		visual.scale.x = -1.0
+
+
 func get_wildlife_movement_mode(
 	wildlife_type: String
 ) -> String:
@@ -113,7 +213,8 @@ func get_wildlife_movement_mode(
 func get_wildlife_start_position(
 	aircraft: Control,
 	phase: String,
-	ground_y: float
+	ground_y: float,
+	ground_contact_offset: float
 ) -> Vector2:
 	match movement_mode:
 		"airborne":
@@ -127,7 +228,9 @@ func get_wildlife_start_position(
 		"ground":
 			return Vector2(
 				aircraft.position.x + 320,
-				ground_y - wildlife.size.y
+				ground_y
+				- wildlife.size.y
+				+ ground_contact_offset
 			)
 
 		_:
@@ -138,6 +241,18 @@ func get_wildlife_start_position(
 				aircraft.position.y - 80
 			)
 
+func get_ground_contact_offset(
+	wildlife_type: String
+) -> float:
+	match wildlife_type.to_lower():
+		"terrestrial mammal":
+			return 15.0
+
+		"reptile":
+			return 20.0
+
+		_:
+			return 0.0
 
 func get_airborne_start_offset(
 	phase: String
@@ -189,26 +304,26 @@ func get_wildlife_size(
 	match size_category.to_lower():
 		"small":
 			return Vector2(
-				18,
-				18
+				42,
+				42
 			)
 
 		"medium":
 			return Vector2(
-				30,
-				30
+				62,
+				62
 			)
 
 		"large":
 			return Vector2(
-				45,
-				45
+				88,
+				88
 			)
 
 		_:
 			return Vector2(
-				25,
-				25
+				52,
+				52
 			)
 
 
@@ -241,15 +356,15 @@ func get_group_offset(
 ) -> Vector2:
 	if mode == "ground":
 		var ground_offsets = [
-			Vector2(35, 0),
-			Vector2(70, 0),
-			Vector2(105, 0),
-			Vector2(140, 0),
-			Vector2(175, 0),
-			Vector2(210, 0),
-			Vector2(245, 0),
-			Vector2(280, 0),
-			Vector2(315, 0),
+			Vector2(55, 0),
+			Vector2(110, 0),
+			Vector2(165, 0),
+			Vector2(220, 0),
+			Vector2(275, 0),
+			Vector2(330, 0),
+			Vector2(385, 0),
+			Vector2(440, 0),
+			Vector2(495, 0),
 		]
 
 		return ground_offsets[
@@ -257,15 +372,15 @@ func get_group_offset(
 		]
 
 	var airborne_offsets = [
-		Vector2(35, -20),
-		Vector2(50, 15),
-		Vector2(75, -35),
-		Vector2(90, 5),
-		Vector2(110, -15),
-		Vector2(125, 25),
-		Vector2(145, -30),
-		Vector2(160, 10),
-		Vector2(180, -5),
+		Vector2(55, -30),
+		Vector2(75, 25),
+		Vector2(110, -50),
+		Vector2(135, 10),
+		Vector2(165, -25),
+		Vector2(190, 35),
+		Vector2(220, -45),
+		Vector2(245, 15),
+		Vector2(275, -10),
 	]
 
 	return airborne_offsets[
