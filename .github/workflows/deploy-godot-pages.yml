@@ -3,7 +3,7 @@ name: Deploy Godot Web Visualizer
 on:
   push:
     branches:
-      - web-hosting
+      - main
     paths:
       - "simulation/web_visualizer/**"
       - ".github/workflows/deploy-godot-pages.yml"
