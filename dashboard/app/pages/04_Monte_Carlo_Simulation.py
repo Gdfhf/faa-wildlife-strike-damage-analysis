@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import base64
 from dataclasses import asdict
 import json
-from pathlib import Path
 import subprocess
 
 import pandas as pd
@@ -37,7 +37,12 @@ from src.utils.runtime import (
     debug_errors_enabled,
     get_max_monte_carlo_trials
 )
-
+from src.utils.paths import (
+    GODOT_BUILD_PATH,
+    GODOT_DIR,
+    GODOT_TRIAL_PATH,
+    GODOT_WEB_URL,
+)
 
 # =====================================================================
 # Helpers
@@ -231,18 +236,25 @@ PLOTLY_CONFIG = {
 
 
 # =====================================================================
-# Local Godot visualization bridge
+# Godot visualization bridge
 # =====================================================================
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-GODOT_PROJECT_DIR = PROJECT_ROOT / "godot"
-GODOT_TRIAL_PATH = GODOT_PROJECT_DIR / "data" / "latest_trial.json"
-GODOT_BUILD_PATH = (
-    GODOT_PROJECT_DIR
-    / "builds"
-    / "CapstoneAirstrikeVisualizer.exe"
-)
+def build_visual_trial_payload(result, visual_trial):
+    """Build the shared payload consumed by the Godot visualizer."""
+    if visual_trial is None:
+        raise ValueError(
+            "The simulation result does not contain "
+            "the requested visual trial."
+        )
 
+    return {
+        "schema_version": "1.0",
+        "simulation": {
+            "n_trials": result.n_trials,
+            "seed": result.seed,
+        },
+        "visual_trial": asdict(visual_trial),
+    }
 
 def simulation_run_signature(scenario, n_trials, seed):
     """Return the inputs that define the currently displayed simulation run."""
@@ -254,25 +266,16 @@ def simulation_run_signature(scenario, n_trials, seed):
 
 
 def export_visual_trial(result, visual_trial):
-    """Write one retained visualization trial for the local Godot project."""
-    if visual_trial is None:
-        raise ValueError(
-            "The simulation result does not contain the requested visual trial."
-        )
+    """Write one retained visualization trial for local Godot."""
+    payload = build_visual_trial_payload(
+        result,
+        visual_trial,
+    )
 
     GODOT_TRIAL_PATH.parent.mkdir(
         parents=True,
         exist_ok=True,
     )
-
-    payload = {
-        "schema_version": "1.0",
-        "simulation": {
-            "n_trials": result.n_trials,
-            "seed": result.seed,
-        },
-        "visual_trial": asdict(visual_trial),
-    }
 
     with GODOT_TRIAL_PATH.open(
         "w",
@@ -287,7 +290,32 @@ def export_visual_trial(result, visual_trial):
 
     return GODOT_TRIAL_PATH
 
+def build_web_visualizer_url(
+    result,
+    visual_trial,
+):
+    """Build a hosted Godot Web URL containing one retained trial."""
+    payload = build_visual_trial_payload(
+        result,
+        visual_trial,
+    )
 
+    json_bytes = json.dumps(
+        payload,
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+    encoded_payload = (
+        base64.urlsafe_b64encode(json_bytes)
+        .decode("ascii")
+        .rstrip("=")
+    )
+
+    return (
+        f"{GODOT_WEB_URL}"
+        f"?trial={encoded_payload}"
+    )
 
 def launch_local_godot_project():
     """Launch the exported standalone Godot visualizer."""
@@ -300,7 +328,7 @@ def launch_local_godot_project():
 
     subprocess.Popen(
         [str(GODOT_BUILD_PATH)],
-        cwd=str(GODOT_PROJECT_DIR),
+        cwd=str(GODOT_DIR),
     )
 
 
@@ -1292,35 +1320,29 @@ if (
             "physical collision dynamics."
         )
 
-        visualizer_available = GODOT_BUILD_PATH.is_file()
+        # Use the standalone desktop build when it is installed locally.
+        # Otherwise fall back to the hosted browser visualizer.
+        local_visualizer_available = GODOT_BUILD_PATH.is_file()
 
-        if not visualizer_available:
-            st.warning(
-                "The optional standalone Godot visualizer is not installed "
-                "locally. The analytical dashboard and Monte Carlo results "
-                "remain fully available."
-            )
-
+        if local_visualizer_available:
             st.info(
-                "To enable the visualization buttons, download "
-                "`CapstoneAirstrikeVisualizer.exe` from the project release, place it at "
-                "`godot/builds/CapstoneAirstrikeVisualizer.exe`, then refresh this page."
+                "The local standalone Godot visualizer is available. "
+                "Visualization buttons will launch the desktop application."
             )
-
-            st.link_button(
-                "Download Godot Visualizer",
-                (
-                    "https://github.com/Gdhf/"
-                    "faa-wildlife-strike-damage-analysis/"
-                    "releases/download/v1.0.0/"
-                    "CapstoneAirstrikeVisualizer.exe"
-                ),
+        else:
+            st.info(
+                "The hosted Godot Web visualizer will open in your browser "
+                "using the selected retained Monte Carlo trial."
             )
 
         random_col, high_impact_col = st.columns(
             2,
             gap="medium",
         )
+
+        # =============================================================
+        # Random realization
+        # =============================================================
 
         with random_col:
             st.markdown("#### Random realization")
@@ -1335,36 +1357,59 @@ if (
                     "No random visual trial is available."
                 )
 
-            elif st.button(
-                "Visualize Random Trial",
-                key="launch_godot_random_visual_trial",
-                use_container_width=True,
-                disabled=not visualizer_available,
-            ):
-                try:
-                    exported_path = export_visual_trial(
+            elif local_visualizer_available:
+                if st.button(
+                    "Visualize Random Trial",
+                    key="launch_godot_random_visual_trial",
+                    use_container_width=True,
+                ):
+                    try:
+                        exported_path = export_visual_trial(
+                            result,
+                            result.visual_trial,
+                        )
+
+                        launch_local_godot_project()
+
+                        st.success(
+                            "Godot visualizer launched using "
+                            "the retained random trial."
+                        )
+
+                        st.caption(
+                            f"Trial payload: {exported_path}"
+                        )
+
+                    except Exception as exc:
+                        st.error(
+                            "The local Godot visualizer could not be launched."
+                        )
+
+                        if debug_errors_enabled():
+                            st.exception(exc)
+
+            else:
+                random_visualizer_url = (
+                    build_web_visualizer_url(
                         result,
                         result.visual_trial,
                     )
+                )
 
-                    launch_local_godot_project()
+                st.link_button(
+                    "Visualize Random Trial",
+                    random_visualizer_url,
+                    use_container_width=True,
+                )
 
-                    st.success(
-                        "Godot visualizer launched using the retained random trial."
-                    )
-
-                    st.caption(
-                        f"Trial payload: {exported_path}"
-                    )
-
-                except Exception as exc:
-                    st.error(
-                        "The Godot visualizer could not be launched."
-                    )
-                    st.exception(exc)
+        # =============================================================
+        # High-impact realization
+        # =============================================================
 
         with high_impact_col:
-            st.markdown("#### High-impact realized case")
+            st.markdown(
+                "#### High-impact realized case"
+            )
 
             st.caption(
                 "An intentionally selected consequential outcome from this "
@@ -1378,34 +1423,50 @@ if (
                     "realized case is unavailable."
                 )
 
-            elif st.button(
-                "Visualize High-Impact Trial",
-                key="launch_godot_high_impact_visual_trial",
-                use_container_width=True,
-                disabled=not visualizer_available,
-            ):
-                try:
-                    exported_path = export_visual_trial(
+            elif local_visualizer_available:
+                if st.button(
+                    "Visualize High-Impact Trial",
+                    key="launch_godot_high_impact_visual_trial",
+                    use_container_width=True,
+                ):
+                    try:
+                        exported_path = export_visual_trial(
+                            result,
+                            result.high_impact_visual_trial,
+                        )
+
+                        launch_local_godot_project()
+
+                        st.success(
+                            "Godot visualizer launched using the selected "
+                            "high-impact realized case."
+                        )
+
+                        st.caption(
+                            f"Trial payload: {exported_path}"
+                        )
+
+                    except Exception as exc:
+                        st.error(
+                            "The local Godot visualizer could not be launched."
+                        )
+
+                        if debug_errors_enabled():
+                            st.exception(exc)
+
+            else:
+                high_impact_visualizer_url = (
+                    build_web_visualizer_url(
                         result,
                         result.high_impact_visual_trial,
                     )
+                )
 
-                    launch_local_godot_project()
-
-                    st.success(
-                        "Godot visualizer launched using the selected "
-                        "high-impact realized case."
-                    )
-
-                    st.caption(
-                        f"Trial payload: {exported_path}"
-                    )
-
-                except Exception as exc:
-                    st.error(
-                        "The Godot visualizer could not be launched."
-                    )
-                    st.exception(exc)
+                st.link_button(
+                    "Visualize High-Impact Trial",
+                    high_impact_visualizer_url,
+                    use_container_width=True,
+                )
 
         st.caption(
             "The high-impact case is deliberately selected for illustration "
