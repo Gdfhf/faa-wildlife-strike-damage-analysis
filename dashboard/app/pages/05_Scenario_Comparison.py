@@ -20,6 +20,7 @@ from src.utils.labels import (
     format_engine_type,
     format_state,
 )
+from src.utils.runtime import get_max_monte_carlo_trials
 
 
 PLOTLY_CONFIG = {"displaylogo": False, "responsive": True}
@@ -944,12 +945,14 @@ section_header(
 
 settings_col1, settings_col2 = st.columns(2, gap="medium")
 
+max_trials = get_max_monte_carlo_trials()
+
 with settings_col1:
     n_trials = st.number_input(
         "Monte Carlo Trials",
         min_value=100,
-        max_value=100_000,
-        value=10_000,
+        max_value=max_trials,
+        value=min(10_000, max_trials),
         step=1_000,
         key="comparison_trials",
     )
