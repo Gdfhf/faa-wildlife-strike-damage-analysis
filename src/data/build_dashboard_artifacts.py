@@ -4,7 +4,7 @@ import json
 import pandas as pd
 
 from src.utils.paths import (
-    FAA_ANALYTICAL_DATA_PATH,
+    ANALYTICAL_DATA_PATH,
     DASHBOARD_DATA_DIR,
 )
 
@@ -14,7 +14,7 @@ from src.utils.paths import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-SOURCE_PATH = FAA_ANALYTICAL_DATA_PATH
+SOURCE_PATH = ANALYTICAL_DATA_PATH
 OUTPUT_DIR = DASHBOARD_DATA_DIR
 
 

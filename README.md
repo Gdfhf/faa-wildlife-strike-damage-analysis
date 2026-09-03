@@ -20,7 +20,7 @@ The project aims to:
 - use scenario-based Monte Carlo simulation to represent probabilistic consequence outcomes;
 - compare historically supported what-if scenarios under common simulation settings;
 - communicate historical, model, and simulation results through an interactive Streamlit dashboard;
-- provide an optional Godot-based 2D visualization of already-realized Monte Carlo trials.
+- provide an optional Godot-based 2D visualization of already-realized Monte Carlo trials through either a local Windows build or a hosted Web build.
 
 The Godot layer is a secondary illustrative interface only. Scientific, predictive, sampling, severity, and component-outcome logic remains in Python. Godot does not independently rerun the models or perform a physical collision simulation.
 
@@ -112,36 +112,52 @@ Both visualizations consume a trial that has already been realized by the Python
 
 The visualization represents scenario context such as aircraft class, aircraft mass group, wildlife type/size, phase of flight, time of day, sky condition, precipitation, realized damage, severity, and modeled component outcomes using a schematic 2D scene with audio/visual effects.
 
-#### Standalone Windows build
+#### Local Windows visualization
 
-The visualizer is exported as a **Windows x86_64 standalone executable**. A user does not need to install the Godot editor to run the compiled visualizer.
+When the standalone Windows executable is present at:
 
-Because the compiled executable is approximately 145 MB, it is **not stored in normal Git history**. The precompiled build is distributed through the project's [GitHub Releases](https://github.com/Gdhf/faa-wildlife-strike-damage-analysis/releases/tag/v1.0.0).
+```text
+godot/builds/CapstoneAirstrikeVisualizer.exe
+```
 
-To enable the visualization buttons in a cloned repository:
-
-1. Download [`CapstoneAirstrikeVisualizer.exe`](https://github.com/Gdhf/faa-wildlife-strike-damage-analysis/releases/download/v1.0.0/CapstoneAirstrikeVisualizer.exe).
-2. Place the executable at:
-
-   ```text
-   godot/builds/CapstoneAirstrikeVisualizer.exe
-   ```
-
-3. Run the Streamlit dashboard normally.
-4. On Page 04, run a supported Monte Carlo scenario.
-5. Select **Visualize Random Trial** or **Visualize High-Impact Trial**.
-
-When a visualization button is selected, Streamlit writes the selected realized trial to:
+Page 04 uses the local desktop bridge. When a visualization action is selected, Streamlit writes the selected realized trial to:
 
 ```text
 godot/data/latest_trial.json
 ```
 
-The standalone Godot executable reads that external JSON file at runtime and displays the current trial.
+The standalone executable reads that external JSON file and displays the current trial.
 
-If the executable is not present, Page 04 leaves the analytical dashboard fully functional, shows installation guidance, and disables the two visualization buttons rather than failing at launch.
+The Windows executable is approximately 145 MB and is therefore **not stored in normal Git history**. It is distributed through the project's GitHub Releases:
 
-The precompiled visualizer currently targets Windows x86_64. The Godot source project and export preset remain in the repository so the visualization can be inspected, reproduced, or exported for another supported platform if required.
+- Release page: https://github.com/Gdfhf/faa-wildlife-strike-damage-analysis/releases/tag/v1.0.0
+- Executable: https://github.com/Gdfhf/faa-wildlife-strike-damage-analysis/releases/download/v1.0.0/CapstoneAirstrikeVisualizer.exe
+
+A user does not need to install the Godot editor to run the compiled Windows build.
+
+#### Hosted Web visualization
+
+When the local Windows executable is not available, Page 04 automatically uses the hosted Godot Web visualizer instead of disabling visualization.
+
+The selected retained trial is serialized by Python, encoded into a browser-safe URL payload, and passed to the Godot Web application. The Web build decodes that payload and visualizes the supplied trial without rerunning any analytical logic.
+
+The tracked Web export is stored at:
+
+```text
+simulation/web_visualizer/
+```
+
+and is deployed through GitHub Pages by the repository GitHub Actions workflow.
+
+Hosted visualizer:
+
+```text
+https://gdfhf.github.io/faa-wildlife-strike-damage-analysis/
+```
+
+If the Web build is opened directly without a supplied trial payload, it falls back to the bundled example trial included in the export.
+
+The Web visualizer has been checked on desktop and mobile browsers, including portrait/landscape use. Browser resizing and replay behavior remain presentation-layer behavior and do not affect the analytical results.
 
 ### Important simulation behavior
 
@@ -177,6 +193,10 @@ The operational default is **10,000 Monte Carlo trials** with a reproducible ran
 
 ```text
 faa-wildlife-strike-damage-analysis/
+│
+├── .github/
+│   └── workflows/
+│       └── deploy-godot-pages.yml     # GitHub Pages deployment for Godot Web
 │
 ├── dashboard/
 │   ├── app.py                         # Streamlit entry point and explicit navigation/router
@@ -214,7 +234,8 @@ faa-wildlife-strike-damage-analysis/
 ├── docs/                              # Documentation for audits, decision-making and official sources
 ├── notebooks/                         # Research notebooks 01–10
 ├── outputs/                           # Saved validation / explainability outputs
-├── simulation/                        # Exported scenario/result files
+├── simulation/
+│   └── web_visualizer/                # Tracked Godot Web export for GitHub Pages
 ├── src/
 │   ├── data/                          # Dashboard artifact builders/loaders
 │   ├── models/                        # Saved-model loading compatibility
@@ -315,13 +336,12 @@ A teammate who only wants to **run the dashboard** should not need the large raw
 - the Python source under `src/`;
 - the Streamlit files under `dashboard/`.
 
-The optional Godot single-trial visualization additionally requires the standalone Windows executable at:
+The Godot single-trial visualization supports two runtime modes:
 
-```text
-godot/builds/CapstoneAirstrikeVisualizer.exe
-```
+- if `godot/builds/CapstoneAirstrikeVisualizer.exe` exists, Page 04 launches the local Windows build;
+- otherwise, Page 04 uses the hosted GitHub Pages Web visualizer.
 
-If that file is absent, the dashboard still runs normally; Page 04 disables only the visualization buttons and provides instructions for obtaining the build from GitHub Releases.
+The local executable is therefore optional. Its absence does not disable the analytical dashboard or the browser-based visualization when internet access is available.
 
 If the lightweight dashboard artifacts are missing, regenerate them from the canonical analytical dataset with:
 
@@ -370,11 +390,43 @@ The repository intentionally does **not** track:
 - compiled Godot builds such as `godot/builds/CapstoneAirstrikeVisualizer.exe`;
 - logs, caches, virtual environments, and local secrets.
 
-Exceptions are made for the small runtime artifacts and final trained-model files required to reproduce the current Streamlit dashboard.
+Exceptions are made for the small runtime artifacts and final trained-model files required to reproduce the current Streamlit dashboard, and for the static Godot Web export under `simulation/web_visualizer/` required by GitHub Pages.
 
 The Godot source project, assets, scripts, attribution, and `export_presets.cfg` are version controlled for reproducibility. The much larger precompiled Windows executable is distributed separately through GitHub Releases rather than normal Git history.
 
 This separation keeps the repository practical while allowing teammates to reproduce the analytical application and optionally install the precompiled visualization without installing Godot.
+
+## Deployment
+
+### Streamlit Community Cloud
+
+The dashboard is deployable from:
+
+```text
+dashboard/app.py
+```
+
+The hosted application uses the same saved artifacts, trained models, and Python simulation code as the local dashboard.
+
+### GitHub Pages
+
+The Godot Web export is stored under:
+
+```text
+simulation/web_visualizer/
+```
+
+and deployed through GitHub Actions.
+
+The production workflow is configured to deploy from the `main` branch after the `web-hosting` pull request is merged.
+
+Published visualizer:
+
+```text
+https://gdfhf.github.io/faa-wildlife-strike-damage-analysis/
+```
+
+When the local Windows executable is unavailable, Page 04 automatically constructs the encoded trial URL for this hosted visualizer.
 
 ## Current Project Status
 
@@ -399,24 +451,26 @@ The Streamlit dashboard is now **functionally and visually complete for the caps
 - optional comparison values are constrained to historically observed values under the selected shared context;
 - the user-facing interpretation guide reflects the final simulation and comparison behavior;
 - responsive desktop/mobile presentation has been checked during development;
+- Streamlit Community Cloud deployment has been validated;
 - shared layout, chart, metric, and theme helpers are in use across the dashboard.
 
 The optional Godot visualization is also implemented and integrated:
 
-- Page 04 can export either a randomly retained trial or an intentionally selected high-impact realized trial;
-- the visualization consumes the Python-generated `latest_trial.json` payload rather than reproducing analytical logic in Godot;
+- Page 04 can visualize either a randomly retained trial or an intentionally selected high-impact realized trial;
+- the visualization consumes a Python-generated retained-trial payload rather than reproducing analytical logic in Godot;
 - aircraft, wildlife, weather, damage, outcome, and audio presentation are implemented;
 - the Windows x86_64 standalone build has been exported and tested independently;
-- the exported application reads the external runtime JSON so newly generated Streamlit trials are reflected without rebuilding the executable;
-- Page 04 detects whether the standalone executable is installed and gracefully disables the visualization actions when it is absent;
+- the desktop build reads the external runtime JSON so newly generated local Streamlit trials are reflected without rebuilding the executable;
+- the Web build accepts browser-safe encoded trial payloads and retains a bundled fallback trial for direct visits;
+- Page 04 automatically uses the local Windows executable when available and otherwise uses the hosted Web visualizer;
+- the Web visualizer is deployed through GitHub Pages and has been checked on desktop and mobile browsers;
 - the standalone Windows build is distributed through the project's GitHub Releases rather than normal Git history.
 
 Remaining work is primarily:
 
 - final regression and fresh-environment QA;
 - final documentation and attribution synchronization;
-- Streamlit Community Cloud deployment, if retained in the final delivery plan;
-- presentation/demo preparation.
+- presentation, poster, and demo preparation.
 
 ## Interpretation Notes
 

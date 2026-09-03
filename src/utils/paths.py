@@ -12,8 +12,18 @@ FINAL_MODELS_DIR = MODELS_DIR / "final"
 
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
+GODOT_DIR = PROJECT_ROOT / "godot"
 
+SIMULATION_DIR = PROJECT_ROOT / "simulation"
+WEB_VISUALIZER_DIR = (
+    SIMULATION_DIR / "web_visualizer"
+)
+
+
+# =====================================================================
 # Data
+# =====================================================================
+
 ANALYTICAL_DATA_PATH = (
     PROCESSED_DATA_DIR / "faa_strikes_analytical.csv"
 )
@@ -43,7 +53,10 @@ OVERVIEW_SUMMARY_PATH = (
 )
 
 
+# =====================================================================
 # Final models
+# =====================================================================
+
 DAMAGE_MODEL_PATH = (
     FINAL_MODELS_DIR
     / "06_calibration_validation"
@@ -62,12 +75,48 @@ COMPONENT_MODEL_DIR = (
 )
 
 
+# =====================================================================
 # Metadata
-DAMAGE_OUTPUT_DIR = OUTPUTS_DIR / "06_calibration_validation"
-SEVERITY_OUTPUT_DIR = OUTPUTS_DIR / "07_severity_modelling"
-COMPONENT_OUTPUT_DIR = OUTPUTS_DIR / "08_component_modelling"
-SIMULATION_OUTPUT_DIR = OUTPUTS_DIR / "10_simulation_analysis"
+# =====================================================================
+
+DAMAGE_OUTPUT_DIR = (
+    OUTPUTS_DIR / "06_calibration_validation"
+)
+
+SEVERITY_OUTPUT_DIR = (
+    OUTPUTS_DIR / "07_severity_modelling"
+)
+
+COMPONENT_OUTPUT_DIR = (
+    OUTPUTS_DIR / "08_component_modelling"
+)
+
+SIMULATION_OUTPUT_DIR = (
+    OUTPUTS_DIR / "10_simulation_analysis"
+)
 
 SCENARIO_SCHEMA_PATH = (
     SIMULATION_OUTPUT_DIR / "scenario_input_schema.json"
+)
+
+
+# =====================================================================
+# Godot visualization
+# =====================================================================
+
+GODOT_TRIAL_PATH = (
+    GODOT_DIR
+    / "data"
+    / "latest_trial.json"
+)
+
+GODOT_BUILD_PATH = (
+    GODOT_DIR
+    / "builds"
+    / "CapstoneAirstrikeVisualizer.exe"
+)
+
+GODOT_WEB_URL = (
+    "https://gdfhf.github.io/"
+    "faa-wildlife-strike-damage-analysis/"
 )

@@ -63,22 +63,29 @@ func _ready() -> void:
 
 	if not load_trial():
 		return
-
-	DisplayServer.window_set_mode(
-		DisplayServer.WINDOW_MODE_FULLSCREEN
-	)
+	
+	if not OS.has_feature("web"):
+		DisplayServer.window_set_mode(
+			DisplayServer.WINDOW_MODE_FULLSCREEN
+		)
 
 	update_trial_info()
 	prepare_scene()
-	configure_weather_audio(
-		sampled_context
-	)
+	if not OS.has_feature("web"):
+		configure_weather_audio(
+			sampled_context
+		)
 
 	play_button.text = "Play Trial"
 	play_button.visible = true
 	play_button.disabled = false
-	exit_button.visible = true
-	exit_button.disabled = false
+
+	if OS.has_feature("web"):
+		exit_button.visible = false
+		exit_button.disabled = true
+	else:
+		exit_button.visible = true
+		exit_button.disabled = false
 
 	if not play_button.pressed.is_connected(
 		_on_play_button_pressed
@@ -129,8 +136,13 @@ func _on_play_button_pressed() -> void:
 	play_button.text = "Replay Trial"
 	play_button.visible = true
 	play_button.disabled = false
-	exit_button.visible = true
-	exit_button.disabled = false
+
+	if OS.has_feature("web"):
+		exit_button.visible = false
+		exit_button.disabled = true
+	else:
+		exit_button.visible = true
+		exit_button.disabled = false
 
 func _on_exit_button_pressed() -> void:
 	button_audio.stop()
@@ -139,6 +151,9 @@ func _on_exit_button_pressed() -> void:
 	await get_tree().create_timer(
 		0.08
 	).timeout
+
+	if OS.has_feature("web"):
+		return
 
 	get_tree().quit()
 
