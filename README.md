@@ -78,6 +78,10 @@ The final operational simulation uses calibrated probabilities rather than conve
 
 The Streamlit application is the operational integration layer of the project. It reuses saved analytical artifacts and trained models instead of retraining models or recomputing expensive explainability analyses during normal dashboard use.
 
+Hosted dashboard:
+
+https://faa-wildlife-strike-analysis-dashboard.streamlit.app
+
 The application now uses an explicit **Home / landing page** plus six numbered analytical pages:
 
 1. **Project Overview**  
@@ -400,10 +404,14 @@ This separation keeps the repository practical while allowing teammates to repro
 
 ### Streamlit Community Cloud
 
-The dashboard is deployable from:
+The dashboard is deployed from:
 
 ```text
 dashboard/app.py
+```
+**Hosted dashboard**
+```text
+https://faa-wildlife-strike-analysis-dashboard.streamlit.app
 ```
 
 The hosted application uses the same saved artifacts, trained models, and Python simulation code as the local dashboard.
